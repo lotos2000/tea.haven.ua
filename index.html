@@ -603,21 +603,6 @@
                 padding: 1rem;
             }
         }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,.3);
-            border-radius: 50%;
-            border-top-color: white;
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
     </style>
 </head>
 <body>
@@ -737,7 +722,7 @@
             </div>
             
             <div class="test-card" onclick="openTest('brewing-ritual')">
-                <h3> Який твій ідеальний ритуал заварювання?</h3>
+                <h3>✨ Який твій ідеальний ритуал заварювання?</h3>
                 <p>12 запитань про те, як ти готуєшся до дня, подорожуєш та відпочиваєш, щоб підібрати найкращий посуд та техніку заварки.</p>
                 <button class="btn">Пройти тест (12 запитань)</button>
             </div>
@@ -774,7 +759,7 @@
             </div>
             
             <div class="content-block">
-                <h3> Енциклопедія чаю</h3>
+                <h3>📚 Енциклопедія чаю</h3>
                 <p>Чай — це цілий всесвіт, який охоплює не лише класичні шу та шен пуери, а й вишукані білі чаї з Фуцзяні, яскраво-зелені японські матча та сенча, ароматні тайванські улуни високих гір.</p>
                 <p>Ми зібрали для вас велику бібліотеку знань про чай: від історії виникнення до сучасних методів заварювання. Дізнайтесь про різноманітні червоні чаї та авторські купажі з травами й фруктами.</p>
                 <ul class="features-list">
@@ -787,7 +772,7 @@
             </div>
             
             <div class="content-block">
-                <h3> Чому обирають нас</h3>
+                <h3>⭐ Чому обирають нас</h3>
                 <p>Наша місія — зробити справжню чайну культуру доступною для кожного. Ми віримо, що правильний чай може змінити настрій, надихнути на нові звершення та подарувати моменти справжньої насолоди.</p>
                 <p>Кожен замовлення — це можливість зануритися у світ східної філософії та знайти свій унікальний смак.</p>
                 <ul class="features-list">
@@ -886,7 +871,7 @@
                     {
                         question: 'Як ти проводиш ранок?',
                         answers: [
-                            'Прокидаюсь рано, медитую та п'ю воду',
+                            'Прокидаюсь рано, медитую та п\'ю воду',
                             'Поспішаю на роботу/навчання',
                             'Люблю довго полежати в ліжку',
                             'Ранок починається з кави або енергетика'
@@ -977,7 +962,7 @@
                         question: 'Що для тебе важливіше?',
                         answers: [
                             'Внутрішня гармонія',
-                            'Кар'єра та успіх',
+                            'Кар\'єра та успіх',
                             'Стосунки з людьми',
                             'Особистий розвиток'
                         ]
@@ -1032,7 +1017,7 @@
                     {
                         question: 'Яка температура води для тебе?',
                         answers: [
-                            'Кип'яток — люблю міцний чай',
+                            'Кип\'яток — люблю міцний чай',
                             '80-85°C — для зеленого чаю',
                             '95°C — для улунов',
                             'Не замислююсь про це'
@@ -1113,7 +1098,7 @@
                 ],
                 results: {
                     0: { name: 'Швидкий ритуал', description: 'Ти цінуєш свій час, але не хочеш компромісів у якості. Твій ідеальний вибір — простий чайник або гайвань з можливістю швидкого заварювання. Спробуй улун або червоний чай!' },
-                    1: { name: 'Класична чайна церемонія', description: 'Ти любиш традиції та цінуєш кожен момент чайної церемонії. Твій вибір — гайвань або ісинський чайник. Ідеально підходять улуни та пуери.' },
+                                       1: { name: 'Класична чайна церемонія', description: 'Ти любиш традиції та цінуєш кожен момент чайної церемонії. Твій вибір — гайвань або исинський чайник. Ідеально підходять улуни та пуери.' },
                     2: { name: 'Медитативний ритуал', description: 'Чай для тебе — це глибока практика та медитація. Ти готовий витрачати години на ідеальне заварювання. Твій вибір — витримані пуери та високогірні улуни.' },
                     3: { name: 'Вільний стиль', description: 'Ти не любиш рамок та створюєш свій власний ритуал. Експериментуй з різними способами заварювання та сортами. Твій ідеальний чай — той, що подобається саме тобі!' }
                 }
@@ -1130,8 +1115,6 @@
             answers = [];
             
             const modal = document.getElementById('testModal');
-            const content = document.getElementById('testContent');
-            
             renderQuestion();
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1174,7 +1157,6 @@
         function selectAnswer(answerIndex) {
             answers.push(answerIndex);
             
-            // Visual feedback
             const buttons = document.querySelectorAll('.answer-btn');
             buttons[answerIndex].classList.add('selected');
             
@@ -1192,7 +1174,6 @@
         function showResult() {
             const content = document.getElementById('testContent');
             
-            // Calculate result
             const dominant = answers.reduce((a, b, _, arr) => 
                 arr.filter(v => v === a).length >= arr.filter(v => v === b).length ? a : b
             );
@@ -1201,7 +1182,7 @@
             
             content.innerHTML = `
                 <div class="test-result">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;"></div>
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">🍵</div>
                     <h3>${result.name}</h3>
                     <p style="font-size: 1.1rem; line-height: 1.6; margin: 1rem 0;">${result.description}</p>
                     <button class="btn" onclick="closeTest()" style="margin-top: 1.5rem;">
@@ -1220,14 +1201,12 @@
             renderQuestion();
         }
 
-        // Close modal on outside click
         document.getElementById('testModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeTest();
             }
         });
 
-        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1241,7 +1220,6 @@
             });
         });
 
-        // Cart functionality (placeholder)
         let cartCount = 0;
         document.querySelectorAll('.btn').forEach(btn => {
             if (btn.textContent.includes('Додати') || btn.textContent.includes('В кошик')) {
@@ -1249,7 +1227,6 @@
                     cartCount++;
                     document.querySelector('.cart-count').textContent = cartCount;
                     
-                    // Animation
                     this.textContent = '✓ Додано';
                     this.style.background = '#4CAF50';
                     setTimeout(() => {
