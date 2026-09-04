@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tea.haven.ua — Премиальный Чай</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d4d4d8;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-stone-100 text-stone-800 font-sans min-h-screen flex flex-col antialiased">
+
+    <!-- Header / Navbar -->
+    <header class="bg-stone-900 text-stone-100 sticky top-0 z-40 shadow-lg border-b border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center">
+            
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-full bg-amber-600/20 border border-amber-500/40 flex items-center justify-center text-amber-500 group-hover:bg-amber-600 group-hover:text-white transition duration-300">
+                    <i class="fa-solid fa-leaf text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-stone-100 block leading-none">tea.haven<span class="text-amber-500">.ua</span></span>
+                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Чайная Коллекция</span>
+                </div>
+            </a>
+
+            <!-- Cart Button -->
+            <button onclick="toggleCart()" class="relative bg-stone-800 hover:bg-stone-700 text-stone-200 px-4 py-2 rounded-xl flex items-center gap-3 transition border border-stone-700/60 shadow-inner">
+                <i class="fa-solid fa-bag-shopping text-amber-500 text-lg"></i>
+                <span class="text-sm font-medium hidden sm:inline">Корзина</span>
+                <span id="cartCount" class="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
+        
+        <!-- Controls Bar -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-stone-200/80">
+            <div>
+                <h1 class="text-2xl font-bold text-stone-900">Каталог сортов</h1>
+                <p id="statusText" class="text-xs text-stone-500 mt-1 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                    Загрузка каталога товаров...
+                </p>
+            </div>
+
+            <div class="relative w-full md:w-80">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
+                <input type="text" id="searchInput" oninput="filterProducts()" 
+                    placeholder="Поиск по названию или категории..." 
+                    class="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition shadow-inner">
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        </div>
+
+        <div id="emptyMessage" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-stone-300">
+            <i class="fa-solid fa-box-open text-4xl text-stone-300 mb-3 block"></i>
+            <p class="text-stone-500 font-medium">Товары не найдены</p>
+        </div>
+    </main>
+
+    <!-- Side Cart Slide-over -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <div onclick="toggleCart()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                
+                <!-- Drawer Header -->
+                <div class="p-5 bg-stone-900 text-stone-100 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping text-amber-500"></i>
+                        <h2 class="text-lg font-bold">Ваша Корзина</h2>
+                    </div>
+                    <button onclick="toggleCart()" class="text-stone-400 hover:text-white transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Drawer Body (Items) -->
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
+                </div>
+
+                <!-- Drawer Footer (Checkout) -->
+                <div id="cartFooter" class="p-5 border-t border-stone-200 bg-stone-50 hidden">
+                    <div class="flex justify-between items-center mb-4 text-stone-900">
+                        <span class="text-sm font-semibold">Итого к оплате:</span>
+                        <span id="cartTotal" class="text-xl font-bold text-amber-700">0 грн</span>
+                    </div>
+
+                    <!-- Order Form -->
+                    <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
+                        <input type="text" id="custName" required placeholder="Ваше Имя и Фамилия" 
+                            class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
+                        <input type="tel" id="custPhone" required placeholder="Телефон (+380...)" 
+                            class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
+                        <input type="text" id="custCity" required placeholder="Город доставки" 
+                            class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
+                        <input type="text" id="custNP" required placeholder="Отделение Новой Почты (№)" 
+                            class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
+
+                        <button type="submit" class="w-full mt-2 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-amber-600/20 transition flex items-center justify-center gap-2">
+                            <span>Оформить Заказ</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 text-center py-6 text-xs mt-auto">
+        <p>© 2026 tea.haven.ua. Все права защищены.</p>
+    </footer>
+
+    <script>
+        // Скрытая ссылка на таблицу
+        const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1z6ytK07e6iLq356LmKxzWToQfKDhxQD9zUxep4E4PZg/edit?gid=0#gid=0';
+
+        let products = [];
+        let cart = [];
+
+        function extractSheetId(url) {
+            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+            return match ? match[1] : null;
+        }
+
+        // Загрузка данных через JSONP
+        function loadCustomTable() {
+            const statusText = document.getElementById('statusText');
+            const sheetId = extractSheetId(DEFAULT_SHEET_URL);
+
+            if (!sheetId) {
+                statusText.innerText = "Ошибка: Неверный ID таблицы.";
+                return;
+            }
+
+            const oldScript = document.getElementById('gvizScript');
+            if (oldScript) oldScript.remove();
+
+            window.handleGvizResponse = function(data) {
+                try {
+                    if (!data || !data.table || !data.table.rows) throw new Error("Пустые данные");
+
+                    const rows = data.table.rows;
+                    const parsedProducts = [];
+
+                    rows.forEach((row) => {
+                        const cells = row.c;
+                        if (!cells) return;
+
+                        const getValue = (index) => {
+                            if (!cells[index] || cells[index].v === null || cells[index].v === undefined) return '';
+                            return String(cells[index].f || cells[index].v).trim();
+                        };
+
+                        const name = getValue(0);
+                        const category = getValue(1);
+                        const priceStr = getValue(2);
+                        const stock = getValue(3);
+                        const image = getValue(4);
+
+                        if (['название', 'назва', 'name'].includes(name.toLowerCase())) return;
+
+                        const cleanPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+
+                        if (name) {
+                            parsedProducts.push({
+                                id: Math.random().toString(36).substr(2, 9),
+                                name: name,
+                                category: category || 'Чай',
+                                price: cleanPrice,
+                                priceRaw: priceStr,
+                                stock: stock || 'В наличии',
+                                image: image || 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'
+                            });
+                        }
+                    });
+
+                    products = parsedProducts;
+                    renderProducts(products);
+                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог обновлен. Товаров: ${products.length}`;
+
+                } catch (err) {
+                    console.error(err);
+                    statusText.innerText = "Ошибка загрузки каталога.";
+                }
+            };
+
+            const script = document.createElement('script');
+            script.id = 'gvizScript';
+            script.src = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
+            script.onerror = () => { statusText.innerText = "Ошибка соединения с таблицей."; };
+            document.body.appendChild(script);
+        }
+
+        // Отрисовка каталога
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            const emptyMsg = document.getElementById('emptyMessage');
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                emptyMsg.classList.remove('hidden');
+                return;
+            }
+            emptyMsg.classList.add('hidden');
+
+            items.forEach(item => {
+                const stockLower = item.stock.toLowerCase();
+                const isAvailable = stockLower.includes('в наличи') || stockLower.includes('наявност') || (!isNaN(parseInt(item.stock)) && parseInt(item.stock) > 0);
+                
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl border border-stone-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group";
+                card.innerHTML = `
+                    <div>
+                        <div class="h-52 overflow-hidden bg-stone-100 relative">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'">
+                            <span class="absolute top-3 right-3 text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md ${isAvailable ? 'bg-emerald-900/80 text-emerald-200' : 'bg-amber-900/80 text-amber-200'}">
+                                ${item.stock}
+                            </span>
+                        </div>
+                        <div class="p-5">
+                            <span class="text-[11px] font-bold text-amber-600 uppercase tracking-wider">${item.category}</span>
+                            <h3 class="text-base font-bold text-stone-900 mt-1 line-clamp-2">${item.name}</h3>
+                        </div>
+                    </div>
+                    <div class="p-5 pt-0 flex items-center justify-between mt-auto">
+                        <div>
+                            <span class="text-[11px] text-stone-400 block font-medium">Цена</span>
+                            <span class="text-xl font-extrabold text-stone-900">${item.price} <span class="text-sm font-normal text-stone-500">грн</span></span>
+                        </div>
+                        <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-amber-600 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-md transition-colors duration-200">
+                            <i class="fa-solid fa-cart-plus text-sm"></i>
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Логика корзины
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            toggleCart(true); // Открыть корзину
+        }
+
+        function changeQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.qty += delta;
+            if (item.qty <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartCount = document.getElementById('cartCount');
+            const container = document.getElementById('cartItemsContainer');
+            const footer = document.getElementById('cartFooter');
+            const totalEl = document.getElementById('cartTotal');
+
+            const totalQty = cart.reduce((sum, i) => sum + i.qty, 0);
+            const totalPrice = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+            cartCount.innerText = totalQty;
+            totalEl.innerText = `${totalPrice} грн`;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-stone-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 block opacity-40"></i>
+                        <p class="text-sm">Корзина пуста</p>
+                    </div>
+                `;
+                footer.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200/60">
+                    <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-cover rounded-lg">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
+                        <span class="text-xs text-amber-700 font-semibold">${item.price} грн</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-stone-200">
+                        <button onclick="changeQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 text-xs px-1">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 text-xs px-1">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCart(forceOpen = false) {
+            const drawer = document.getElementById('cartDrawer');
+            if (forceOpen) {
+                drawer.classList.remove('hidden');
+            } else {
+                drawer.classList.toggle('hidden');
+            }
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
+            );
+            renderProducts(filtered);
+        }
+
+        // Заглушка отправки заказа (готово под бота)
+        function handleCheckout(e) {
+            e.preventDefault();
+
+            const orderData = {
+                name: document.getElementById('custName').value,
+                phone: document.getElementById('custPhone').value,
+                city: document.getElementById('custCity').value,
+                np: document.getElementById('custNP').value,
+                cart: cart,
+                total: cart.reduce((sum, i) => sum + (i.price * i.qty), 0)
+            };
+
+            console.log('Данные заказа для Telegram:', orderData);
+            alert(`Спасибо за заказ, ${orderData.name}! Скоро с вами свяжутся.`);
+
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            document.getElementById('orderForm').reset();
+        }
+
+        window.onload = () => {
+            loadCustomTable();
+        };
+    </script>
+</body>
+</html>
