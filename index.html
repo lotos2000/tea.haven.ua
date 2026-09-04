@@ -28,7 +28,6 @@
             to { transform: translateX(0); }
         }
 
-        /* М'які плавні анімації хмар без різких рухів */
         @keyframes floatCloudSlow {
             0% { transform: translate(0px, 0px) scale(1); }
             50% { transform: translate(35px, -20px) scale(1.06); }
@@ -53,11 +52,10 @@
 
         body {
             -webkit-tap-highlight-color: transparent;
-            background-color: #d8f3dc; /* Світло-зелений фон */
+            background-color: #d8f3dc;
             overflow-x: hidden;
         }
 
-        /* Плаваючі хмари на фон */
         .bg-clouds-container {
             position: fixed;
             top: 0;
@@ -78,7 +76,6 @@
 </head>
 <body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-24 md:pb-0">
 
-    <!-- Фонові плавні світло-зелені та білі хмари -->
     <div class="bg-clouds-container">
         <div class="cloud-shape cloud-slow w-[450px] h-[450px] -top-24 -left-24 bg-white/60"></div>
         <div class="cloud-shape cloud-fast w-[600px] h-[600px] top-1/4 -right-40 bg-white/40"></div>
@@ -89,7 +86,6 @@
     <header class="bg-[#d8f3dc]/85 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-900/10 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
             
-            <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group btn-active-scale">
                 <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-emerald-900/20 shadow-sm" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
                 <div>
@@ -98,7 +94,6 @@
                 </div>
             </a>
 
-            <!-- Search Bar in Header -->
             <div class="hidden md:flex relative flex-1 max-w-md mx-6">
                 <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
                     placeholder="Пошук за всіма сортами чаю та посуду..." 
@@ -106,7 +101,6 @@
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
 
-            <!-- Actions & Cart Button -->
             <div class="flex items-center gap-3">
                 <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Instagram" class="hidden sm:flex w-10 h-10 bg-white/70 hover:bg-white text-stone-700 rounded-full items-center justify-center transition border border-stone-300/50 shadow-sm btn-active-scale">
                     <i class="fa-brands fa-instagram text-base"></i>
@@ -125,36 +119,20 @@
     <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full space-y-8">
 
         <!-- Banner / Hero Section -->
-        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="md:col-span-2 bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
-                <div class="z-10 max-w-md">
-                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">Повна колекція ексклюзивних чаїв</h1>
-                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Понад 900 унікальних сортів з Китаю, Тайваню, Японії та всього світу в наявності.</p>
+        <section class="grid grid-cols-1 gap-4">
+            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[260px]">
+                <div class="z-15 max-w-xl">
+                    <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Колекція 2026</span>
+                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">Повна колекція ексклюзивних чаїв та посуду</h1>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Понад 900 унікальних сортів з Китаю, Тайваню, Японії та найкращий посуд для традиційних заварювань в наявності.</p>
                 </div>
-                <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90">
+                <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90 hidden sm:flex">
                     <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Tea" class="max-h-[90%] object-contain rounded-2xl">
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-4">
-                <div onclick="setCategory('Подарки')" class="bg-[#c26e44] text-white rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-xl font-bold">Подарунки</h3>
-                        <i class="fa-solid fa-gift text-2xl opacity-80"></i>
-                    </div>
-                    <p class="text-xs font-medium opacity-90">Найкращі набори</p>
-                </div>
-                <div onclick="setCategory('Акции')" class="bg-[#facc15] text-stone-900 rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-xl font-bold">Акції</h3>
-                        <i class="fa-solid fa-percent text-2xl opacity-80"></i>
-                    </div>
-                    <p class="text-xs font-medium opacity-80">Спеціальні пропозиції</p>
                 </div>
             </div>
         </section>
 
-        <!-- Категорії каталогy -->
+        <!-- Категорії каталогу -->
         <section class="space-y-4">
             <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категорії каталогу</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid"></div>
@@ -183,7 +161,6 @@
                 <p class="text-xs sm:text-sm text-stone-600">Оберіть тест та пройдіть захопливе інтерактивне дослідження свого чайного характеру чи ідеального стилю життя!</p>
             </div>
 
-            <!-- Блоки тестів з кнопками відкриття в окремому вікні -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
                 <!-- Тест 1 -->
                 <div class="bg-stone-50 rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition">
@@ -262,7 +239,6 @@
         <div class="flex min-h-full items-center justify-center p-3 sm:p-6">
             <div class="relative w-full max-w-2xl rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-scale-up flex flex-col">
                 
-                <!-- Шапка тесту -->
                 <div class="p-5 bg-stone-50 border-b border-stone-200 flex justify-between items-center">
                     <div>
                         <span id="quizBadge" class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Тест</span>
@@ -273,15 +249,11 @@
                     </button>
                 </div>
 
-                <!-- Прогрес-бар -->
                 <div class="w-full bg-stone-100 h-2">
                     <div id="quizProgressBar" class="bg-emerald-600 h-2 transition-all duration-300 w-0"></div>
                 </div>
 
-                <!-- Контент запитання -->
-                <div id="quizBody" class="p-6 sm:p-8 space-y-6 min-h-[320px] flex flex-col justify-between">
-                    <!-- Заповнюється через JS -->
-                </div>
+                <div id="quizBody" class="p-6 sm:p-8 space-y-6 min-h-[320px] flex flex-col justify-between"></div>
             </div>
         </div>
     </div>
@@ -443,16 +415,14 @@
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
         const CATEGORIES_LIST = [
-            { name: 'Чай', desc: 'Перлини з Китаю та світу', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
-            { name: 'Посуд', desc: 'Зручність і стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Шу Пуэр', desc: 'Насичений смак', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Шен Пуэр', desc: 'Світлий та бадьорий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Улун', desc: 'Ароматні напівферментовані', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Зеленый чай', desc: 'Свіжість і гармонія', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
-            { name: 'Белый чай', desc: 'Витончені світлі листочки', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Красный чай', desc: 'Зігріваючий та насичений', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Акции', desc: 'Спеціальні пропозиції', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
+            { name: 'Чай', desc: 'Перлини з Китаю та світу', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-2 md:col-span-2' },
+            { name: 'Посуд', desc: 'Зручність і стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шу Пуэр', desc: 'Насичений смак', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шен Пуэр', desc: 'Світлий та бадьорий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Улун', desc: 'Ароматні напівферментовані', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Зеленый чай', desc: 'Свіжість і гармонія', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', span: 'col-span-2 md:col-span-2' },
+            { name: 'Белый чай', desc: 'Витончені світлі листочки', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Красный чай', desc: 'Зігріваючий та насичений', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' }
         ];
 
         const TEA_IMAGES = [
@@ -465,7 +435,6 @@
         let cart = [];
         let searchTimeout = null;
 
-        // Дані для тестів по 12 запитань у кожному
         const QUIZ_1_QUESTIONS = [
             { q: "Який час доби тобі ближче всього?", opts: ["Ніч і повна тиша", "Ранковий світанок і кава/чай", "Ближче до вечора, захід сонця", "День у постійній динаміці"] },
             { q: "Яка музика грає в твоїх навушниках?", opts: ["Хип-хоп / реп / андеграунд", "Інді / рок / альтернатива", "Фонк / треп / електронна", "Ло-фай / ембіент для фокусу"] },
@@ -521,8 +490,6 @@
             if (lower.includes('зелен') || lower.includes('лунцзин')) return 'Зеленый чай';
             if (lower.includes('белый') || lower.includes('білий')) return 'Белый чай';
             if (lower.includes('красн') || lower.includes('червон')) return 'Красный чай';
-            if (lower.includes('подар') || lower.includes('набор')) return 'Подарки';
-            if (lower.includes('акці') || lower.includes('скидк')) return 'Акции';
             if (lower.includes('гайвань') || lower.includes('чайник') || lower.includes('піал')) return 'Посуд';
             return 'Чай';
         }
@@ -588,20 +555,14 @@
         function renderCategoryTiles() {
             const container = document.getElementById('categoryTilesGrid');
             container.innerHTML = CATEGORIES_LIST.map(cat => `
-                <div onclick="openCategory('${cat.name}')" class="${cat.color} ${cat.span} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[150px] relative overflow-hidden btn-active-scale group">
+                <div onclick="openCategory('${cat.name}')" class="bg-white ${cat.span} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[150px] relative overflow-hidden btn-active-scale group">
                     <div class="z-10">
                         <h3 class="text-base sm:text-lg font-bold mb-1 group-hover:text-emerald-700 transition">${cat.name}</h3>
-                        <p class="text-xs opacity-80 leading-relaxed">${cat.desc}</p>
+                        <p class="text-xs text-stone-500 leading-relaxed">${cat.desc}</p>
                     </div>
-                    ${cat.image ? `
-                        <div class="absolute right-0 bottom-0 w-24 h-24 opacity-80 pointer-events-none">
-                            <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover rounded-tl-2xl">
-                        </div>
-                    ` : `
-                        <div class="flex justify-end mt-4">
-                            <i class="fa-solid fa-arrow-right text-lg opacity-70"></i>
-                        </div>
-                    `}
+                    <div class="absolute right-0 bottom-0 w-24 h-24 opacity-80 pointer-events-none">
+                        <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover rounded-tl-2xl">
+                    </div>
                 </div>
             `).join('');
         }
@@ -648,7 +609,6 @@
             `).join('');
         }
 
-        // Логіка великих інтерактивних тестів (12 запитань)
         function openQuizModal(quizId) {
             currentQuizId = quizId;
             currentQuizIndex = 0;
@@ -768,7 +728,7 @@
             if (catName === 'Все товары') {
                 items = allProducts;
             } else if (catName === 'Чай') {
-                items = allProducts.filter(p => !['Посуд', 'Подарки', 'Акции'].includes(p.category));
+                items = allProducts.filter(p => p.category !== 'Посуд');
             } else {
                 items = allProducts.filter(p => p.category === catName);
             }
