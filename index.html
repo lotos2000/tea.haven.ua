@@ -8,9 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #f5f5f4; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d7d3cd; border-radius: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #15803d; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -39,132 +38,140 @@
 
         body {
             -webkit-tap-highlight-color: transparent;
-            padding-bottom: env(safe-area-inset-bottom);
+            background-color: #dcedc8; /* Фірмовий фісташковий відтінок NewTea */
         }
     </style>
 </head>
-<body class="bg-[#fcfbf9] text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-20 md:pb-0">
+<body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-20 md:pb-0">
 
-    <header class="bg-white/90 backdrop-blur-md text-stone-800 sticky top-0 z-40 border-b border-stone-200 shadow-sm">
+    <!-- Header -->
+    <header class="bg-[#dcedc8]/90 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-900/10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
             
+            <!-- Logo -->
             <a href="#" class="flex items-center gap-3 group btn-active-scale">
-                <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-emerald-500/30 shadow-md shadow-emerald-600/5" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
+                <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-emerald-900/20 shadow-sm" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
                 <div>
-                    <span class="text-xl font-bold tracking-tight text-stone-900 block leading-none">tea.haven<span class="text-emerald-600">.ua</span></span>
-                    <span class="text-[10px] text-stone-500 uppercase tracking-widest font-medium">Чай та Посуд</span>
+                    <span class="text-xl font-bold tracking-tight text-stone-900 block leading-none">NEW<span class="text-emerald-700">TEA</span></span>
+                    <span class="text-[10px] text-stone-600 uppercase tracking-widest font-semibold">tea.haven.ua</span>
                 </div>
             </a>
 
-            <div class="hidden lg:flex items-center gap-6 text-xs text-stone-600">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-clock text-emerald-600"></i>
-                    <span>Пн-Нд: 9:00 - 20:00</span>
-                </div>
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-phone text-emerald-600"></i>
-                    <span class="font-semibold text-stone-800">Швидка допомога замовлення</span>
-                </div>
+            <!-- Search Bar in Header -->
+            <div class="hidden md:flex relative flex-1 max-w-md mx-6">
+                <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
+                    placeholder="Поиск по 1000 сортам чая и посуды..." 
+                    class="w-full pl-4 pr-10 py-2 bg-white/85 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
 
-            <div class="flex items-center gap-2">
-                <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Наш інстаграм з відгуками" class="hidden sm:flex items-center gap-2 bg-pink-50 hover:bg-pink-100 text-pink-700 px-3 py-2 rounded-xl text-xs font-semibold border border-pink-200 transition btn-active-scale">
-                    <i class="fa-brands fa-instagram text-pink-600 text-base"></i>
-                    <span>Відгуки</span>
+            <!-- Actions & Cart Button -->
+            <div class="flex items-center gap-3">
+                <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Instagram" class="hidden sm:flex w-10 h-10 bg-white/70 hover:bg-white text-stone-700 rounded-full items-center justify-center transition border border-stone-300/50 shadow-sm btn-active-scale">
+                    <i class="fa-brands fa-instagram text-base"></i>
                 </a>
 
-                <button onclick="toggleCart()" class="relative bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-2.5 sm:py-2 rounded-xl flex items-center gap-2.5 transition shadow-md shadow-emerald-700/20 font-medium text-sm btn-active-scale">
+                <button onclick="toggleCart()" class="relative bg-stone-900 hover:bg-stone-800 text-white px-4 py-2.5 rounded-full flex items-center gap-2.5 transition shadow-md font-medium text-sm btn-active-scale">
                     <i class="fa-solid fa-bag-shopping text-base"></i>
-                    <span class="hidden sm:inline">Кошик</span>
-                    <span id="cartCount" class="bg-white text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-inner">0</span>
+                    <span class="hidden sm:inline">Корзина</span>
+                    <span id="cartCount" class="bg-emerald-500 text-stone-900 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-inner">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <div class="md:hidden bg-stone-100 border-b border-stone-200 px-4 py-2.5 flex items-center justify-around text-xs text-stone-600">
-        <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" class="flex items-center gap-1.5 text-pink-600 font-medium">
-            <i class="fa-brands fa-instagram"></i>
-            <span>Instagram</span>
-        </a>
-        <div class="h-4 w-[1px] bg-stone-300"></div>
-        <a href="https://t.me/FdDollar" target="_blank" class="flex items-center gap-1.5 text-sky-600 font-medium">
-            <i class="fa-brands fa-telegram"></i>
-            <span>Telegram</span>
-        </a>
-    </div>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full space-y-8">
 
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full">
-
-        <div id="catalog" class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-6 gap-3.5 bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-sm">
-            <div class="flex justify-between items-center md:block">
-                <h2 class="text-lg sm:text-xl font-bold text-stone-900 flex items-center gap-2">
-                    <i class="fa-solid fa-store text-emerald-600"></i> Каталог товарів
-                </h2>
-                <p id="statusText" class="text-xs text-stone-500 mt-0.5 sm:mt-1 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    Завантаження каталогу...
-                </p>
+        <!-- Banner / Hero Section (як на NewTea) -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Main Large Banner Card -->
+            <div class="md:col-span-2 bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
+                <div class="z-10 max-w-md">
+                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">968 вкуснейших сортов чая</h1>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Мы лично отбирали и привезли из Китая... и еще с шестнадцати стран мира</p>
+                </div>
+                <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90">
+                    <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Tea" class="max-h-[90%] object-contain rounded-2xl">
+                </div>
             </div>
 
-            <div class="relative w-full md:w-80">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
-                <input type="text" id="searchInput" oninput="handleSearch()" 
-                    placeholder="Пошук чаю, посуду, ID..." 
-                    class="w-full pl-10 pr-10 py-2.5 md:py-2 bg-stone-50 border border-stone-300 rounded-xl text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
-                <button onclick="clearSearch()" id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 hidden text-xs">
-                    <i class="fa-solid fa-xmark"></i>
+            <!-- Side Cards Stack -->
+            <div class="flex flex-col gap-4">
+                <div onclick="setCategory('Подарки')" class="bg-[#c26e44] text-white rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-bold">Подарки</h3>
+                        <i class="fa-solid fa-gift text-2xl opacity-80"></i>
+                    </div>
+                    <p class="text-xs font-medium opacity-90">Хочу! Хочу! Хочу!</p>
+                </div>
+                <div onclick="setCategory('Акции')" class="bg-[#facc15] text-stone-900 rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-xl font-bold">Акции</h3>
+                        <i class="fa-solid fa-percent text-2xl opacity-80"></i>
+                    </div>
+                    <p class="text-xs font-medium opacity-80">...от которых нельзя удержаться</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Slider Bar -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar" id="categoryContainer"></div>
+
+        <!-- Catalog Section -->
+        <div id="catalog" class="space-y-4">
+            <div class="flex justify-between items-center">
+                <h2 id="catalogTitle" class="text-xl sm:text-2xl font-black text-stone-900">Коллекции от основателей New Tea</h2>
+                <p id="statusText" class="text-xs text-stone-600 font-medium"></p>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+
+            <div id="scrollTrigger" class="h-10 my-4 flex items-center justify-center">
+                <span id="loadMoreSpinner" class="text-stone-600 text-sm hidden">
+                    <i class="fa-solid fa-spinner animate-spin mr-2"></i> Загрузка...
+                </span>
+            </div>
+
+            <div id="emptyMessage" class="hidden text-center py-20 bg-white/60 rounded-3xl border border-dashed border-stone-300">
+                <i class="fa-solid fa-box-open text-4xl text-stone-400 mb-3 block"></i>
+                <p class="text-stone-700 font-medium">Ничего не найдено</p>
+                <button onclick="resetFilters()" class="mt-3 px-4 py-2 bg-white text-stone-800 text-xs font-semibold rounded-xl shadow-sm border border-stone-200">
+                    Сбросить фильтры
                 </button>
             </div>
         </div>
-
-        <div class="flex items-center gap-2 overflow-x-auto pb-3 mb-6 custom-scrollbar" id="categoryContainer"></div>
-
-        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
-
-        <div id="scrollTrigger" class="h-10 my-6 flex items-center justify-center">
-            <span id="loadMoreSpinner" class="text-stone-400 text-sm hidden">
-                <i class="fa-solid fa-spinner animate-spin mr-2"></i> Завантаження...
-            </span>
-        </div>
-
-        <div id="emptyMessage" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-stone-300 shadow-sm">
-            <i class="fa-solid fa-box-open text-4xl text-stone-300 mb-3 block"></i>
-            <p class="text-stone-600 font-medium">Нічого не знайдено</p>
-            <button onclick="resetFilters()" class="mt-3 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition">
-                Скинути фільтри
-            </button>
-        </div>
     </main>
 
+    <!-- Mobile Bottom Navigation Bar -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-stone-200 z-30 px-2 py-2 flex justify-around items-center shadow-lg">
         <button onclick="scrollToTop()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-house text-base"></i>
-            <span class="text-[10px] font-medium">Головна</span>
+            <span class="text-[10px] font-medium">Главная</span>
         </button>
         <button onclick="openCategoriesModal()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-layer-group text-base"></i>
-            <span class="text-[10px] font-medium">Розділи</span>
+            <span class="text-[10px] font-medium">Разделы</span>
         </button>
         <button onclick="focusSearch()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-magnifying-glass text-base"></i>
-            <span class="text-[10px] font-medium">Пошук</span>
+            <span class="text-[10px] font-medium">Поиск</span>
         </button>
-        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-700 hover:text-emerald-700 transition p-1 relative">
+        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-800 hover:text-emerald-700 transition p-1 relative">
             <i class="fa-solid fa-bag-shopping text-base"></i>
-            <span class="text-[10px] font-medium">Кошик</span>
-            <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-700 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
+            <span class="text-[10px] font-medium">Корзина</span>
+            <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
         </button>
     </div>
 
+    <!-- Mobile Categories Modal -->
     <div id="categoriesModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
         <div onclick="closeCategoriesModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
         <div class="fixed inset-x-0 bottom-0 max-h-[80vh] bg-white rounded-t-3xl border-t border-stone-200 shadow-2xl flex flex-col z-10 animate-slide-bottom">
             <div class="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
-                <h3 class="font-bold text-stone-900 flex items-center gap-2">
-                    <i class="fa-solid fa-layer-group text-emerald-600"></i> Виберіть розділ
-                </h3>
-                <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center">
+                <h3 class="font-bold text-stone-900">Выберите раздел</h3>
+                <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-200 text-stone-700 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -172,23 +179,24 @@
         </div>
     </div>
 
+    <!-- Product Detail Modal -->
     <div id="productModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
         <div onclick="closeProductModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
 
         <div class="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4">
             <div class="relative w-full max-w-3xl rounded-t-3xl sm:rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-slide-bottom sm:animate-scale-up max-h-[90vh] flex flex-col">
-                <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-stone-100 text-stone-600 hover:text-stone-900 flex items-center justify-center transition border border-stone-200 btn-active-scale">
+                <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200 flex items-center justify-center transition btn-active-scale">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 overflow-y-auto custom-scrollbar">
                     <div class="h-64 md:h-full bg-stone-50 relative overflow-hidden flex items-center justify-center p-4">
-                        <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain rounded-xl">
+                        <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain rounded-2xl">
                     </div>
                     <div class="p-5 sm:p-8 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
-                                <span id="modalCategory" class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200"></span>
+                                <span id="modalCategory" class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200"></span>
                                 <span id="modalId" class="text-[10px] font-mono text-stone-400"></span>
                             </div>
                             <h3 id="modalTitle" class="text-lg sm:text-xl font-bold text-stone-900 mb-3"></h3>
@@ -197,12 +205,12 @@
 
                         <div class="pt-4 border-t border-stone-100">
                             <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs text-stone-500">Ціна за упаковку:</span>
+                                <span class="text-xs text-stone-500">Цена за упаковку:</span>
                                 <span id="modalPrice" class="text-2xl font-black text-emerald-700">0 грн</span>
                             </div>
-                            <button id="modalAddBtn" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-emerald-700/20 transition flex items-center justify-center gap-2 btn-active-scale">
+                            <button id="modalAddBtn" class="w-full bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-2xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <span>Додати до кошика</span>
+                                <span>Добавить в корзину</span>
                             </button>
                         </div>
                     </div>
@@ -211,6 +219,7 @@
         </div>
     </div>
 
+    <!-- Side Cart Drawer -->
     <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
         <div onclick="toggleCart()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
 
@@ -220,7 +229,7 @@
                 <div class="p-4 sm:p-5 bg-stone-50 text-stone-900 flex justify-between items-center border-b border-stone-200">
                     <div class="flex items-center gap-2.5">
                         <i class="fa-solid fa-bag-shopping text-emerald-600"></i>
-                        <h2 class="text-lg font-bold">Кошик</h2>
+                        <h2 class="text-lg font-bold">Корзина</h2>
                     </div>
                     <button onclick="toggleCart()" class="text-stone-400 hover:text-stone-700 transition btn-active-scale p-1">
                         <i class="fa-solid fa-xmark text-xl"></i>
@@ -231,42 +240,42 @@
 
                 <div id="cartFooter" class="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 hidden">
                     <div class="flex justify-between items-center mb-4 text-stone-900">
-                        <span class="text-sm font-medium text-stone-500">До сплати:</span>
+                        <span class="text-sm font-medium text-stone-500">К оплате:</span>
                         <span id="cartTotal" class="text-xl font-extrabold text-emerald-700">0 грн</span>
                     </div>
 
                     <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
                         <div>
-                            <input type="text" id="custName" required placeholder="Ім'я та Прізвище" 
+                            <input type="text" id="custName" required placeholder="Имя и Фамилия" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div>
-                            <input type="tel" id="custPhone" required placeholder="Номер телефону" 
+                            <input type="tel" id="custPhone" required placeholder="Номер телефона" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="custCity" required placeholder="Місто" 
+                            <input type="text" id="custCity" required placeholder="Город" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
-                            <input type="text" id="custNP" required placeholder="№ відділення НП" 
+                            <input type="text" id="custNP" required placeholder="№ отделения НП" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
 
                         <div class="pt-1">
-                            <label class="block text-xs font-semibold text-stone-500 mb-2">Спосіб оплати:</label>
+                            <label class="block text-xs font-semibold text-stone-500 mb-2">Способ оплаты:</label>
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
                                     <input type="radio" name="paymentMethod" value="full" checked onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-800 block">Повна оплата</span>
-                                        <span class="text-stone-500 text-[10px]">За реквізитами</span>
+                                        <span class="font-bold text-stone-800 block">Полная оплата</span>
+                                        <span class="text-stone-500 text-[10px]">По реквизитам</span>
                                     </div>
                                 </label>
 
                                 <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
                                     <input type="radio" name="paymentMethod" value="cod" onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-800 block">Післяплата</span>
-                                        <span class="text-stone-500 text-[10px]">Передплата 200 грн</span>
+                                        <span class="font-bold text-stone-800 block">Наложенный платёж</span>
+                                        <span class="text-stone-500 text-[10px]">Предоплата 200 грн</span>
                                     </div>
                                 </label>
                             </div>
@@ -274,11 +283,11 @@
 
                         <div id="paymentNotice" class="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-600 text-[11px] leading-tight flex items-center gap-2">
                             <i class="fa-solid fa-credit-card text-emerald-600 text-sm flex-shrink-0"></i>
-                            <span id="paymentNoticeText">Менеджер надішле реквізити для сплати після підтвердження замовлення.</span>
+                            <span id="paymentNoticeText">Менеджер пришлет реквизиты для оплаты после подтверждения заказа.</span>
                         </div>
 
-                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-emerald-700 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-emerald-700/20 transition flex items-center justify-center gap-2 btn-active-scale">
-                            <span>Оформити замовлення</span>
+                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                            <span>Оформить заказ</span>
                             <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </form>
@@ -293,9 +302,9 @@
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
         const DEFAULT_CATEGORIES = [
-            'Всі товари', 'Шу Пуер', 'Шен Пуер', 'Улун', 
-            'Зелений чай', 'Білий чай', 'Червоний чай', 
-            'Гайвані', 'Чайники (Исин)', 'Піали', 'Чабані'
+            'Все товары', 'Шу Пуэр', 'Шен Пуэр', 'Улун', 
+            'Зеленый чай', 'Белый чай', 'Красный чай', 
+            'Подарки', 'Акции', 'Гайвани', 'Чайники', 'Пиалы'
         ];
 
         const TEA_IMAGES = [
@@ -307,7 +316,7 @@
         let allProducts = [];
         let filteredProducts = [];
         let cart = [];
-        let selectedCategory = 'Всі товари';
+        let selectedCategory = 'Все товары';
         
         const PAGE_SIZE = 20;
         let currentPage = 1;
@@ -328,17 +337,18 @@
 
         function detectCategory(name) {
             const lower = name.toLowerCase();
-            if (lower.includes('шу') || lower.includes('shu')) return 'Шу Пуер';
-            if (lower.includes('шен') || lower.includes('shen')) return 'Шен Пуер';
+            if (lower.includes('шу') || lower.includes('shu')) return 'Шу Пуэр';
+            if (lower.includes('шен') || lower.includes('shen')) return 'Шен Пуэр';
             if (lower.includes('улун') || lower.includes('тегуаньинь') || lower.includes('дахунпао')) return 'Улун';
-            if (lower.includes('зелен') || lower.includes('лунцзин')) return 'Зелений чай';
-            if (lower.includes('білий') || lower.includes('белый')) return 'Білий чай';
-            if (lower.includes('червон') || lower.includes('красный')) return 'Червоний чай';
-            if (lower.includes('гайвань')) return 'Гайвані';
-            if (lower.includes('чайник') || lower.includes('исин')) return 'Чайники (Исин)';
-            if (lower.includes('піал') || lower.includes('пиал')) return 'Піали';
-            if (lower.includes('дошка') || lower.includes('чабань')) return 'Чабані';
-            return 'Чай та Посуд';
+            if (lower.includes('зелен') || lower.includes('лунцзин')) return 'Зеленый чай';
+            if (lower.includes('белый') || lower.includes('білий')) return 'Белый чай';
+            if (lower.includes('красн') || lower.includes('червон')) return 'Красный чай';
+            if (lower.includes('подар') || lower.includes('набор')) return 'Подарки';
+            if (lower.includes('акці') || lower.includes('скидк')) return 'Акции';
+            if (lower.includes('гайвань')) return 'Гайвани';
+            if (lower.includes('чайник') || lower.includes('исин')) return 'Чайники';
+            if (lower.includes('пиал') || lower.includes('піал')) return 'Пиалы';
+            return 'Все товары';
         }
 
         async function loadData() {
@@ -348,7 +358,7 @@
 
             window.handleSheetData = function(data) {
                 try {
-                    if (!data || !data.table || !data.table.rows) throw new Error("Порожні дані");
+                    if (!data || !data.table || !data.table.rows) throw new Error("Пустые данные");
 
                     const rows = data.table.rows;
                     const parsed = [];
@@ -376,7 +386,7 @@
                         const rawImg = getRawCell(0); 
                         const finalImg = processImageUrl(rawImg, idx);
 
-                        const retailVal= cleanNumber(getValue(4)) || cleanNumber(getValue(3)) || 250; 
+                        const retailVal = cleanNumber(getValue(4)) || cleanNumber(getValue(3)) || 250; 
 
                         parsed.push({
                             id: productId,
@@ -385,19 +395,19 @@
                             category: detectCategory(name),
                             image: finalImg,
                             fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length],
-                            description: `Артикул: ${productId}. Висока якість.`
+                            description: `Артикул: ${productId}. Высокое качество.`
                         });
                     });
 
                     allProducts = parsed;
                     applyFilters();
 
-                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Товарів: ${allProducts.length}`;
+                    statusText.innerText = `Товаров: ${allProducts.length}`;
                     setupInfiniteScroll();
 
                 } catch (err) {
-                    console.error("Помилка:", err);
-                    statusText.innerText = "Помилка завантаження";
+                    console.error("Ошибка:", err);
+                    statusText.innerText = "Ошибка загрузки";
                 }
             };
 
@@ -409,10 +419,10 @@
         function renderCategories() {
             const container = document.getElementById('categoryContainer');
             container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
-                <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-3.5 py-2 rounded-xl text-xs font-semibold transition border btn-active-scale flex items-center gap-1.5 ${
+                <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-bold transition border btn-active-scale flex items-center gap-1.5 ${
                     selectedCategory === cat 
-                    ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' 
-                    : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
+                    ? 'bg-stone-900 text-white border-stone-900 shadow-sm' 
+                    : 'bg-white/80 text-stone-700 border-stone-200/80 hover:bg-white'
                 }">
                     <span>${cat}</span>
                 </button>
@@ -424,8 +434,8 @@
             container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
                 <button onclick="setCategory('${cat}'); closeCategoriesModal();" class="p-3 rounded-xl text-left text-xs font-semibold transition border flex items-center gap-3 ${
                     selectedCategory === cat 
-                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300' 
-                    : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-stone-300'
+                    ? 'bg-emerald-50 text-emerald-900 border-emerald-300' 
+                    : 'bg-stone-50 text-stone-700 border-stone-200'
                 }">
                     <i class="fa-solid fa-tag text-emerald-600"></i>
                     <span class="truncate">${cat}</span>
@@ -438,21 +448,15 @@
             renderCategories();
             renderModalCategories();
             applyFilters();
+            document.getElementById('catalogTitle').innerText = cat;
             scrollToCatalog();
         }
 
         function applyFilters() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            const clearBtn = document.getElementById('clearSearchBtn');
-
-            if (query.length > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
+            const query = document.getElementById('headerSearchInput').value.toLowerCase().trim();
 
             filteredProducts = allProducts.filter(p => {
-                const matchesCat = selectedCategory === 'Всі товари' || p.category === selectedCategory;
+                const matchesCat = selectedCategory === 'Все товары' || p.category === selectedCategory;
                 const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).toLowerCase().includes(query);
                 return matchesCat && matchesQuery;
             });
@@ -460,14 +464,10 @@
             renderCurrentPage(true);
         }
 
-        function clearSearch() {
-            document.getElementById('searchInput').value = '';
-            applyFilters();
-        }
-
         function resetFilters() {
-            selectedCategory = 'Всі товари';
-            document.getElementById('searchInput').value = '';
+            selectedCategory = 'Все товары';
+            document.getElementById('headerSearchInput').value = '';
+            document.getElementById('catalogTitle').innerText = "Коллекции от основателей New Tea";
             renderCategories();
             applyFilters();
         }
@@ -495,29 +495,26 @@
 
             itemsToRender.forEach(item => {
                 const card = document.createElement('div');
-                card.className = "bg-white rounded-2xl border border-stone-200 overflow-hidden flex flex-col justify-between hover:border-emerald-500/50 hover:shadow-lg transition-all duration-300 group animate-fade-in";
+                card.className = "bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in";
                 
                 card.innerHTML = `
                     <div>
-                        <div class="h-40 sm:h-52 overflow-hidden bg-stone-100 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                        <div class="h-44 sm:h-56 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
                             <img src="${item.image}" alt="${item.name}" loading="lazy" 
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                                 onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                            <span class="absolute top-2 right-2 text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 sm:px-2 py-0.5 rounded-md bg-white/90 text-stone-700 border border-stone-200 backdrop-blur-md shadow-xs">ID: ${item.id}</span>
+                            <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60 shadow-xs">ID: ${item.id}</span>
                         </div>
-                        <div class="p-3 sm:p-4">
-                            <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-800 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
+                        <div class="p-3.5 sm:p-5">
+                            <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
                         </div>
                     </div>
-                    <div class="p-3 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                    <div class="p-3.5 sm:p-5 pt-0 flex items-center justify-between mt-auto">
                         <div>
-                            <span class="text-sm sm:text-lg font-extrabold text-emerald-700">${item.price} <span class="text-[10px] sm:text-xs font-normal text-stone-500">грн</span></span>
+                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] sm:text-xs font-normal text-stone-500">грн</span></span>
                         </div>
-                        <div class="flex items-center gap-1">
-                            <button onclick="openProductModal('${item.id}')" title="Детальніше" class="hidden sm:flex bg-stone-100 hover:bg-stone-200 text-stone-600 w-9 h-9 rounded-xl items-center justify-center transition border border-stone-200 btn-active-scale">
-                                <i class="fa-solid fa-eye text-xs"></i>
-                            </button>
-                            <button onclick="addToCart('${item.id}')" title="В кошик" class="bg-emerald-700 hover:bg-emerald-600 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shadow-md shadow-emerald-700/20 transition btn-active-scale">
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
                                 <i class="fa-solid fa-cart-plus text-xs"></i>
                             </button>
                         </div>
@@ -542,7 +539,7 @@
             observer.observe(document.getElementById('scrollTrigger'));
         }
 
-        function handleSearch() {
+        function handleSearch(val) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
                 applyFilters();
@@ -550,7 +547,7 @@
         }
 
         function focusSearch() {
-            const searchInput = document.getElementById('searchInput');
+            const searchInput = document.getElementById('headerSearchInput');
             searchInput.focus();
             scrollToCatalog();
         }
@@ -640,7 +637,7 @@
                 container.innerHTML = `
                     <div class="text-center py-16 text-stone-400">
                         <i class="fa-solid fa-basket-shopping text-4xl mb-3 block opacity-30"></i>
-                        <p class="text-sm">Кошик порожній</p>
+                        <p class="text-sm">Корзина пуста</p>
                     </div>
                 `;
                 footer.classList.add('hidden');
@@ -650,18 +647,16 @@
             footer.classList.remove('hidden');
 
             container.innerHTML = cart.map(item => `
-                <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200">
-                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg bg-white" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-2xl border border-stone-200">
+                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-xl bg-white" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
                     <div class="flex-1 min-w-0">
-                        <h4 class="text-xs font-bold text-stone-800 truncate">${item.name}</h4>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <span class="text-xs text-emerald-700 font-bold">${item.price} грн/шт</span>
-                        </div>
+                        <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
+                        <span class="text-xs text-emerald-700 font-bold">${item.price} грн/шт</span>
                     </div>
-                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-stone-200">
-                        <button onclick="changeQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5 btn-active-scale">-</button>
-                        <span class="text-xs font-bold w-4 text-center text-emerald-700">${item.qty}</span>
-                        <button onclick="changeQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5 btn-active-scale">+</button>
+                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-stone-200">
+                        <button onclick="changeQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5">-</button>
+                        <span class="text-xs font-bold w-4 text-center text-stone-900">${item.qty}</span>
+                        <button onclick="changeQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5">+</button>
                     </div>
                 </div>
             `).join('');
@@ -670,14 +665,13 @@
         function updatePaymentInfo() {
             const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
             const noticeText = document.getElementById('paymentNoticeText');
-
             let totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
             if (selectedMethod === 'cod') {
                 const prepay = totalSum >= 100 ? 200 : totalSum;
-                noticeText.innerHTML = `Передплата: <strong>${prepay} грн</strong> (решта ${Math.max(0, totalSum - prepay)} грн при отриманні).`;
+                noticeText.innerHTML = `Предоплата: <strong>${prepay} грн</strong> (остаток ${Math.max(0, totalSum - prepay)} грн при получении).`;
             } else {
-                noticeText.innerText = "Менеджер надішле реквізити для сплати після підтвердження замовлення.";
+                noticeText.innerText = "Менеджер пришлет реквизиты для оплаты после подтверждения заказа.";
             }
         }
 
@@ -695,7 +689,7 @@
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Обробка...</span>`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Обработка...</span>`;
 
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
@@ -709,24 +703,18 @@
                 return `${idx + 1}. *${item.name}*\n   └ ID: \`${item.id}\` | ${item.qty} шт. x ${item.price} грн`;
             }).join('\n');
 
-            let payText = '';
-            if (payMethod === 'cod') {
-                const prepayAmount = totalSum >= 100 ? 200 : totalSum;
-                payText = `📦 *Післяплата* (Передплата: ${prepayAmount} грн)`;
-            } else {
-                payText = `💳 *Повна оплата* (За реквізитами)`;
-            }
+            let payText = payMethod === 'cod' ? `📦 *Наложенный платёж* (Предоплата)` : `💳 *Полная оплата* (По реквизитам)`;
 
-            const message = `🛍 *НОВЕ ЗАМОВЛЕННЯ (РОЗДРІБ) — tea.haven.ua*\n` +
+            const message = `🛍 *НОВЫЙ ЗАКАЗ — tea.haven.ua*\n` +
                 `------------------------------------\n` +
-                `👤 *Клієнт:* ${name}\n` +
+                `👤 *Клиент:* ${name}\n` +
                 `📞 *Телефон:* ${phone}\n` +
-                `📍 *Доставка:* м. ${city}, НП №${np}\n` +
+                `📍 *Доставка:* г. ${city}, НП №${np}\n` +
                 `💳 *Оплата:* ${payText}\n` +
                 `------------------------------------\n` +
-                `📦 *Товари:*\n${itemsText}\n` +
+                `📦 *Товары:*\n${itemsText}\n` +
                 `------------------------------------\n` +
-                `💰 *Разом до сплати:* ${totalSum} грн`;
+                `💰 *Итого к оплате:* ${totalSum} грн`;
 
             try {
                 for (const chatId of TG_ADMIN_IDS) {
@@ -741,17 +729,17 @@
                     });
                 }
 
-                alert(`Дякуємо за замовлення, ${name}! Менеджер зв'яжеться з вами.`);
+                alert(`Спасибо за заказ, ${name}! Менеджер свяжется с вами.`);
                 cart = [];
                 updateCartUI();
                 toggleCart();
                 document.getElementById('orderForm').reset();
             } catch (err) {
-                console.error("Помилка:", err);
-                alert("Помилка відправки. Напишіть у Telegram @FdDollar.");
+                console.error("Ошибка:", err);
+                alert("Ошибка отправки. Напишите в Telegram @FdDollar.");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = `<span>Оформити замовлення</span><i class="fa-solid fa-paper-plane text-xs"></i>`;
+                submitBtn.innerHTML = `<span>Оформить заказ</span><i class="fa-solid fa-paper-plane text-xs"></i>`;
             }
         }
 
