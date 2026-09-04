@@ -1,22 +1,15 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>tea.haven.ua — Премиальный Чай</title>
+    <title>tea.haven.ua — Чай та посуд</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #d4d4d8;
-            border-radius: 3px;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 3px; }
     </style>
 </head>
 <body class="bg-stone-100 text-stone-800 font-sans min-h-screen flex flex-col antialiased">
@@ -31,14 +24,14 @@
                 </div>
                 <div>
                     <span class="text-xl font-bold tracking-tight text-stone-100 block leading-none">tea.haven<span class="text-amber-500">.ua</span></span>
-                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Чайная Коллекция</span>
+                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Опт та роздріб</span>
                 </div>
             </a>
 
             <!-- Cart Button -->
             <button onclick="toggleCart()" class="relative bg-stone-800 hover:bg-stone-700 text-stone-200 px-4 py-2 rounded-xl flex items-center gap-3 transition border border-stone-700/60 shadow-inner">
                 <i class="fa-solid fa-bag-shopping text-amber-500 text-lg"></i>
-                <span class="text-sm font-medium hidden sm:inline">Корзина</span>
+                <span class="text-sm font-medium hidden sm:inline">Кошик</span>
                 <span id="cartCount" class="bg-amber-600 text-white text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center">0</span>
             </button>
         </div>
@@ -50,17 +43,17 @@
         <!-- Controls Bar -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-stone-200/80">
             <div>
-                <h1 class="text-2xl font-bold text-stone-900">Каталог сортов</h1>
+                <h1 class="text-2xl font-bold text-stone-900">Каталог товарів</h1>
                 <p id="statusText" class="text-xs text-stone-500 mt-1 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Загрузка каталога товаров...
+                    Завантаження даних з таблицы...
                 </p>
             </div>
 
             <div class="relative w-full md:w-80">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
                 <input type="text" id="searchInput" oninput="filterProducts()" 
-                    placeholder="Поиск по названию или категории..." 
+                    placeholder="Пошук за назвою чи артикулом..." 
                     class="w-full pl-10 pr-4 py-2.5 bg-stone-50 border border-stone-200 rounded-xl text-sm focus:outline-none focus:border-amber-500 focus:bg-white transition shadow-inner">
             </div>
         </div>
@@ -71,52 +64,48 @@
 
         <div id="emptyMessage" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-stone-300">
             <i class="fa-solid fa-box-open text-4xl text-stone-300 mb-3 block"></i>
-            <p class="text-stone-500 font-medium">Товары не найдены</p>
+            <p class="text-stone-500 font-medium">Товари не знайдені</p>
         </div>
     </main>
 
     <!-- Side Cart Slide-over -->
-    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
         <div onclick="toggleCart()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm transition-opacity"></div>
 
         <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
             <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
                 
-                <!-- Drawer Header -->
                 <div class="p-5 bg-stone-900 text-stone-100 flex justify-between items-center">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-bag-shopping text-amber-500"></i>
-                        <h2 class="text-lg font-bold">Ваша Корзина</h2>
+                        <h2 class="text-lg font-bold">Ваш Кошик</h2>
                     </div>
                     <button onclick="toggleCart()" class="text-stone-400 hover:text-white transition">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
 
-                <!-- Drawer Body (Items) -->
                 <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
                 </div>
 
-                <!-- Drawer Footer (Checkout) -->
                 <div id="cartFooter" class="p-5 border-t border-stone-200 bg-stone-50 hidden">
                     <div class="flex justify-between items-center mb-4 text-stone-900">
-                        <span class="text-sm font-semibold">Итого к оплате:</span>
+                        <span class="text-sm font-semibold">Разом до сплати:</span>
                         <span id="cartTotal" class="text-xl font-bold text-amber-700">0 грн</span>
                     </div>
 
-                    <!-- Order Form -->
                     <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
-                        <input type="text" id="custName" required placeholder="Ваше Имя и Фамилия" 
+                        <input type="text" id="custName" required placeholder="ПІБ отримувача" 
                             class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
                         <input type="tel" id="custPhone" required placeholder="Телефон (+380...)" 
                             class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
-                        <input type="text" id="custCity" required placeholder="Город доставки" 
+                        <input type="text" id="custCity" required placeholder="Місто доставки" 
                             class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
-                        <input type="text" id="custNP" required placeholder="Отделение Новой Почты (№)" 
+                        <input type="text" id="custNP" required placeholder="Відділення Нової Пошти (№)" 
                             class="w-full px-3.5 py-2 text-sm bg-white border border-stone-300 rounded-lg focus:outline-none focus:border-amber-500">
 
                         <button type="submit" class="w-full mt-2 bg-amber-600 hover:bg-amber-700 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-amber-600/20 transition flex items-center justify-center gap-2">
-                            <span>Оформить Заказ</span>
+                            <span>Оформити Замовлення</span>
                             <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </form>
@@ -127,11 +116,11 @@
     </div>
 
     <footer class="bg-stone-900 text-stone-400 border-t border-stone-800 text-center py-6 text-xs mt-auto">
-        <p>© 2026 tea.haven.ua. Все права защищены.</p>
+        <p>© 2026 tea.haven.ua. Всі права захищені.</p>
     </footer>
 
     <script>
-        // Скрытая ссылка на таблицу
+        // Новая ссылка на таблицу с новой структурой
         const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0/edit?usp=sharing';
 
         let products = [];
@@ -142,13 +131,12 @@
             return match ? match[1] : null;
         }
 
-        // Загрузка данных через JSONP
         function loadCustomTable() {
             const statusText = document.getElementById('statusText');
             const sheetId = extractSheetId(DEFAULT_SHEET_URL);
 
             if (!sheetId) {
-                statusText.innerText = "Ошибка: Неверный ID таблицы.";
+                statusText.innerText = "Помилка: Невірний ID таблиці.";
                 return;
             }
 
@@ -157,7 +145,7 @@
 
             window.handleGvizResponse = function(data) {
                 try {
-                    if (!data || !data.table || !data.table.rows) throw new Error("Пустые данные");
+                    if (!data || !data.table || !data.table.rows) throw new Error("Порожні дані");
 
                     const rows = data.table.rows;
                     const parsedProducts = [];
@@ -171,24 +159,26 @@
                             return String(cells[index].f || cells[index].v).trim();
                         };
 
-                        const name = getValue(0);
-                        const category = getValue(1);
-                        const priceStr = getValue(2);
-                        const stock = getValue(3);
-                        const image = getValue(4);
+                        const image = getValue(0);
+                        const name = getValue(1);
+                        const priceOpt15 = getValue(2);
+                        const priceOpt7 = getValue(3);
+                        const priceRetail = getValue(4);
+                        const productId = getValue(5);
 
-                        if (['название', 'назва', 'name'].includes(name.toLowerCase())) return;
+                        // Пропускаем шапку таблицы
+                        if (['назва', 'название', 'name', 'фото'].includes(name.toLowerCase())) return;
 
-                        const cleanPrice = parseFloat(priceStr.replace(/[^0-9.]/g, '')) || 0;
+                        const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
 
                         if (name) {
                             parsedProducts.push({
-                                id: Math.random().toString(36).substr(2, 9),
+                                id: productId || Math.random().toString(36).substr(2, 9),
                                 name: name,
-                                category: category || 'Чай',
                                 price: cleanPrice,
-                                priceRaw: priceStr,
-                                stock: stock || 'В наличии',
+                                priceRaw: priceRetail || '0',
+                                priceOpt7: priceOpt7,
+                                priceOpt15: priceOpt15,
                                 image: image || 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'
                             });
                         }
@@ -196,22 +186,21 @@
 
                     products = parsedProducts;
                     renderProducts(products);
-                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог обновлен. Товаров: ${products.length}`;
+                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог оновлено. Товарів: ${products.length}`;
 
                 } catch (err) {
                     console.error(err);
-                    statusText.innerText = "Ошибка загрузки каталога.";
+                    statusText.innerText = "Помилка завантаження каталогу.";
                 }
             };
 
             const script = document.createElement('script');
             script.id = 'gvizScript';
             script.src = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
-            script.onerror = () => { statusText.innerText = "Ошибка соединения с таблицей."; };
+            script.onerror = () => { statusText.innerText = "Помилка з'єднання з таблицею."; };
             document.body.appendChild(script);
         }
 
-        // Отрисовка каталога
         function renderProducts(items) {
             const grid = document.getElementById('productGrid');
             const emptyMsg = document.getElementById('emptyMessage');
@@ -224,27 +213,27 @@
             emptyMsg.classList.add('hidden');
 
             items.forEach(item => {
-                const stockLower = item.stock.toLowerCase();
-                const isAvailable = stockLower.includes('в наличи') || stockLower.includes('наявност') || (!isNaN(parseInt(item.stock)) && parseInt(item.stock) > 0);
-                
                 const card = document.createElement('div');
                 card.className = "bg-white rounded-2xl border border-stone-200/80 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group";
                 card.innerHTML = `
                     <div>
                         <div class="h-52 overflow-hidden bg-stone-100 relative">
                             <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'">
-                            <span class="absolute top-3 right-3 text-[11px] font-semibold px-2.5 py-1 rounded-full backdrop-blur-md ${isAvailable ? 'bg-emerald-900/80 text-emerald-200' : 'bg-amber-900/80 text-amber-200'}">
-                                ${item.stock}
-                            </span>
+                            ${item.id ? `<span class="absolute top-3 right-3 text-[10px] font-semibold px-2 py-1 rounded-md bg-stone-900/80 text-stone-200 backdrop-blur-md">ID: ${item.id}</span>` : ''}
                         </div>
                         <div class="p-5">
-                            <span class="text-[11px] font-bold text-amber-600 uppercase tracking-wider">${item.category}</span>
-                            <h3 class="text-base font-bold text-stone-900 mt-1 line-clamp-2">${item.name}</h3>
+                            <h3 class="text-base font-bold text-stone-900 line-clamp-2">${item.name}</h3>
+                            
+                            <!-- Wholesale prices block -->
+                            <div class="mt-3 pt-3 border-t border-stone-100 text-[11px] text-stone-500 space-y-1">
+                                ${item.priceOpt7 ? `<div class="flex justify-between"><span>Опт від 7к:</span><span class="font-medium text-stone-700">${item.priceOpt7} грн</span></div>` : ''}
+                                ${item.priceOpt15 ? `<div class="flex justify-between"><span>Опт від 15к:</span><span class="font-medium text-stone-700">${item.priceOpt15} грн</span></div>` : ''}
+                            </div>
                         </div>
                     </div>
                     <div class="p-5 pt-0 flex items-center justify-between mt-auto">
                         <div>
-                            <span class="text-[11px] text-stone-400 block font-medium">Цена</span>
+                            <span class="text-[11px] text-stone-400 block font-medium">Роздріб</span>
                             <span class="text-xl font-extrabold text-stone-900">${item.price} <span class="text-sm font-normal text-stone-500">грн</span></span>
                         </div>
                         <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-amber-600 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-md transition-colors duration-200">
@@ -256,7 +245,6 @@
             });
         }
 
-        // Логика корзины
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
@@ -269,7 +257,7 @@
             }
 
             updateCartUI();
-            toggleCart(true); // Открыть корзину
+            toggleCart(true);
         }
 
         function changeQty(productId, delta) {
@@ -299,7 +287,7 @@
                 container.innerHTML = `
                     <div class="text-center py-12 text-stone-400">
                         <i class="fa-solid fa-basket-shopping text-4xl mb-3 block opacity-40"></i>
-                        <p class="text-sm">Корзина пуста</p>
+                        <p class="text-sm">Кошик порожній</p>
                     </div>
                 `;
                 footer.classList.add('hidden');
@@ -335,12 +323,11 @@
         function filterProducts() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             const filtered = products.filter(p => 
-                p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query)
+                p.name.toLowerCase().includes(query) || (p.id && p.id.toLowerCase().includes(query))
             );
             renderProducts(filtered);
         }
 
-        // Заглушка отправки заказа (готово под бота)
         function handleCheckout(e) {
             e.preventDefault();
 
@@ -353,8 +340,8 @@
                 total: cart.reduce((sum, i) => sum + (i.price * i.qty), 0)
             };
 
-            console.log('Данные заказа для Telegram:', orderData);
-            alert(`Спасибо за заказ, ${orderData.name}! Скоро с вами свяжутся.`);
+            console.log('Дані замовлення:', orderData);
+            alert(`Дякуємо за замовлення, ${orderData.name}! Найближчим часом ми з вами зв'яжемося.`);
 
             cart = [];
             updateCartUI();
