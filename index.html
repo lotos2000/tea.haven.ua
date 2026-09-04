@@ -27,6 +27,7 @@
                 </div>
             </a>
 
+            <!-- Cart Button -->
             <button onclick="toggleCart()" class="relative bg-stone-800 hover:bg-stone-700 text-stone-200 px-4 py-2 rounded-xl flex items-center gap-3 transition border border-stone-700/60 shadow-inner">
                 <i class="fa-solid fa-bag-shopping text-amber-500 text-lg"></i>
                 <span class="text-sm font-medium hidden sm:inline">Кошик</span>
@@ -38,6 +39,7 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-grow w-full">
         
+        <!-- Controls Bar -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4 bg-white p-4 sm:p-6 rounded-2xl shadow-sm border border-stone-200/80">
             <div>
                 <h1 class="text-2xl font-bold text-stone-900">Каталог товарів</h1>
@@ -55,6 +57,7 @@
             </div>
         </div>
 
+        <!-- Product Grid -->
         <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         </div>
 
@@ -121,7 +124,7 @@
     </footer>
 
     <script>
-        const SHEET_ID = 'https://docs.google.com/spreadsheets/d/1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0/edit?gid=0#gid=0';
+        const SHEET_ID = '1JGmsSCaG2UAXBrijz0IL6Mnn5tOge5CigejicJHEYT0';
         
         let allProducts = [];
         let filteredProducts = [];
@@ -131,73 +134,73 @@
         let currentPage = 1;
         let searchTimeout = null;
 
-        // Быстрый CSV парсер
-        function fastParseCSV(text) {
-            const lines = text.split('\n');
-            const result = [];
-            for (let i = 1; i < lines.length; i++) {
-                const line = lines[i].trim();
-                if (!line) continue;
-                
-                const parts = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if (parts.length >= 2) {
-                    result.push(parts.map(p => p.replace(/^"|"$/g, '').trim()));
-                }
-            }
-            return result;
-        }
-
         async function loadData() {
             const statusText = document.getElementById('statusText');
-            const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
-
-            try {
-                const response = await fetch(csvUrl);
-                if (!response.ok) throw new Error("Помилка завантаження");
-                
-                const csvText = await response.text();
-                const rows = fastParseCSV(csvText);
-
-                const parsed = [];
-                for (let i = 0; i < rows.length; i++) {
-                    const row = rows[i];
-                    const name = row[1];
-                    if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) continue;
-
-                    let img = row[0] || '';
-                    if (img.includes('http')) {
-                        const m = img.match(/https?:\/\/[^\s"']+/);
-                        if (m) img = m[0];
-                    }
-                    if (!img.startsWith('http')) {
-                        img = 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400';
+            
+            // GViz JSONP запит (без обмежень CORS)
+            window.handleSheetData = function(data) {
+                try {
+                    if (!data || !data.table || !data.table.rows) {
+                        throw new Error("Порожні дані");
                     }
 
-                    const priceRetail = row[4] || '0';
-                    const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
+                    const rows = data.table.rows;
+                    const parsed = [];
 
-                    parsed.push({
-                        id: row[5] || Math.random().toString(36).substr(2, 7),
-                        name: name,
-                        price: cleanPrice,
-                        priceOpt7: row[3] || '',
-                        priceOpt15: row[2] || '',
-                        image: img
+                    rows.forEach((row) => {
+                        const cells = row.c;
+                        if (!cells) return;
+
+                        const getValue = (idx) => {
+                            if (!cells[idx] || cells[idx].v === null || cells[idx].v === undefined) return '';
+                            return String(cells[idx].f || cells[idx].v).trim();
+                        };
+
+                        const name = getValue(1);
+                        if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
+
+                        let img = getValue(0);
+                        if (img.includes('http')) {
+                            const m = img.match(/https?:\/\/[^\s"']+/);
+                            if (m) img = m[0];
+                        }
+                        if (!img.startsWith('http')) {
+                            img = 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400';
+                        }
+
+                        const priceRetail = getValue(4) || '0';
+                        const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
+
+                        parsed.push({
+                            id: getValue(5) || Math.random().toString(36).substr(2, 7),
+                            name: name,
+                            price: cleanPrice,
+                            priceOpt7: getValue(3),
+                            priceOpt15: getValue(2),
+                            image: img
+                        });
                     });
+
+                    allProducts = parsed;
+                    filteredProducts = parsed;
+
+                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Готово! Всього товарів: ${allProducts.length}`;
+                    
+                    renderCurrentPage(true);
+                    setupInfiniteScroll();
+
+                } catch (err) {
+                    console.error("Помилка обробки GViz:", err);
+                    statusText.innerText = "Помилка формату даних у таблиці.";
                 }
+            };
 
-                allProducts = parsed;
-                filteredProducts = parsed;
-                
-                statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Готово! Всього товарів: ${allProducts.length}`;
-                
-                renderCurrentPage(true);
-                setupInfiniteScroll();
-
-            } catch (err) {
-                console.error(err);
-                statusText.innerText = "Помилка завантаження даних.";
-            }
+            const script = document.createElement('script');
+            script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleSheetData`;
+            script.onerror = function() {
+                statusText.innerText = "Не вдалося підключитися до Google Таблиці. Перевірте доступ.";
+            };
+            document.body.appendChild(script);
         }
 
         function renderCurrentPage(reset = false) {
@@ -254,7 +257,7 @@
             grid.appendChild(fragment);
         }
 
-        // Бесконечный скролл
+        // Нескінченний скролл
         function setupInfiniteScroll() {
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
@@ -268,7 +271,7 @@
             observer.observe(document.getElementById('scrollTrigger'));
         }
 
-        // Задержка поиска (debounce)
+        // Затримка пошуку (debounce)
         function handleSearch() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
@@ -281,10 +284,10 @@
                     );
                 }
                 renderCurrentPage(true);
-            }, 250);
+            }, 200);
         }
 
-        // Корзина
+        // Кошик
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
