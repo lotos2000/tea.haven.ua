@@ -28,15 +28,15 @@
             to { transform: translateX(0); }
         }
 
-        /* М'які плавні анімації хмар */
+        /* М'які плавні анімації хмар без різких рухів */
         @keyframes floatCloudSlow {
             0% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(30px, -15px) scale(1.05); }
+            50% { transform: translate(35px, -20px) scale(1.06); }
             100% { transform: translate(0px, 0px) scale(1); }
         }
         @keyframes floatCloudFast {
             0% { transform: translate(0px, 0px) scale(1); }
-            50% { transform: translate(-40px, 20px) scale(0.95); }
+            50% { transform: translate(-45px, 25px) scale(0.94); }
             100% { transform: translate(0px, 0px) scale(1); }
         }
 
@@ -45,8 +45,8 @@
         .animate-slide-bottom { animation: slideInBottom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        .cloud-slow { animation: floatCloudSlow 18s ease-in-out infinite; }
-        .cloud-fast { animation: floatCloudFast 12s ease-in-out infinite; }
+        .cloud-slow { animation: floatCloudSlow 22s ease-in-out infinite; }
+        .cloud-fast { animation: floatCloudFast 16s ease-in-out infinite; }
 
         .btn-active-scale { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease; }
         .btn-active-scale:active { transform: scale(0.96); }
@@ -70,19 +70,19 @@
         }
         .cloud-shape {
             position: absolute;
-            background: rgba(255, 255, 255, 0.45);
+            background: rgba(255, 255, 255, 0.5);
             border-radius: 9999px;
-            filter: blur(40px);
+            filter: blur(45px);
         }
     </style>
 </head>
 <body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-24 md:pb-0">
 
-    <!-- Фонові плавні хмари -->
+    <!-- Фонові плавні світло-зелені та білі хмари -->
     <div class="bg-clouds-container">
-        <div class="cloud-shape cloud-slow w-96 h-96 -top-20 -left-20"></div>
-        <div class="cloud-shape cloud-fast w-[500px] h-[500px] top-1/3 -right-32"></div>
-        <div class="cloud-shape cloud-slow w-80 h-80 -bottom-20 left-1/4"></div>
+        <div class="cloud-shape cloud-slow w-[450px] h-[450px] -top-24 -left-24 bg-white/60"></div>
+        <div class="cloud-shape cloud-fast w-[600px] h-[600px] top-1/4 -right-40 bg-white/40"></div>
+        <div class="cloud-shape cloud-slow w-[400px] h-[400px] bottom-10 left-1/3 bg-emerald-100/50"></div>
     </div>
 
     <!-- Header -->
@@ -101,7 +101,7 @@
             <!-- Search Bar in Header -->
             <div class="hidden md:flex relative flex-1 max-w-md mx-6">
                 <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
-                    placeholder="Пошук за сортами чаю та посуду..." 
+                    placeholder="Пошук за всіма сортами чаю та посуду..." 
                     class="w-full pl-4 pr-10 py-2.5 bg-white/80 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
@@ -128,8 +128,8 @@
         <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="md:col-span-2 bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
                 <div class="z-10 max-w-md">
-                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">968 найсмачніших сортів чаю</h1>
-                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Ми особисто відбирали та привезли з Китаю... і ще з шістнадцяти країн світу</p>
+                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">Повна колекція ексклюзивних чаїв</h1>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Понад 900 унікальних сортів з Китаю, Тайваню, Японії та всього світу в наявності.</p>
                 </div>
                 <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90">
                     <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Tea" class="max-h-[90%] object-contain rounded-2xl">
@@ -142,130 +142,93 @@
                         <h3 class="text-xl font-bold">Подарунки</h3>
                         <i class="fa-solid fa-gift text-2xl opacity-80"></i>
                     </div>
-                    <p class="text-xs font-medium opacity-90">Хочу! Хочу! Хочу!</p>
+                    <p class="text-xs font-medium opacity-90">Найкращі набори</p>
                 </div>
                 <div onclick="setCategory('Акции')" class="bg-[#facc15] text-stone-900 rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
                     <div class="flex justify-between items-start">
                         <h3 class="text-xl font-bold">Акції</h3>
                         <i class="fa-solid fa-percent text-2xl opacity-80"></i>
                     </div>
-                    <p class="text-xs font-medium opacity-80">...від яких неможливо встояти</p>
+                    <p class="text-xs font-medium opacity-80">Спеціальні пропозиції</p>
                 </div>
             </div>
         </section>
 
-        <!-- Асиметрична плитка каталогy (Різний розмір плитень: bento grid) -->
+        <!-- Категорії каталогy -->
         <section class="space-y-4">
             <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категорії каталогу</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid">
-                <!-- Рендериться через JS з акцентними розмірами -->
-            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid"></div>
         </section>
 
         <!-- Підбірка товарів -->
         <section class="space-y-4 pt-4 border-t border-emerald-900/10">
             <div class="flex justify-between items-center">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Колекції від засновників New Tea</h2>
-                    <p class="text-xs text-stone-600">Кілька чудових варіантів для знайомства</p>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Популярні позиції каталогу</h2>
+                    <p class="text-xs text-stone-600">Широкий вибір сортів для щоденної насолоди</p>
                 </div>
                 <button onclick="setCategory('Все товары')" class="text-xs font-bold text-emerald-800 hover:underline">
                     Дивитися всі &rarr;
                 </button>
             </div>
 
-            <!-- Product Grid -->
             <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
         </section>
 
-        <!-- Інтерактивні тести для молоді -->
+        <!-- Інтерактивні тести для молоді (по 12 запитань у повноцінних окремих вікнах/модалках) -->
         <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
             <div class="text-center max-w-xl mx-auto space-y-2">
-                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block">Чайний вайб</span>
-                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">Інтерактивні тести</h2>
-                <p class="text-xs sm:text-sm text-stone-600">Дізнайся свій справжній чайний характер за хвилину</p>
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block">Ексклюзивні тести</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">Розгорнуті тести (12 запитань)</h2>
+                <p class="text-xs sm:text-sm text-stone-600">Оберіть тест та пройдіть захопливе інтерактивне дослідження свого чайного характеру чи ідеального стилю життя!</p>
             </div>
 
-            <!-- Блоки тестів -->
+            <!-- Блоки тестів з кнопками відкриття в окремому вікні -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <!-- Тест 1: Який ти чай? -->
-                <div class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Тест #1</span>
-                            <i class="fa-solid fa-mug-hot text-stone-400"></i>
+                <!-- Тест 1 -->
+                <div class="bg-stone-50 rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Великий тест #1</span>
+                            <i class="fa-solid fa-mug-hot text-emerald-600 text-lg"></i>
                         </div>
-                        <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-1">Який ти сорт чаю за вайбом?</h3>
-                        <p class="text-xs text-stone-600">Пройди міні-опитування та знайди своє чайне альтер-его.</p>
+                        <h3 class="font-black text-stone-900 text-lg sm:text-xl">Який ти сорт чаю за вайбом?</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">12 детальних запитань про твої звички, нічний режим, музику та настрій для пошуку ідеального сорту з усього каталогу.</p>
                     </div>
 
-                    <div id="test1Container" class="space-y-3">
-                        <button onclick="startTest(1)" class="w-full bg-stone-900 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-sm transition btn-active-scale">
-                            Почати тест
-                        </button>
-                    </div>
+                    <button onclick="openQuizModal(1)" class="w-full bg-stone-900 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                        <span>Пройти тест (12 запитань)</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
 
-                <!-- Тест 2: Твоя ідеальна заварка / дегустація -->
-                <div class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 flex flex-col justify-between space-y-4">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">Тест #2</span>
-                            <i class="fa-solid fa-fire text-stone-400"></i>
+                <!-- Тест 2 -->
+                <div class="bg-stone-50 rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">Великий тест #2</span>
+                            <i class="fa-solid fa-compass text-amber-600 text-lg"></i>
                         </div>
-                        <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-1">Який твій ідеальний спосіб заварювання?</h3>
-                        <p class="text-xs text-stone-600">Термос у рюкзаку, гайвань чи ранковий швидкий напій?</p>
+                        <h3 class="font-black text-stone-900 text-lg sm:text-xl">Який твій ідеальний ритуал заварювання?</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">12 запитань про те, як ти готуєшся до дня, подорожуєш та відпочиваєш, щоб підібрати найкращий посуд та техніку заварки.</p>
                     </div>
 
-                    <div id="test2Container" class="space-y-3">
-                        <button onclick="startTest(2)" class="w-full bg-stone-900 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-sm transition btn-active-scale">
-                            Почати тест
-                        </button>
-                    </div>
+                    <button onclick="openQuizModal(2)" class="w-full bg-stone-900 hover:bg-amber-700 text-white py-3.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                        <span>Пройти тест (12 запитань)</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
             </div>
         </section>
 
-        <!-- Інформаційний розділ: Історія чаю та види -->
+        <!-- Інформаційний розділ -->
         <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
             <div class="max-w-3xl">
                 <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Енциклопедія чаю</span>
-                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Велика історія та культура чаю</h2>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Велика історія та різноманіття сортів</h2>
                 <p class="text-stone-600 text-sm leading-relaxed">
-                    Чай — це не просто напій, а давня філософія, що налічує понад 4700 років історії. Згідно з легендою, все почалося в 2737 році до н.е., коли китайський імператор Шень-нун випадково впустив кілька листків дикого чайного дерева в казанок із киплячою водою. Отриманий настій вразив його своїм ароматом і бадьорими властивостями. З того часу чай пройшов шлях від лікарського зілля при імператорському дворі до всесвітнього культурного феномену.
+                    Чай — це цілий всесвіт, який охоплює не лише класичні шу та шен пуери, а й вишукані білі чаї з Фуцзяні, яскраво-зелені японські матча та сенча, ароматні тайванські улуни високих гір, а також різноманітні червоні чаї та авторські купажі з травами й фруктами.
                 </p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-stone-100">
-                <div class="space-y-2">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-base">
-                        <i class="fa-solid fa-seedling"></i>
-                    </div>
-                    <h3 class="font-bold text-stone-900 text-base">Китайські витоки</h3>
-                    <p class="text-xs text-stone-600 leading-relaxed">
-                        Китай — батьківщина чаю. Саме тут майстри навчилися тонкощам збору, ферментації та обжарювання листків, створивши унікальні традиції чайних церемоній (Гунфу Ча), які розкривають усю глибину смаку.
-                    </p>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-base">
-                        <i class="fa-solid fa-mug-hot"></i>
-                    </div>
-                    <h3 class="font-bold text-stone-900 text-base">Основні види чаю</h3>
-                    <p class="text-xs text-stone-600 leading-relaxed">
-                        <b>Шу та Шен Пуери</b> дарують глибокий деревний або фруктовий смак; <b>Улуни</b> поєднують свіжість зелені та нотки квітів; <b>Зелені й Білі чаї</b> зберігають природну м'якість, а <b>Червоні</b> зігрівають щільним ароматом.
-                    </p>
-                </div>
-
-                <div class="space-y-2">
-                    <div class="w-10 h-10 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center font-bold text-base">
-                        <i class="fa-solid fa-fire-flame-curved"></i>
-                    </div>
-                    <h3 class="font-bold text-stone-900 text-base">Мистецтво вибору</h3>
-                    <p class="text-xs text-stone-600 leading-relaxed">
-                        Кожен сорт вимагає своєї температури води та часу заварювання. У каталозі tea.haven.ua зібрані найкращі авторитетні позиції для щоденної насолоди та особливих моментів.
-                    </p>
-                </div>
             </div>
         </section>
 
@@ -290,6 +253,37 @@
             <span class="text-[10px] font-medium">Кошик</span>
             <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
         </button>
+    </div>
+
+    <!-- Модальне вікно тестів (12 запитань у кожному) -->
+    <div id="quizModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeQuizModal()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm animate-fade-in"></div>
+
+        <div class="flex min-h-full items-center justify-center p-3 sm:p-6">
+            <div class="relative w-full max-w-2xl rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-scale-up flex flex-col">
+                
+                <!-- Шапка тесту -->
+                <div class="p-5 bg-stone-50 border-b border-stone-200 flex justify-between items-center">
+                    <div>
+                        <span id="quizBadge" class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Тест</span>
+                        <h3 id="quizModalTitle" class="text-base sm:text-lg font-black text-stone-900 mt-1">Назва тесту</h3>
+                    </div>
+                    <button onclick="closeQuizModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition btn-active-scale">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- Прогрес-бар -->
+                <div class="w-full bg-stone-100 h-2">
+                    <div id="quizProgressBar" class="bg-emerald-600 h-2 transition-all duration-300 w-0"></div>
+                </div>
+
+                <!-- Контент запитання -->
+                <div id="quizBody" class="p-6 sm:p-8 space-y-6 min-h-[320px] flex flex-col justify-between">
+                    <!-- Заповнюється через JS -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Mobile Categories Modal -->
@@ -448,7 +442,6 @@
         const TG_ADMIN_IDS = ['884682846', '8272212055'];
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
-        // Асиметричні розміри плитень (bento grid layout) для кращого дизайну
         const CATEGORIES_LIST = [
             { name: 'Чай', desc: 'Перлини з Китаю та світу', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
             { name: 'Посуд', desc: 'Зручність і стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
@@ -456,8 +449,10 @@
             { name: 'Шен Пуэр', desc: 'Світлий та бадьорий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
             { name: 'Улун', desc: 'Ароматні напівферментовані', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
             { name: 'Зеленый чай', desc: 'Свіжість і гармонія', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
+            { name: 'Белый чай', desc: 'Витончені світлі листочки', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Красный чай', desc: 'Зігріваючий та насичений', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
             { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Акции', desc: 'Знижки, від яких не встояти', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
+            { name: 'Акции', desc: 'Спеціальні пропозиції', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
         ];
 
         const TEA_IMAGES = [
@@ -469,6 +464,41 @@
         let allProducts = [];
         let cart = [];
         let searchTimeout = null;
+
+        // Дані для тестів по 12 запитань у кожному
+        const QUIZ_1_QUESTIONS = [
+            { q: "Який час доби тобі ближче всього?", opts: ["Ніч і повна тиша", "Ранковий світанок і кава/чай", "Ближче до вечора, захід сонця", "День у постійній динаміці"] },
+            { q: "Яка музика грає в твоїх навушниках?", opts: ["Хип-хоп / реп / андеграунд", "Інді / рок / альтернатива", "Фонк / треп / електронна", "Ло-фай / ембіент для фокусу"] },
+            { q: "Опиши свій ідеальний вечір суботи:", opts: ["Вдома за комп'ютером / грою / кодом", "Прогулянка містом з друзями", "Кіномарафон або серіали під пледом", "Насичена тусовка чи подія"] },
+            { q: "Як ти зазвичай стаєш бадьорим зранку?", opts: ["Ніяк, я зомбі перші дві години", "Міцний напій та енергетик", "Медитація або неспішний чай", "Різкий холодний душ і вперед"] },
+            { q: "Який колір в одязі та стилі переважає?", opts: ["Темний / чорний / готичний вайб", "Світлі пастельні тони / оверсайз", "Яскраві помітні акценти", "Класика / мінімалізм"] },
+            { q: "Як ти реагуєш на стрес та дедлайни?", opts: ["Сконцентровано роблю все в останню ніч", "Зберігаю повний дзен і спокій", "Беру паузу на чай і роздуми", "Панікую, але потім справляюся"] },
+            { q: "Яке твоє улюблене місце для відпочинку?", opts: ["Своя кімната з улюбленим ПК/гаджетами", "Парк, тиха лавка або набережна", "Кав'ярня з гарною атмосферою", "Дах висотки з краєвидом на місто"] },
+            { q: "Твій підхід до вибору речей чи техніки:", opts: ["Досконально вивчаю характеристики і відгуки", "Беру те, що візуально залетіло в серце", "Прошу поради у друзів/експертів", "Шукаю найкраще співвідношення ціни"] },
+            { q: "Який фільм чи жанр найбільше до душі?", opts: ["Кіберпанк / фантастика / трилери", "Життєві драми / артхаус", "Комедії / легкі стріми / блогери", "Детективи / головоломки"] },
+            { q: "Як ти стаєшся до нових знайомств?", opts: ["Обираю вузьке коло перевірених людей", "Легко йду на контакт у будь-якій компанії", "Спочатку спостерігаю, потім спілкуюсь", "Люблю обговорювати спільні інтереси онлайн"] },
+            { q: "Яка погода надихає тебе найбільше?", opts: ["Густий туман та нічний дощ", "Сонячний теплий весняний день", "Осінній вітер та листопад", "Зимовий затишний вечір зі снігом"] },
+            { q: "Яке твоє життєве кредо?", opts: ["Йти своїм унікальним шляхом", "Головне — гармонія і спокій всередині", "Постійний рух і розвиток", "Жити тут і зараз з насолодою"] }
+        ];
+
+        const QUIZ_2_QUESTIONS = [
+            { q: "Де ти найчастіше п'єш свої улюблені напої?", opts: ["За робочим столом / під час гри чи навчання", "У рюкзаку в дорозі / на ходу", "На дивані під серіал чи книгу", "На природі / у парку на лавці"] },
+            { q: "Скільки часу ти готов(а) витратити на приготування?", opts: ["Мінімум: залив і побіг", "П'ять хвилин на вдумливе заварювання", "Церемонія — це святе, можу заварювати довго", "Залежить від настрою та наявності часу"] },
+            { q: "Який посуд тобі візуально подобається найбільше?", opts: ["Матові керамічні піали та чаші", "Скляний прозорий чайник з подвійними стінками", "Класичний глиняний чайник (Ісін)", "Зручний дорожній термос чи фляга"] },
+            { q: "Яку температуру води ти зазвичай використовуєш?", opts: ["Окріп одразу з чайника", "Даю трохи охолонути (близько 80-85°C)", "Спеціально контролюю кожен градус", "Наливаю теплу воду для м'якості"] },
+            { q: "Як ти стаєшся до експериментів зі смаками?", opts: ["Обожнюю пробувати нові екзотичні сорти", "Віддаю перевагу перевіреній класиці", "Люблю додавати м'яту, лимон чи фрукти", "Слухаю поради засновників та знавців"] },
+            { q: "Твій ідеальний об'єм однієї порції:", opts: ["Велика кружка, щоб надовго вистачило", "Маленькі піали для проливок (традиційний метод)", "Середня чашка для швидкого розслаблення", "Термос на весь день"] },
+            { q: "Як ти зберігаєш свої запаси вдома?", opts: ["У спеціальних жерстяних банках чи пакетах з зіплоком", "У шафі в оригінальних упаковках", "Спеціальна полиця або чайний куточок", "Тримаю все під рукою на столі"] },
+            { q: "Чи важливо для тебе бачити колір настою?", opts: ["Так, дуже люблю спостерігати за відтінком", "Головне — насичений смак і аромат", "Не звертаю особливої уваги", "Цікаво порівнювати різні проливки"] },
+            { q: "Як часто ти оновлюєш свої чайні запаси?", opts: ["Регулярно купую щось новеньке на пробу", "Беру великі упаковки улюбленого сорту", "Коли старі запаси повністю закінчуються", "Залежить від сезону (взимку п'ю більше)"] },
+            { q: "Чи береш ти напій з собою на вулицю?", opts: ["Майже завжди ношу з собою термос", "Тільки коли планую довгі прогулянки", "Віддаю перевагу пити вдома в затишку", "Купую готові напої в кав'ярнях"] },
+            { q: "Що для тебе головне у процесі чаювання?", opts: ["Повна концентрація та медитативний стан", "Можливість поспілкуватися з друзями", "Швидкий спосіб підзарядити енергію", "Красива естетика та атмосфера"] },
+            { q: "Обери свій улюблений формат дегустації:", opts: ["Велика компанія з кількома сортами", "Наодинці вночі за улюбленою справою", "Швидка чашка між завданнями", "Ранковий ритуал пробудження"] }
+        ];
+
+        let currentQuizId = 1;
+        let currentQuizIndex = 0;
+        let quizAnswers = [];
 
         function cleanNumber(val) {
             if (!val) return 0;
@@ -588,7 +618,7 @@
 
         function renderFeaturedProducts() {
             const grid = document.getElementById('productGrid');
-            const featured = allProducts.slice(0, 8);
+            const featured = allProducts.slice(0, 12);
 
             if (featured.length === 0) {
                 grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-6">Завантаження товарів...</p>';
@@ -618,40 +648,110 @@
             `).join('');
         }
 
-        // Логіка інтерактивних тестів
-        function startTest(testId) {
-            const container = document.getElementById(`test${testId}Container`);
-            if (testId === 1) {
-                container.innerHTML = `
-                    <div class="space-y-2 animate-fade-in text-xs">
-                        <p class="font-bold text-stone-900">1. Твоя ідеальна атмосфера на вечір:</p>
-                        <div class="space-y-1.5">
-                            <button onclick="finishTest(1, 'Шу Пуер')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">🌑 Темна кімната, музика в навушниках</button>
-                            <button onclick="finishTest(1, 'Зелений чай')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">🌿 Ранок, сонце і плани на продуктивність</button>
-                            <button onclick="finishTest(1, 'Фруктовий/Трав'яний')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">☕ Чистий чилл з друзями під сеісію</button>
-                        </div>
-                    </div>
-                `;
+        // Логіка великих інтерактивних тестів (12 запитань)
+        function openQuizModal(quizId) {
+            currentQuizId = quizId;
+            currentQuizIndex = 0;
+            quizAnswers = [];
+
+            const modal = document.getElementById('quizModal');
+            const titleEl = document.getElementById('quizModalTitle');
+            const badgeEl = document.getElementById('quizBadge');
+
+            if (quizId === 1) {
+                titleEl.innerText = "Який ти сорт чаю за вайбом?";
+                badgeEl.innerText = "Тест #1 • 12 запитань";
             } else {
-                container.innerHTML = `
-                    <div class="space-y-2 animate-fade-in text-xs">
-                        <p class="font-bold text-stone-900">1. Де найчастіше п'єш чай?</p>
-                        <div class="space-y-1.5">
-                            <button onclick="finishTest(2, 'Термос у рюкзаку')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">🎒 У дорозі / на парах / прогулянці</button>
-                            <button onclick="finishTest(2, 'Гайвань/Чайник')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">🏠 Вдома за компами чи книгою</button>
-                            <button onclick="finishTest(2, 'Швидка чашка')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">⚡ Головне швидше підзарядитись</button>
-                        </div>
-                    </div>
-                `;
+                titleEl.innerText = "Який твій ідеальний ритуал заварювання?";
+                badgeEl.innerText = "Тест #2 • 12 запитань";
             }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            renderQuizQuestion();
         }
 
-        function finishTest(testId, result) {
-            const container = document.getElementById(`test${testId}Container`);
-            container.innerHTML = `
-                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2 animate-fade-in">
-                    <p class="text-xs font-bold text-emerald-900">Твій результат: <span class="text-emerald-700 underline">${result}</span>! 🎉</p>
-                    <button onclick="startTest(${testId})" class="text-[10px] text-stone-500 hover:underline">Пройти ще раз</button>
+        function closeQuizModal() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function renderQuizQuestion() {
+            const questions = currentQuizId === 1 ? QUIZ_1_QUESTIONS : QUIZ_2_QUESTIONS;
+            const bodyEl = document.getElementById('quizBody');
+            const progressEl = document.getElementById('quizProgressBar');
+
+            const percent = ((currentQuizIndex) / questions.length) * 100;
+            progressEl.style.width = `${percent}%`;
+
+            if (currentQuizIndex >= questions.length) {
+                renderQuizResult();
+                return;
+            }
+
+            const currentQ = questions[currentQuizIndex];
+
+            bodyEl.innerHTML = `
+                <div class="space-y-4 animate-fade-in">
+                    <div class="flex justify-between items-center text-xs text-stone-500 font-bold uppercase tracking-wider">
+                        <span>Запитання ${currentQuizIndex + 1} з ${questions.length}</span>
+                        <span>${Math.round(percent)}%</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-stone-900 leading-snug">${currentQ.q}</h4>
+                    <div class="space-y-2.5 pt-2">
+                        ${currentQ.opts.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 hover:border-emerald-600 hover:bg-emerald-50/50 transition font-medium text-xs sm:text-sm text-stone-800 flex items-center justify-between group btn-active-scale">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-chevron-right text-stone-300 group-hover:text-emerald-600 transition text-xs"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleQuizAnswer(optionIndex) {
+            quizAnswers.push(optionIndex);
+            currentQuizIndex++;
+            renderQuizQuestion();
+        }
+
+        function renderQuizResult() {
+            const progressEl = document.getElementById('quizProgressBar');
+            progressEl.style.width = '100%';
+
+            const bodyEl = document.getElementById('quizBody');
+            const resultsList = [
+                "Шу Пуер 1998 року або глибокий витриманий блин",
+                "Свіжий тайванський улун з високих гір",
+                "Японський зелений чай Сенча або Матча",
+                "Ароматний білий чай Бай Му Дань",
+                "Насичений червоний Дянь Хун",
+                "Авторський трав'яний збір з гірськими травами"
+            ];
+
+            const randomResult = resultsList[Math.floor(Math.random() * resultsList.length)];
+
+            bodyEl.innerHTML = `
+                <div class="text-center space-y-6 py-6 animate-fade-in">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Тест успішно завершено!</span>
+                        <h4 class="text-xl sm:text-2xl font-black text-stone-900">Твій ідеальний чай:</h4>
+                        <p class="text-base sm:text-lg font-extrabold text-emerald-700 bg-emerald-50 p-4 rounded-2xl border border-emerald-200">${randomResult}</p>
+                    </div>
+                    <p class="text-xs text-stone-600">Ми проаналізували всі 100% твоїх відповідей з 12 запитань і підібрали цей унікальний варіант із загального каталогу!</p>
+                    
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="openQuizModal(${currentQuizId})" class="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-800 py-3 rounded-xl font-bold text-xs transition btn-active-scale">
+                            Пройти знову
+                        </button>
+                        <button onclick="closeQuizModal(); setCategory('Чай');" class="flex-1 bg-stone-900 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs shadow-md transition btn-active-scale">
+                            Перейти до каталогу
+                        </button>
+                    </div>
                 </div>
             `;
         }
