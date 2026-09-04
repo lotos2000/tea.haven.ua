@@ -186,6 +186,12 @@
                         <span id="wholesaleMinAlertText">Мінімальне оптове замовлення — від 7 000 грн</span>
                     </div>
 
+                    <!-- Payment Note -->
+                    <div class="mb-3 p-2.5 rounded-xl bg-stone-900 border border-stone-800 text-stone-400 text-[11px] leading-tight flex items-center gap-2">
+                        <i class="fa-solid fa-truck-ramp-box text-amber-500 text-sm flex-shrink-0"></i>
+                        <span>Оплата при отриманні (післяплата) можлива за передплатою <strong>200 грн</strong> (для замовлень від 100 грн).</span>
+                    </div>
+
                     <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
                         <div>
                             <input type="text" id="custName" required placeholder="Ім'я та Прізвище" 
@@ -540,7 +546,6 @@
             const footer = document.getElementById('cartFooter');
             const totalEl = document.getElementById('cartTotal');
 
-            // Показує кількість унікальних обраних позицій (якщо 1 товар — цифра 1)
             cartCount.innerText = cart.length;
 
             let totalSum = 0;
@@ -645,16 +650,19 @@
                 ? (totalSum >= 15000 ? 'ОПТ ВІД 15к' : 'ОПТ ВІД 7к') 
                 : 'РОЗДРІБ';
 
+            const prepayAmount = totalSum >= 100 ? 200 : totalSum;
+
             const message = `🛍 *НОВЕ ЗАМОВЛЕННЯ — tea.haven.ua*\n` +
                 `------------------------------------\n` +
                 `🏷 *Режим:* ${modeTitle}\n` +
                 `👤 *Клієнт:* ${name}\n` +
                 `📞 *Телефон:* ${phone}\n` +
                 `📍 *Доставка:* м. ${city}, НП №${np}\n` +
+                `💳 *Передплата (післяплата):* ${prepayAmount} грн\n` +
                 `------------------------------------\n` +
                 `📦 *Товари:*\n${itemsText}\n` +
                 `------------------------------------\n` +
-                `💰 *Разом:* ${totalSum} грн`;
+                `💰 *Разом до сплати:* ${totalSum} грн`;
 
             try {
                 for (const chatId of TG_ADMIN_IDS) {
@@ -669,7 +677,7 @@
                     });
                 }
 
-                alert(`Дякуємо за замовлення, ${name}!`);
+                alert(`Дякуємо за замовлення, ${name}! Менеджер зв'яжеться з вами для уточнення передплати.`);
                 cart = [];
                 updateCartUI();
                 toggleCart();
