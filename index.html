@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>tea.haven.ua — Чай та Посуд</title>
+    <title>tea.haven.ua — Інтернет-магазин чаю та посуду</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: #1c1917; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #44403c; border-radius: 2px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #d97706; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f5f5f4; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #d7d3cd; border-radius: 2px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #15803d; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -43,58 +43,52 @@
         }
     </style>
 </head>
-<body class="bg-stone-950 text-stone-200 font-sans min-h-screen flex flex-col antialiased selection:bg-amber-600 selection:text-white pb-20 md:pb-0">
+<body class="bg-[#fcfbf9] text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-20 md:pb-0">
 
-    <header class="bg-stone-900/90 backdrop-blur-md text-stone-100 sticky top-0 z-40 border-b border-stone-800 shadow-xl">
+    <header class="bg-white/90 backdrop-blur-md text-stone-800 sticky top-0 z-40 border-b border-stone-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
             
             <a href="#" class="flex items-center gap-3 group btn-active-scale">
-                <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-amber-500/40 shadow-lg shadow-amber-600/10" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
+                <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-emerald-500/30 shadow-md shadow-emerald-600/5" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
                 <div>
-                    <span class="text-xl font-bold tracking-tight text-stone-100 block leading-none">tea.haven<span class="text-amber-500">.ua</span></span>
-                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Чай та Посуд</span>
+                    <span class="text-xl font-bold tracking-tight text-stone-900 block leading-none">tea.haven<span class="text-emerald-600">.ua</span></span>
+                    <span class="text-[10px] text-stone-500 uppercase tracking-widest font-medium">Чай та Посуд</span>
                 </div>
             </a>
 
-            <div class="hidden md:flex bg-stone-950 p-1 rounded-2xl border border-stone-800 items-center gap-1 shadow-inner">
-                <button id="modeRetailBtn" onclick="setTradingMode('retail')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition bg-amber-600 text-white shadow-md">
-                    Роздріб
-                </button>
-                <button id="modeWholesaleBtn" onclick="setTradingMode('wholesale')" class="px-4 py-1.5 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white">
-                    Опт
-                </button>
+            <div class="hidden lg:flex items-center gap-6 text-xs text-stone-600">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-clock text-emerald-600"></i>
+                    <span>Пн-Нд: 9:00 - 20:00</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-phone text-emerald-600"></i>
+                    <span class="font-semibold text-stone-800">Швидка допомога замовлення</span>
+                </div>
             </div>
 
             <div class="flex items-center gap-2">
-                <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Наш інстаграм з відгуками" class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-purple-900/40 to-pink-900/40 hover:from-purple-800/60 hover:to-pink-800/60 text-stone-200 hover:text-white px-3 py-2 rounded-xl text-xs font-semibold border border-pink-500/30 transition btn-active-scale">
-                    <i class="fa-brands fa-instagram text-pink-400 text-base"></i>
+                <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Наш інстаграм з відгуками" class="hidden sm:flex items-center gap-2 bg-pink-50 hover:bg-pink-100 text-pink-700 px-3 py-2 rounded-xl text-xs font-semibold border border-pink-200 transition btn-active-scale">
+                    <i class="fa-brands fa-instagram text-pink-600 text-base"></i>
                     <span>Відгуки</span>
                 </a>
 
-                <button onclick="toggleCart()" class="relative bg-amber-600 hover:bg-amber-500 text-white px-4 py-2.5 sm:py-2 rounded-xl flex items-center gap-2.5 transition shadow-lg shadow-amber-600/20 font-medium text-sm btn-active-scale">
+                <button onclick="toggleCart()" class="relative bg-emerald-700 hover:bg-emerald-600 text-white px-4 py-2.5 sm:py-2 rounded-xl flex items-center gap-2.5 transition shadow-md shadow-emerald-700/20 font-medium text-sm btn-active-scale">
                     <i class="fa-solid fa-bag-shopping text-base"></i>
                     <span class="hidden sm:inline">Кошик</span>
-                    <span id="cartCount" class="bg-stone-950 text-amber-400 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center border border-amber-500/30">0</span>
+                    <span id="cartCount" class="bg-white text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-inner">0</span>
                 </button>
             </div>
         </div>
     </header>
 
-    <div class="md:hidden bg-stone-900/80 border-b border-stone-800/80 px-4 py-2.5 flex items-center justify-between text-xs overflow-x-auto custom-scrollbar gap-3">
-        <div class="flex items-center gap-2 flex-shrink-0">
-            <span class="text-stone-400">Режим:</span>
-            <button onclick="setTradingMode(tradingMode === 'retail' ? 'wholesale' : 'retail')" id="mobileModeIndicator" class="px-2.5 py-1 rounded-lg bg-amber-600/20 border border-amber-500/40 text-amber-400 font-bold flex items-center gap-1.5">
-                <i class="fa-solid fa-tags text-[10px]"></i>
-                <span id="mobileModeText">Роздріб</span>
-            </button>
-        </div>
-        <div class="h-4 w-[1px] bg-stone-800 flex-shrink-0"></div>
-        <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" class="flex items-center gap-1.5 text-pink-400 font-medium flex-shrink-0">
+    <div class="md:hidden bg-stone-100 border-b border-stone-200 px-4 py-2.5 flex items-center justify-around text-xs text-stone-600">
+        <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" class="flex items-center gap-1.5 text-pink-600 font-medium">
             <i class="fa-brands fa-instagram"></i>
             <span>Instagram</span>
         </a>
-        <div class="h-4 w-[1px] bg-stone-800 flex-shrink-0"></div>
-        <a href="https://t.me/FdDollar" target="_blank" class="flex items-center gap-1.5 text-sky-400 font-medium flex-shrink-0">
+        <div class="h-4 w-[1px] bg-stone-300"></div>
+        <a href="https://t.me/FdDollar" target="_blank" class="flex items-center gap-1.5 text-sky-600 font-medium">
             <i class="fa-brands fa-telegram"></i>
             <span>Telegram</span>
         </a>
@@ -102,23 +96,23 @@
 
     <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full">
 
-        <div id="catalog" class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-6 gap-3.5 bg-stone-900/60 p-4 sm:p-5 rounded-2xl border border-stone-800/80 backdrop-blur-sm">
+        <div id="catalog" class="flex flex-col md:flex-row justify-between items-stretch md:items-center mb-6 gap-3.5 bg-white p-4 sm:p-5 rounded-2xl border border-stone-200 shadow-sm">
             <div class="flex justify-between items-center md:block">
-                <h2 class="text-lg sm:text-xl font-bold text-stone-100 flex items-center gap-2">
-                    <i class="fa-solid fa-store text-amber-500"></i> Каталог
+                <h2 class="text-lg sm:text-xl font-bold text-stone-900 flex items-center gap-2">
+                    <i class="fa-solid fa-store text-emerald-600"></i> Каталог товарів
                 </h2>
-                <p id="statusText" class="text-xs text-stone-400 mt-0.5 sm:mt-1 flex items-center gap-2">
-                    <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Завантаження...
+                <p id="statusText" class="text-xs text-stone-500 mt-0.5 sm:mt-1 flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Завантаження каталогу...
                 </p>
             </div>
 
             <div class="relative w-full md:w-80">
-                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-500 text-sm"></i>
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
                 <input type="text" id="searchInput" oninput="handleSearch()" 
                     placeholder="Пошук чаю, посуду, ID..." 
-                    class="w-full pl-10 pr-10 py-2.5 md:py-2 bg-stone-950 border border-stone-800 rounded-xl text-sm text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition shadow-inner">
-                <button onclick="clearSearch()" id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300 hidden text-xs">
+                    class="w-full pl-10 pr-10 py-2.5 md:py-2 bg-stone-50 border border-stone-300 rounded-xl text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 focus:bg-white transition">
+                <button onclick="clearSearch()" id="clearSearchBtn" class="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600 hidden text-xs">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -129,52 +123,48 @@
         <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
 
         <div id="scrollTrigger" class="h-10 my-6 flex items-center justify-center">
-            <span id="loadMoreSpinner" class="text-stone-500 text-sm hidden">
+            <span id="loadMoreSpinner" class="text-stone-400 text-sm hidden">
                 <i class="fa-solid fa-spinner animate-spin mr-2"></i> Завантаження...
             </span>
         </div>
 
-        <div id="emptyMessage" class="hidden text-center py-20 bg-stone-900/40 rounded-2xl border border-dashed border-stone-800">
-            <i class="fa-solid fa-box-open text-4xl text-stone-600 mb-3 block"></i>
-            <p class="text-stone-400 font-medium">Нічого не знайдено</p>
-            <button onclick="resetFilters()" class="mt-3 px-4 py-2 bg-stone-800 hover:bg-stone-700 text-stone-200 text-xs font-semibold rounded-xl transition">
+        <div id="emptyMessage" class="hidden text-center py-20 bg-white rounded-2xl border border-dashed border-stone-300 shadow-sm">
+            <i class="fa-solid fa-box-open text-4xl text-stone-300 mb-3 block"></i>
+            <p class="text-stone-600 font-medium">Нічого не знайдено</p>
+            <button onclick="resetFilters()" class="mt-3 px-4 py-2 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-semibold rounded-xl transition">
                 Скинути фільтри
             </button>
         </div>
     </main>
 
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-stone-900/95 backdrop-blur-lg border-t border-stone-800 z-30 px-2 py-2 flex justify-around items-center shadow-2xl">
-        <button onclick="scrollToTop()" class="flex flex-col items-center gap-1 text-stone-400 hover:text-amber-500 transition p-1">
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-stone-200 z-30 px-2 py-2 flex justify-around items-center shadow-lg">
+        <button onclick="scrollToTop()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-house text-base"></i>
             <span class="text-[10px] font-medium">Головна</span>
         </button>
-        <button onclick="openCategoriesModal()" class="flex flex-col items-center gap-1 text-stone-400 hover:text-amber-500 transition p-1">
+        <button onclick="openCategoriesModal()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-layer-group text-base"></i>
             <span class="text-[10px] font-medium">Розділи</span>
         </button>
-        <button onclick="focusSearch()" class="flex flex-col items-center gap-1 text-stone-400 hover:text-amber-500 transition p-1">
+        <button onclick="focusSearch()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-magnifying-glass text-base"></i>
             <span class="text-[10px] font-medium">Пошук</span>
         </button>
-        <button onclick="toggleTradingModeMobile()" class="flex flex-col items-center gap-1 text-amber-400 hover:text-amber-300 transition p-1">
-            <i class="fa-solid fa-percent text-base"></i>
-            <span id="mobileBottomModeText" class="text-[10px] font-bold">Опт/Роздріб</span>
-        </button>
-        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-300 hover:text-amber-500 transition p-1 relative">
+        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-700 hover:text-emerald-700 transition p-1 relative">
             <i class="fa-solid fa-bag-shopping text-base"></i>
             <span class="text-[10px] font-medium">Кошик</span>
-            <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-amber-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
+            <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-700 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
         </button>
     </div>
 
     <div id="categoriesModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div onclick="closeCategoriesModal()" class="fixed inset-0 bg-stone-950/80 backdrop-blur-md animate-fade-in"></div>
-        <div class="fixed inset-x-0 bottom-0 max-h-[80vh] bg-stone-900 rounded-t-3xl border-t border-stone-800 shadow-2xl flex flex-col z-10 animate-slide-bottom">
-            <div class="p-4 border-b border-stone-800 flex justify-between items-center bg-stone-950 rounded-t-3xl">
-                <h3 class="font-bold text-stone-100 flex items-center gap-2">
-                    <i class="fa-solid fa-layer-group text-amber-500"></i> Виберіть розділ
+        <div onclick="closeCategoriesModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+        <div class="fixed inset-x-0 bottom-0 max-h-[80vh] bg-white rounded-t-3xl border-t border-stone-200 shadow-2xl flex flex-col z-10 animate-slide-bottom">
+            <div class="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
+                <h3 class="font-bold text-stone-900 flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-600"></i> Виберіть розділ
                 </h3>
-                <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-900 text-stone-400 hover:text-white flex items-center justify-center border border-stone-800">
+                <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-200 text-stone-600 hover:text-stone-900 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -183,31 +173,34 @@
     </div>
 
     <div id="productModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div onclick="closeProductModal()" class="fixed inset-0 bg-stone-950/80 backdrop-blur-md animate-fade-in"></div>
+        <div onclick="closeProductModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
 
         <div class="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4">
-            <div class="relative w-full max-w-3xl rounded-t-3xl sm:rounded-3xl bg-stone-900 border border-stone-800 shadow-2xl overflow-hidden z-10 animate-slide-bottom sm:animate-scale-up max-h-[90vh] flex flex-col">
-                <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-stone-950/80 text-stone-400 hover:text-white flex items-center justify-center transition border border-stone-800 btn-active-scale">
+            <div class="relative w-full max-w-3xl rounded-t-3xl sm:rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-slide-bottom sm:animate-scale-up max-h-[90vh] flex flex-col">
+                <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-stone-100 text-stone-600 hover:text-stone-900 flex items-center justify-center transition border border-stone-200 btn-active-scale">
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 overflow-y-auto custom-scrollbar">
-                    <div class="h-64 md:h-full bg-stone-950 relative overflow-hidden flex items-center justify-center p-4">
+                    <div class="h-64 md:h-full bg-stone-50 relative overflow-hidden flex items-center justify-center p-4">
                         <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain rounded-xl">
                     </div>
                     <div class="p-5 sm:p-8 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
-                                <span id="modalCategory" class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/20"></span>
-                                <span id="modalId" class="text-[10px] font-mono text-stone-500"></span>
+                                <span id="modalCategory" class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200"></span>
+                                <span id="modalId" class="text-[10px] font-mono text-stone-400"></span>
                             </div>
-                            <h3 id="modalTitle" class="text-lg sm:text-xl font-bold text-white mb-3"></h3>
-                            <div class="text-stone-300 text-xs sm:text-sm space-y-2 leading-relaxed mb-6 custom-scrollbar max-h-40 overflow-y-auto pr-2" id="modalDescription"></div>
+                            <h3 id="modalTitle" class="text-lg sm:text-xl font-bold text-stone-900 mb-3"></h3>
+                            <div class="text-stone-600 text-xs sm:text-sm space-y-2 leading-relaxed mb-6 custom-scrollbar max-h-40 overflow-y-auto pr-2" id="modalDescription"></div>
                         </div>
 
-                        <div class="pt-4 border-t border-stone-800">
-                            <div id="modalTierPrices" class="mb-4 text-xs space-y-1.5 bg-stone-950 p-3 rounded-xl border border-stone-800"></div>
-                            <button id="modalAddBtn" class="w-full bg-amber-600 hover:bg-amber-500 text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-amber-600/20 transition flex items-center justify-center gap-2 btn-active-scale">
+                        <div class="pt-4 border-t border-stone-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs text-stone-500">Ціна за упаковку:</span>
+                                <span id="modalPrice" class="text-2xl font-black text-emerald-700">0 грн</span>
+                            </div>
+                            <button id="modalAddBtn" class="w-full bg-emerald-700 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-emerald-700/20 transition flex items-center justify-center gap-2 btn-active-scale">
                                 <i class="fa-solid fa-cart-plus"></i>
                                 <span>Додати до кошика</span>
                             </button>
@@ -219,96 +212,72 @@
     </div>
 
     <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div onclick="toggleCart()" class="fixed inset-0 bg-stone-950/80 backdrop-blur-sm animate-fade-in"></div>
+        <div onclick="toggleCart()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
 
         <div class="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10 w-full sm:w-auto">
-            <div class="w-full sm:w-[420px] bg-stone-900 border-l border-stone-800 shadow-2xl flex flex-col animate-slide-right ml-auto">
+            <div class="w-full sm:w-[420px] bg-white border-l border-stone-200 shadow-2xl flex flex-col animate-slide-right ml-auto">
                 
-                <div class="p-4 sm:p-5 bg-stone-950 text-stone-100 flex justify-between items-center border-b border-stone-800">
+                <div class="p-4 sm:p-5 bg-stone-50 text-stone-900 flex justify-between items-center border-b border-stone-200">
                     <div class="flex items-center gap-2.5">
-                        <i class="fa-solid fa-bag-shopping text-amber-500"></i>
+                        <i class="fa-solid fa-bag-shopping text-emerald-600"></i>
                         <h2 class="text-lg font-bold">Кошик</h2>
                     </div>
-                    <button onclick="toggleCart()" class="text-stone-400 hover:text-white transition btn-active-scale p-1">
+                    <button onclick="toggleCart()" class="text-stone-400 hover:text-stone-700 transition btn-active-scale p-1">
                         <i class="fa-solid fa-xmark text-xl"></i>
                     </button>
                 </div>
 
                 <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 custom-scrollbar"></div>
 
-                <div id="cartFooter" class="p-4 sm:p-5 border-t border-stone-800 bg-stone-950/60 hidden">
-                    
-                    <div id="wholesaleTierSelectorContainer" class="hidden mb-4 pb-3 border-b border-stone-800">
-                        <label class="block text-xs font-semibold text-stone-400 mb-2">Виберіть рівень опту:</label>
-                        <div class="grid grid-cols-2 gap-2">
-                            <label class="cursor-pointer border border-stone-700/80 rounded-xl p-2.5 bg-stone-900 flex items-center gap-2 hover:border-amber-500 transition has-[:checked]:border-amber-500 has-[:checked]:bg-amber-500/10">
-                                <input type="radio" name="wholesaleTier" value="7k" checked onchange="updateCartUI()" class="accent-amber-500">
-                                <div class="text-[11px] leading-tight">
-                                    <span class="font-bold text-stone-200 block">Опт від 7 тис.</span>
-                                    <span class="text-stone-400 text-[10px]">Базова ціна</span>
-                                </div>
-                            </label>
-
-                            <label class="cursor-pointer border border-stone-700/80 rounded-xl p-2.5 bg-stone-900 flex items-center gap-2 hover:border-amber-500 transition has-[:checked]:border-amber-500 has-[:checked]:bg-amber-500/10">
-                                <input type="radio" name="wholesaleTier" value="15k" onchange="updateCartUI()" class="accent-amber-500">
-                                <div class="text-[11px] leading-tight">
-                                    <span class="font-bold text-stone-200 block">Опт від 15 тис.</span>
-                                    <span class="text-stone-400 text-[10px]">Макс. знижка</span>
-                                </div>
-                            </label>
-                        </div>
+                <div id="cartFooter" class="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 hidden">
+                    <div class="flex justify-between items-center mb-4 text-stone-900">
+                        <span class="text-sm font-medium text-stone-500">До сплати:</span>
+                        <span id="cartTotal" class="text-xl font-extrabold text-emerald-700">0 грн</span>
                     </div>
-
-                    <div class="flex justify-between items-center mb-3 text-stone-100">
-                        <span class="text-sm font-medium text-stone-400">Всього:</span>
-                        <span id="cartTotal" class="text-xl font-bold text-amber-400">0 грн</span>
-                    </div>
-
-                    <div id="wholesaleTierNotice" class="hidden mb-3 p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-xs font-medium"></div>
 
                     <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
                         <div>
                             <input type="text" id="custName" required placeholder="Ім'я та Прізвище" 
-                                class="w-full px-3.5 py-2.5 text-sm bg-stone-900 border border-stone-700/80 rounded-xl text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition">
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div>
                             <input type="tel" id="custPhone" required placeholder="Номер телефону" 
-                                class="w-full px-3.5 py-2.5 text-sm bg-stone-900 border border-stone-700/80 rounded-xl text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition">
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div class="grid grid-cols-2 gap-2">
                             <input type="text" id="custCity" required placeholder="Місто" 
-                                class="w-full px-3.5 py-2.5 text-sm bg-stone-900 border border-stone-700/80 rounded-xl text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition">
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                             <input type="text" id="custNP" required placeholder="№ відділення НП" 
-                                class="w-full px-3.5 py-2.5 text-sm bg-stone-900 border border-stone-700/80 rounded-xl text-stone-200 placeholder-stone-500 focus:outline-none focus:border-amber-500 transition">
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
 
                         <div class="pt-1">
-                            <label class="block text-xs font-semibold text-stone-400 mb-2">Спосіб оплати:</label>
+                            <label class="block text-xs font-semibold text-stone-500 mb-2">Спосіб оплати:</label>
                             <div class="grid grid-cols-2 gap-2">
-                                <label class="cursor-pointer border border-stone-700/80 rounded-xl p-2.5 bg-stone-900 flex items-center gap-2 hover:border-amber-500 transition has-[:checked]:border-amber-500 has-[:checked]:bg-amber-500/10">
-                                    <input type="radio" name="paymentMethod" value="full" checked onchange="updatePaymentInfo()" class="accent-amber-500">
+                                <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+                                    <input type="radio" name="paymentMethod" value="full" checked onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-200 block">Повна оплата</span>
-                                        <span class="text-stone-400 text-[10px]">За реквізитами</span>
+                                        <span class="font-bold text-stone-800 block">Повна оплата</span>
+                                        <span class="text-stone-500 text-[10px]">За реквізитами</span>
                                     </div>
                                 </label>
 
-                                <label class="cursor-pointer border border-stone-700/80 rounded-xl p-2.5 bg-stone-900 flex items-center gap-2 hover:border-amber-500 transition has-[:checked]:border-amber-500 has-[:checked]:bg-amber-500/10">
-                                    <input type="radio" name="paymentMethod" value="cod" onchange="updatePaymentInfo()" class="accent-amber-500">
+                                <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+                                    <input type="radio" name="paymentMethod" value="cod" onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-200 block">Післяплата</span>
-                                        <span class="text-stone-400 text-[10px]">Передплата 200 грн</span>
+                                        <span class="font-bold text-stone-800 block">Післяплата</span>
+                                        <span class="text-stone-500 text-[10px]">Передплата 200 грн</span>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
-                        <div id="paymentNotice" class="p-2.5 rounded-xl bg-stone-900 border border-stone-800 text-stone-400 text-[11px] leading-tight flex items-center gap-2">
-                            <i class="fa-solid fa-credit-card text-amber-500 text-sm flex-shrink-0"></i>
+                        <div id="paymentNotice" class="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-600 text-[11px] leading-tight flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-emerald-600 text-sm flex-shrink-0"></i>
                             <span id="paymentNoticeText">Менеджер надішле реквізити для сплати після підтвердження замовлення.</span>
                         </div>
 
-                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-amber-600 hover:bg-amber-500 disabled:bg-stone-800 disabled:text-stone-500 disabled:cursor-not-allowed text-white py-3 rounded-xl font-bold text-sm shadow-lg shadow-amber-600/20 transition flex items-center justify-center gap-2 btn-active-scale">
+                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-emerald-700 hover:bg-emerald-600 text-white py-3 rounded-xl font-bold text-sm shadow-md shadow-emerald-700/20 transition flex items-center justify-center gap-2 btn-active-scale">
                             <span>Оформити замовлення</span>
                             <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
@@ -338,7 +307,6 @@
         let allProducts = [];
         let filteredProducts = [];
         let cart = [];
-        let tradingMode = 'retail'; 
         let selectedCategory = 'Всі товари';
         
         const PAGE_SIZE = 20;
@@ -351,47 +319,11 @@
             return isNaN(num) ? 0 : num;
         }
 
-        function setTradingMode(mode) {
-            tradingMode = mode;
-            
-            const retailBtn = document.getElementById('modeRetailBtn');
-            const wholesaleBtn = document.getElementById('modeWholesaleBtn');
-            const mobileModeText = document.getElementById('mobileModeText');
-            const mobileBottomModeText = document.getElementById('mobileBottomModeText');
-
-            if (mode === 'wholesale') {
-                if (retailBtn) retailBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white";
-                if (wholesaleBtn) wholesaleBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition bg-amber-600 text-white shadow-md";
-                if (mobileModeText) mobileModeText.innerText = "Опт";
-                if (mobileBottomModeText) mobileBottomModeText.innerText = "Опт активний";
-            } else {
-                if (retailBtn) retailBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition bg-amber-600 text-white shadow-md";
-                if (wholesaleBtn) wholesaleBtn.className = "px-4 py-1.5 rounded-xl text-xs font-bold transition text-stone-400 hover:text-white";
-                if (mobileModeText) mobileModeText.innerText = "Роздріб";
-                if (mobileBottomModeText) mobileBottomModeText.innerText = "Роздріб";
-            }
-
-            renderCurrentPage(true);
-            updateCartUI();
-        }
-
-        function toggleTradingModeMobile() {
-            setTradingMode(tradingMode === 'retail' ? 'wholesale' : 'retail');
-        }
-
         function processImageUrl(rawUrl, index) {
             if (!rawUrl) return TEA_IMAGES[index % TEA_IMAGES.length];
             const urlMatch = rawUrl.match(/https?:\/\/[^\s"'\)]+/);
             if (!urlMatch) return TEA_IMAGES[index % TEA_IMAGES.length];
-
-            let cleanUrl = urlMatch[0];
-            if (cleanUrl.includes('drive.google.com')) {
-                const driveIdMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/id=([a-zA-Z0-9_-]+)/);
-                if (driveIdMatch && driveIdMatch[1]) {
-                    return `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}=w800`;
-                }
-            }
-            return cleanUrl;
+            return urlMatch[0];
         }
 
         function detectCategory(name) {
@@ -444,20 +376,16 @@
                         const rawImg = getRawCell(0); 
                         const finalImg = processImageUrl(rawImg, idx);
 
-                        const opt15Val = cleanNumber(getValue(2)); 
-                        const opt7Val  = cleanNumber(getValue(3)); 
-                        const retailVal= cleanNumber(getValue(4)); 
+                        const retailVal= cleanNumber(getValue(4)) || cleanNumber(getValue(3)) || 250; 
 
                         parsed.push({
                             id: productId,
                             name: name,
-                            priceRetail: retailVal,
-                            priceOpt7: opt7Val || retailVal,
-                            priceOpt15: opt15Val || opt7Val || retailVal,
+                            price: retailVal,
                             category: detectCategory(name),
                             image: finalImg,
                             fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length],
-                            description: `Артикул: ${productId}.`
+                            description: `Артикул: ${productId}. Висока якість.`
                         });
                     });
 
@@ -483,8 +411,8 @@
             container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
                 <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-3.5 py-2 rounded-xl text-xs font-semibold transition border btn-active-scale flex items-center gap-1.5 ${
                     selectedCategory === cat 
-                    ? 'bg-amber-600 text-white border-amber-500 shadow-md shadow-amber-600/20' 
-                    : 'bg-stone-900 text-stone-400 border-stone-800 hover:bg-stone-800 hover:text-stone-200'
+                    ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm' 
+                    : 'bg-white text-stone-600 border-stone-200 hover:bg-stone-100'
                 }">
                     <span>${cat}</span>
                 </button>
@@ -496,10 +424,10 @@
             container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
                 <button onclick="setCategory('${cat}'); closeCategoriesModal();" class="p-3 rounded-xl text-left text-xs font-semibold transition border flex items-center gap-3 ${
                     selectedCategory === cat 
-                    ? 'bg-amber-600/20 text-amber-400 border-amber-500/50' 
-                    : 'bg-stone-950 text-stone-300 border-stone-800 hover:border-stone-700'
+                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300' 
+                    : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-stone-300'
                 }">
-                    <i class="fa-solid fa-tag text-amber-500"></i>
+                    <i class="fa-solid fa-tag text-emerald-600"></i>
                     <span class="truncate">${cat}</span>
                 </button>
             `).join('');
@@ -544,14 +472,6 @@
             applyFilters();
         }
 
-        function getCurrentProductPrice(product) {
-            if (tradingMode === 'wholesale') {
-                const selectedTier = document.querySelector('input[name="wholesaleTier"]:checked')?.value || '7k';
-                return selectedTier === '15k' ? product.priceOpt15 : product.priceOpt7;
-            }
-            return product.priceRetail;
-        }
-
         function renderCurrentPage(reset = false) {
             const grid = document.getElementById('productGrid');
             const emptyMsg = document.getElementById('emptyMessage');
@@ -574,32 +494,30 @@
             const fragment = document.createDocumentFragment();
 
             itemsToRender.forEach(item => {
-                const activePrice = getCurrentProductPrice(item);
-
                 const card = document.createElement('div');
-                card.className = "bg-stone-900 rounded-2xl border border-stone-800 overflow-hidden flex flex-col justify-between hover:border-amber-500/50 transition-all duration-300 group animate-fade-in shadow-md";
+                card.className = "bg-white rounded-2xl border border-stone-200 overflow-hidden flex flex-col justify-between hover:border-emerald-500/50 hover:shadow-lg transition-all duration-300 group animate-fade-in";
                 
                 card.innerHTML = `
                     <div>
-                        <div class="h-40 sm:h-52 overflow-hidden bg-stone-950 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                        <div class="h-40 sm:h-52 overflow-hidden bg-stone-100 relative cursor-pointer" onclick="openProductModal('${item.id}')">
                             <img src="${item.image}" alt="${item.name}" loading="lazy" 
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                                 onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                            <span class="absolute top-2 right-2 text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 sm:px-2 py-0.5 rounded-md bg-stone-950/80 text-stone-300 border border-stone-800 backdrop-blur-md">ID: ${item.id}</span>
+                            <span class="absolute top-2 right-2 text-[9px] sm:text-[10px] font-mono font-semibold px-1.5 sm:px-2 py-0.5 rounded-md bg-white/90 text-stone-700 border border-stone-200 backdrop-blur-md shadow-xs">ID: ${item.id}</span>
                         </div>
                         <div class="p-3 sm:p-4">
-                            <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-100 line-clamp-2 cursor-pointer hover:text-amber-400 transition leading-snug">${item.name}</h3>
+                            <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-800 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
                         </div>
                     </div>
                     <div class="p-3 sm:p-4 pt-0 flex items-center justify-between mt-auto">
                         <div>
-                            <span class="text-sm sm:text-lg font-extrabold text-amber-400">${activePrice} <span class="text-[10px] sm:text-xs font-normal text-stone-400">грн</span></span>
+                            <span class="text-sm sm:text-lg font-extrabold text-emerald-700">${item.price} <span class="text-[10px] sm:text-xs font-normal text-stone-500">грн</span></span>
                         </div>
                         <div class="flex items-center gap-1">
-                            <button onclick="openProductModal('${item.id}')" title="Детальніше" class="hidden sm:flex bg-stone-800 hover:bg-stone-700 text-stone-300 w-9 h-9 rounded-xl items-center justify-center transition border border-stone-700/60 btn-active-scale">
+                            <button onclick="openProductModal('${item.id}')" title="Детальніше" class="hidden sm:flex bg-stone-100 hover:bg-stone-200 text-stone-600 w-9 h-9 rounded-xl items-center justify-center transition border border-stone-200 btn-active-scale">
                                 <i class="fa-solid fa-eye text-xs"></i>
                             </button>
-                            <button onclick="addToCart('${item.id}')" title="В кошик" class="bg-amber-600 hover:bg-amber-500 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shadow-lg shadow-amber-600/20 transition btn-active-scale">
+                            <button onclick="addToCart('${item.id}')" title="В кошик" class="bg-emerald-700 hover:bg-emerald-600 text-white w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center shadow-md shadow-emerald-700/20 transition btn-active-scale">
                                 <i class="fa-solid fa-cart-plus text-xs"></i>
                             </button>
                         </div>
@@ -662,12 +580,7 @@
             document.getElementById('modalCategory').innerText = product.category;
             document.getElementById('modalId').innerText = `ID: ${product.id}`;
             document.getElementById('modalDescription').innerText = product.description;
-
-            document.getElementById('modalTierPrices').innerHTML = `
-                <div class="flex justify-between"><span>Роздрібна ціна:</span><span class="font-bold text-stone-200">${product.priceRetail} грн</span></div>
-                <div class="flex justify-between"><span>Опт (від 7 000 грн):</span><span class="font-bold text-amber-400">${product.priceOpt7} грн</span></div>
-                <div class="flex justify-between"><span>Опт (від 15 000 грн):</span><span class="font-bold text-amber-500">${product.priceOpt15} грн</span></div>
-            `;
+            document.getElementById('modalPrice').innerText = `${product.price} грн`;
 
             const addBtn = document.getElementById('modalAddBtn');
             addBtn.onclick = () => {
@@ -714,67 +627,18 @@
             const container = document.getElementById('cartItemsContainer');
             const footer = document.getElementById('cartFooter');
             const totalEl = document.getElementById('cartTotal');
-            const selectorContainer = document.getElementById('wholesaleTierSelectorContainer');
 
             cartCount.innerText = cart.length;
             mobileCartBadge.innerText = cart.length;
 
-            let totalSum = 0;
-            let selectedWholesaleTier = '7k';
-
-            if (tradingMode === 'wholesale') {
-                selectorContainer.classList.remove('hidden');
-                selectedWholesaleTier = document.querySelector('input[name="wholesaleTier"]:checked')?.value || '7k';
-                
-                if (selectedWholesaleTier === '15k') {
-                    totalSum = cart.reduce((sum, item) => sum + (item.priceOpt15 * item.qty), 0);
-                } else {
-                    totalSum = cart.reduce((sum, item) => sum + (item.priceOpt7 * item.qty), 0);
-                }
-            } else {
-                selectorContainer.classList.add('hidden');
-                totalSum = cart.reduce((sum, item) => sum + (item.priceRetail * item.qty), 0);
-            }
-
+            let totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
             totalEl.innerText = `${totalSum} грн`;
 
-            const submitBtn = document.getElementById('submitBtn');
-            const tierNotice = document.getElementById('wholesaleTierNotice');
-
-            if (tradingMode === 'wholesale') {
-                tierNotice.classList.remove('hidden');
-                if (selectedWholesaleTier === '7k') {
-                    if (totalSum < 7000) {
-                        submitBtn.disabled = true;
-                        tierNotice.className = "mb-3 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-medium";
-                        tierNotice.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1"></i> Мін. сума для опту 7к — 7 000 грн (не хватає ${7000 - totalSum} грн)`;
-                    } else {
-                        submitBtn.disabled = false;
-                        tierNotice.className = "mb-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium";
-                        tierNotice.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Мінімальну суму (7 000 грн) досягнуто.`;
-                    }
-                } else {
-                    if (totalSum < 15000) {
-                        submitBtn.disabled = true;
-                        tierNotice.className = "mb-3 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-medium";
-                        tierNotice.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1"></i> Мін. сума для опту 15к — 15 000 грн (не хватає ${15000 - totalSum} грн)`;
-                    } else {
-                        submitBtn.disabled = false;
-                        tierNotice.className = "mb-3 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-medium";
-                        tierNotice.innerHTML = `<i class="fa-solid fa-circle-check mr-1"></i> Активовано максимальну знижку від 15 000 грн!`;
-                    }
-                }
-            } else {
-                submitBtn.disabled = false;
-                tierNotice.classList.add('hidden');
-            }
-
-            renderCurrentPage(false);
             updatePaymentInfo();
 
             if (cart.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-16 text-stone-500">
+                    <div class="text-center py-16 text-stone-400">
                         <i class="fa-solid fa-basket-shopping text-4xl mb-3 block opacity-30"></i>
                         <p class="text-sm">Кошик порожній</p>
                     </div>
@@ -785,44 +649,29 @@
 
             footer.classList.remove('hidden');
 
-            container.innerHTML = cart.map(item => {
-                let itemPrice = item.priceRetail;
-                if (tradingMode === 'wholesale') {
-                    itemPrice = selectedWholesaleTier === '15k' ? item.priceOpt15 : item.priceOpt7;
-                }
-
-                return `
-                    <div class="flex items-center gap-3 bg-stone-950 p-3 rounded-xl border border-stone-800">
-                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg bg-stone-900" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                        <div class="flex-1 min-w-0">
-                            <h4 class="text-xs font-bold text-stone-200 truncate">${item.name}</h4>
-                            <div class="flex items-center gap-2 mt-0.5">
-                                <span class="text-xs text-amber-400 font-bold">${itemPrice} грн/шт</span>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-2 bg-stone-900 px-2 py-1 rounded-lg border border-stone-800">
-                            <button onclick="changeQty('${item.id}', -1)" class="text-stone-400 hover:text-white text-xs px-1.5 py-0.5 btn-active-scale">-</button>
-                            <span class="text-xs font-bold w-4 text-center text-amber-400">${item.qty}</span>
-                            <button onclick="changeQty('${item.id}', 1)" class="text-stone-400 hover:text-white text-xs px-1.5 py-0.5 btn-active-scale">+</button>
+            container.innerHTML = cart.map(item => `
+                <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200">
+                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg bg-white" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-stone-800 truncate">${item.name}</h4>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="text-xs text-emerald-700 font-bold">${item.price} грн/шт</span>
                         </div>
                     </div>
-                `;
-            }).join('');
+                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border border-stone-200">
+                        <button onclick="changeQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5 btn-active-scale">-</button>
+                        <span class="text-xs font-bold w-4 text-center text-emerald-700">${item.qty}</span>
+                        <button onclick="changeQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5 btn-active-scale">+</button>
+                    </div>
+                </div>
+            `).join('');
         }
 
         function updatePaymentInfo() {
             const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
             const noticeText = document.getElementById('paymentNoticeText');
 
-            let totalSum = 0;
-            if (tradingMode === 'wholesale') {
-                const selectedTier = document.querySelector('input[name="wholesaleTier"]:checked')?.value || '7k';
-                totalSum = selectedTier === '15k' 
-                    ? cart.reduce((s, i) => s + (i.priceOpt15 * i.qty), 0) 
-                    : cart.reduce((s, i) => s + (i.priceOpt7 * i.qty), 0);
-            } else {
-                totalSum = cart.reduce((sum, item) => sum + (item.priceRetail * item.qty), 0);
-            }
+            let totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
             if (selectedMethod === 'cod') {
                 const prepay = totalSum >= 100 ? 200 : totalSum;
@@ -854,23 +703,11 @@
             const np = document.getElementById('custNP').value;
             const payMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
             
-            const selectedTier = tradingMode === 'wholesale' 
-                ? (document.querySelector('input[name="wholesaleTier"]:checked')?.value || '7k') 
-                : null;
-
             let totalSum = 0;
             let itemsText = cart.map((item, idx) => {
-                let price = item.priceRetail;
-                if (tradingMode === 'wholesale') {
-                    price = selectedTier === '15k' ? item.priceOpt15 : item.priceOpt7;
-                }
-                totalSum += price * item.qty;
-                return `${idx + 1}. *${item.name}*\n   └ ID: \`${item.id}\` | ${item.qty} шт. x ${price} грн`;
+                totalSum += item.price * item.qty;
+                return `${idx + 1}. *${item.name}*\n   └ ID: \`${item.id}\` | ${item.qty} шт. x ${item.price} грн`;
             }).join('\n');
-
-            const modeTitle = tradingMode === 'wholesale' 
-                ? (selectedTier === '15k' ? 'ОПТ ВІД 15 000 грн' : 'ОПТ ВІД 7 000 грн') 
-                : 'РОЗДРІБ';
 
             let payText = '';
             if (payMethod === 'cod') {
@@ -880,9 +717,8 @@
                 payText = `💳 *Повна оплата* (За реквізитами)`;
             }
 
-            const message = `🛍 *НОВЕ ЗАМОВЛЕННЯ — tea.haven.ua*\n` +
+            const message = `🛍 *НОВЕ ЗАМОВЛЕННЯ (РОЗДРІБ) — tea.haven.ua*\n` +
                 `------------------------------------\n` +
-                `🏷 *Режим:* ${modeTitle}\n` +
                 `👤 *Клієнт:* ${name}\n` +
                 `📞 *Телефон:* ${phone}\n` +
                 `📍 *Доставка:* м. ${city}, НП №${np}\n` +
