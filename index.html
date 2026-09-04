@@ -125,8 +125,6 @@
 
     <script>
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
-        
-        // Резервне пряме фото з каталогу kovtok.com.ua
         const FALLBACK_IMAGE = 'https://kovtok.com.ua/wp-content/uploads/2023/11/chaj-shu-puer-menhaj-dayi-7572-2021.jpg';
 
         let allProducts = [];
@@ -153,24 +151,33 @@
                         const cells = row.c;
                         if (!cells) return;
 
+                        // Отримуємо і формулу (.f), і значення (.v)
+                        const getRawData = (idx) => {
+                            if (!cells[idx]) return '';
+                            const fVal = cells[idx].f ? String(cells[idx].f) : '';
+                            const vVal = cells[idx].v !== null && cells[idx].v !== undefined ? String(cells[idx].v) : '';
+                            return `${fVal} ${vVal}`.trim();
+                        };
+
                         const getValue = (idx) => {
                             if (!cells[idx] || cells[idx].v === null || cells[idx].v === undefined) return '';
                             return String(cells[idx].f || cells[idx].v).trim();
                         };
 
-                        const name = getValue(1); // Столбец B: Назва
+                        const name = getValue(1); // Назва (Стовпець B)
                         if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
 
-                        // Парсинг та обробка картинки зі стовпця A
-                        let rawImg = getValue(0);
+                        // Витягуємо посилання з формули =IMAGE("url") або простого тексту
+                        const rawImgData = getRawData(0);
                         let img = '';
 
-                        const urlMatch = rawImg.match(/https?:\/\/[^\s"']+/);
+                        // Парсимо URL через регулярний вираз
+                        const urlMatch = rawImgData.match(/https?:\/\/[^\s"'\)]+/);
                         if (urlMatch) {
                             img = urlMatch[0];
                         }
 
-                        // Надійна конвертація посилань Google Drive у прямі публічні прев'ю
+                        // Конвертація Google Drive у пряме фото
                         if (img.includes('drive.google.com')) {
                             const driveIdMatch = img.match(/\/d\/([a-zA-Z0-9_-]+)/) || img.match(/id=([a-zA-Z0-9_-]+)/);
                             if (driveIdMatch && driveIdMatch[1]) {
@@ -178,7 +185,6 @@
                             }
                         }
 
-                        // Запасна картинка з kovtok.com.ua, якщо посилання немає
                         if (!img || !img.startsWith('http')) {
                             img = FALLBACK_IMAGE;
                         }
@@ -205,7 +211,7 @@
                     setupInfiniteScroll();
 
                 } catch (err) {
-                    console.error("Помилка обробки GViz:", err);
+                    console.error("Помилка обробки:", err);
                     statusText.innerText = "Помилка формату даних у таблиці.";
                 }
             };
@@ -213,7 +219,7 @@
             const script = document.createElement('script');
             script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleSheetData`;
             script.onerror = function() {
-                statusText.innerText = "Не вдалося підключитися до Google Таблиці. Перевірте доступ по посиланню.";
+                statusText.innerText = "Не вдалося підключитися до Google Таблиці.";
             };
             document.body.appendChild(script);
         }
@@ -272,7 +278,6 @@
             grid.appendChild(fragment);
         }
 
-        // Нескінченний скролл
         function setupInfiniteScroll() {
             const observer = new IntersectionObserver((entries) => {
                 if (entries[0].isIntersecting) {
@@ -286,7 +291,6 @@
             observer.observe(document.getElementById('scrollTrigger'));
         }
 
-        // Затримка пошуку (debounce)
         function handleSearch() {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
@@ -302,7 +306,6 @@
             }, 200);
         }
 
-        // Кошик
         function addToCart(productId) {
             const product = allProducts.find(p => p.id === productId);
             if (!product) return;
