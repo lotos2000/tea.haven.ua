@@ -24,7 +24,7 @@
                 </div>
                 <div>
                     <span class="text-xl font-bold tracking-tight text-stone-100 block leading-none">tea.haven<span class="text-amber-500">.ua</span></span>
-                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Китайська чайне мистецтво</span>
+                    <span class="text-[10px] text-stone-400 uppercase tracking-widest font-medium">Китайське чайне мистецтво</span>
                 </div>
             </a>
 
@@ -90,7 +90,6 @@
 
         <!-- Categories Filters -->
         <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-6 custom-scrollbar" id="categoryContainer">
-            <!-- Dynamic categories inserted here -->
         </div>
 
         <!-- Product Grid -->
@@ -157,7 +156,6 @@
 
         <div class="fixed inset-y-0 right-0 pl-10 max-w-full flex">
             <div class="w-screen max-w-md bg-stone-900 border-l border-stone-800 shadow-2xl flex flex-col">
-                <!-- Cart Header -->
                 <div class="p-5 bg-stone-950 text-stone-100 flex justify-between items-center border-b border-stone-800">
                     <div class="flex items-center gap-2.5">
                         <i class="fa-solid fa-bag-shopping text-amber-500"></i>
@@ -168,11 +166,9 @@
                     </button>
                 </div>
 
-                <!-- Cart Items Container -->
                 <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-5 space-y-4 custom-scrollbar">
                 </div>
 
-                <!-- Cart Checkout Form -->
                 <div id="cartFooter" class="p-5 border-t border-stone-800 bg-stone-950/60 hidden">
                     <div class="flex justify-between items-center mb-4 text-stone-100">
                         <span class="text-sm font-medium text-stone-400">Всього до сплати:</span>
@@ -219,14 +215,10 @@
     </footer>
 
     <script>
-        // Telegram Bot Config
         const TG_BOT_TOKEN = '8970897973:AAG1JZ-f2IgQElmMR_OdFvH2Pj9cOLz8txs';
         const TG_ADMIN_IDS = ['884682846', '8272212055'];
-        
-        // Data Source Config
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
-        // Default categories list for Chinese Tea Store
         const DEFAULT_CATEGORIES = [
             'Всі товари',
             'Шу Пуер',
@@ -241,7 +233,6 @@
             'Чабані'
         ];
 
-        // Backup high quality images
         const TEA_IMAGES = [
             "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
             "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
@@ -260,7 +251,6 @@
         let currentPage = 1;
         let searchTimeout = null;
 
-        // Smart image proxy resolver
         function processImageUrl(rawUrl, index) {
             if (!rawUrl) return TEA_IMAGES[index % TEA_IMAGES.length];
 
@@ -279,7 +269,6 @@
             return cleanUrl;
         }
 
-        // Auto categorizer based on title keywords
         function detectCategory(name) {
             const lower = name.toLowerCase();
             if (lower.includes('шу') || lower.includes('shu')) return 'Шу Пуер';
@@ -325,6 +314,10 @@
                         const name = getValue(1);
                         if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
 
+                        // БЕРЕМО АЙДІ ЧІТКО З З СТОВПЧИКА F (індекс 5 в масиві)
+                        const rawId = getValue(5);
+                        const productId = rawId ? rawId : String(250008 + idx);
+
                         const rawImg = getRawCell(0);
                         const finalImg = processImageUrl(rawImg, idx);
                         const priceRetail = getValue(4) || '0';
@@ -332,7 +325,7 @@
                         const category = detectCategory(name);
 
                         parsed.push({
-                            id: getValue(5) || `TEA-${250000 + idx}`,
+                            id: productId,
                             name: name,
                             price: cleanPrice,
                             priceOpt7: getValue(3),
@@ -340,7 +333,7 @@
                             category: category,
                             image: finalImg,
                             fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length],
-                            description: `Високоякісний китайський чай/посуд. Пряма поставка. Прекрасний вибір для особистої колекції або чайної церемонії Гунфу Ча.`
+                            description: `Високоякісний китайський чай/посуд (Артикул: ${productId}). Пряма поставка. Прекрасний вибір для особистої колекції або чайної церемонії Гунфу Ча.`
                         });
                     });
 
@@ -477,9 +470,8 @@
             }, 250);
         }
 
-        // Modal Functionality
         function openProductModal(productId) {
-            const product = allProducts.find(p => p.id === productId);
+            const product = allProducts.find(p => String(p.id) === String(productId));
             if (!product) return;
 
             document.getElementById('modalImage').src = product.image;
@@ -502,12 +494,11 @@
             document.getElementById('productModal').classList.add('hidden');
         }
 
-        // Cart Actions
         function addToCart(productId) {
-            const product = allProducts.find(p => p.id === productId);
+            const product = allProducts.find(p => String(p.id) === String(productId));
             if (!product) return;
 
-            const existingItem = cart.find(item => item.id === productId);
+            const existingItem = cart.find(item => String(item.id) === String(productId));
             if (existingItem) {
                 existingItem.qty += 1;
             } else {
@@ -519,12 +510,12 @@
         }
 
         function changeQty(productId, delta) {
-            const item = cart.find(i => i.id === productId);
+            const item = cart.find(i => String(i.id) === String(productId));
             if (!item) return;
 
             item.qty += delta;
             if (item.qty <= 0) {
-                cart = cart.filter(i => i.id !== productId);
+                cart = cart.filter(i => String(i.id) !== String(productId));
             }
             updateCartUI();
         }
@@ -578,7 +569,6 @@
             }
         }
 
-        // Telegram Notification Checkout Handler
         async function handleCheckout(e) {
             e.preventDefault();
 
@@ -607,7 +597,6 @@
                 `💰 *Загальна сума:* ${totalPrice} грн`;
 
             try {
-                // Send messages to all specified Telegram Admin IDs
                 for (const chatId of TG_ADMIN_IDS) {
                     await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
                         method: 'POST',
