@@ -46,7 +46,7 @@
                 <h1 class="text-2xl font-bold text-stone-900">Каталог товарів</h1>
                 <p id="statusText" class="text-xs text-stone-500 mt-1 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Завантаження даних з таблицы...
+                    Завантаження каталогів...
                 </p>
             </div>
 
@@ -120,45 +120,115 @@
     </footer>
 
     <script>
-        // Новая ссылка на таблицу с новой структурой
-        const DEFAULT_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0/edit?usp=sharing';
+        const SHEET_ID = '1JGmsSCaG2UAXBrijz0IL6Mnn5tOge5CigejicJHEYT0';
 
         let products = [];
         let cart = [];
 
-        function extractSheetId(url) {
-            const match = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
-            return match ? match[1] : null;
+        // Функция для парсинга CSV от Google
+        function parseCSV(text) {
+            let lines = text.split('\n');
+            let result = [];
+            for (let i = 0; i < lines.length; i++) {
+                let row = [];
+                let insideQuotes = false;
+                let entry = '';
+                let line = lines[i];
+                
+                for (let j = 0; j < line.length; j++) {
+                    let char = line[j];
+                    if (char === '"') {
+                        insideQuotes = !insideQuotes;
+                    } else if (char === ',' && !insideQuotes) {
+                        row.push(entry.trim().replace(/^"|"$/g, ''));
+                        entry = '';
+                    } else {
+                        entry += char;
+                    }
+                }
+                row.push(entry.trim().replace(/^"|"$/g, ''));
+                if (row.length > 1) result.push(row);
+            }
+            return result;
         }
 
-        function loadCustomTable() {
+        // Загрузка данных таблицы
+        async function loadCustomTable() {
             const statusText = document.getElementById('statusText');
-            const sheetId = extractSheetId(DEFAULT_SHEET_URL);
+            
+            // Используем прямой экспорт в CSV для обхода ограничений GViz
+            const csvUrl = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&gid=0`;
 
-            if (!sheetId) {
-                statusText.innerText = "Помилка: Невірний ID таблиці.";
-                return;
+            try {
+                const response = await fetch(csvUrl);
+                if (!response.ok) throw new Error("Помилка мережі");
+                
+                const csvData = await response.text();
+                const rows = parseCSV(csvData);
+                const parsedProducts = [];
+
+                // Начинаем со 2-й строки (пропускаем заголовок)
+                for (let i = 1; i < rows.length; i++) {
+                    const row = rows[i];
+                    if (!row || row.length < 2) continue;
+
+                    let imageRaw = row[0] || '';
+                    const name = row[1] || '';
+                    const priceOpt15 = row[2] || '';
+                    const priceOpt7 = row[3] || '';
+                    const priceRetail = row[4] || '';
+                    const productId = row[5] || '';
+
+                    if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) continue;
+
+                    // Извлечение чистого URL, если ссылка в формате =IMAGE("...") или содержит скобки
+                    let imageUrl = imageRaw;
+                    if (imageRaw.includes('http')) {
+                        const match = imageRaw.match(/https?:\/\/[^\s"']+/);
+                        if (match) imageUrl = match[0];
+                    }
+
+                    // Заглушка, если картинки всё ещё нет
+                    if (!imageUrl.startsWith('http')) {
+                        imageUrl = 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400';
+                    }
+
+                    const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
+
+                    parsedProducts.push({
+                        id: productId || Math.random().toString(36).substr(2, 9),
+                        name: name,
+                        price: cleanPrice,
+                        priceRaw: priceRetail || '0',
+                        priceOpt7: priceOpt7,
+                        priceOpt15: priceOpt15,
+                        image: imageUrl
+                    });
+                }
+
+                products = parsedProducts;
+                renderProducts(products);
+                statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог оновлено. Товарів: ${products.length}`;
+
+            } catch (err) {
+                console.error(err);
+                // Запасной вариант через gviz
+                loadFallbackGviz();
             }
+        }
 
-            const oldScript = document.getElementById('gvizScript');
-            if (oldScript) oldScript.remove();
-
+        // Запасной запуск если CSV заблокирован
+        function loadFallbackGviz() {
+            const statusText = document.getElementById('statusText');
             window.handleGvizResponse = function(data) {
                 try {
-                    if (!data || !data.table || !data.table.rows) throw new Error("Порожні дані");
-
                     const rows = data.table.rows;
                     const parsedProducts = [];
-
                     rows.forEach((row) => {
                         const cells = row.c;
                         if (!cells) return;
-
-                        const getValue = (index) => {
-                            if (!cells[index] || cells[index].v === null || cells[index].v === undefined) return '';
-                            return String(cells[index].f || cells[index].v).trim();
-                        };
-
+                        const getValue = (idx) => cells[idx] && cells[idx].v !== null ? String(cells[idx].f || cells[idx].v).trim() : '';
+                        
                         const image = getValue(0);
                         const name = getValue(1);
                         const priceOpt15 = getValue(2);
@@ -166,38 +236,26 @@
                         const priceRetail = getValue(4);
                         const productId = getValue(5);
 
-                        // Пропускаем шапку таблицы
-                        if (['назва', 'название', 'name', 'фото'].includes(name.toLowerCase())) return;
-
-                        const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
-
-                        if (name) {
+                        if (name && !['назва', 'название'].includes(name.toLowerCase())) {
                             parsedProducts.push({
                                 id: productId || Math.random().toString(36).substr(2, 9),
                                 name: name,
-                                price: cleanPrice,
-                                priceRaw: priceRetail || '0',
+                                price: parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0,
                                 priceOpt7: priceOpt7,
                                 priceOpt15: priceOpt15,
-                                image: image || 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'
+                                image: image.startsWith('http') ? image : 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'
                             });
                         }
                     });
-
                     products = parsedProducts;
                     renderProducts(products);
-                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог оновлено. Товарів: ${products.length}`;
-
-                } catch (err) {
-                    console.error(err);
-                    statusText.innerText = "Помилка завантаження каталогу.";
+                    statusText.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-500"></span> Каталог оновлено (Gviz). Товарів: ${products.length}`;
+                } catch(e) {
+                    statusText.innerText = "Помилка завантаження каталогів.";
                 }
             };
-
             const script = document.createElement('script');
-            script.id = 'gvizScript';
-            script.src = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
-            script.onerror = () => { statusText.innerText = "Помилка з'єднання з таблицею."; };
+            script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleGvizResponse`;
             document.body.appendChild(script);
         }
 
@@ -223,8 +281,6 @@
                         </div>
                         <div class="p-5">
                             <h3 class="text-base font-bold text-stone-900 line-clamp-2">${item.name}</h3>
-                            
-                            <!-- Wholesale prices block -->
                             <div class="mt-3 pt-3 border-t border-stone-100 text-[11px] text-stone-500 space-y-1">
                                 ${item.priceOpt7 ? `<div class="flex justify-between"><span>Опт від 7к:</span><span class="font-medium text-stone-700">${item.priceOpt7} грн</span></div>` : ''}
                                 ${item.priceOpt15 ? `<div class="flex justify-between"><span>Опт від 15к:</span><span class="font-medium text-stone-700">${item.priceOpt15} грн</span></div>` : ''}
