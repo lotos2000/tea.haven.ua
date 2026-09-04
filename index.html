@@ -12,11 +12,11 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes scaleUp {
-            from { transform: scale(0.95); opacity: 0; }
+            from { transform: scale(0.96); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
         @keyframes slideInBottom {
@@ -28,24 +28,65 @@
             to { transform: translateX(0); }
         }
 
-        .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
-        .animate-scale-up { animation: scaleUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-slide-bottom { animation: slideInBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-slide-right { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        /* М'які плавні анімації хмар */
+        @keyframes floatCloudSlow {
+            0% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(30px, -15px) scale(1.05); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+        @keyframes floatCloudFast {
+            0% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(-40px, 20px) scale(0.95); }
+            100% { transform: translate(0px, 0px) scale(1); }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-scale-up { animation: scaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-bottom { animation: slideInBottom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         
-        .btn-active-scale { transition: transform 0.1s ease; }
-        .btn-active-scale:active { transform: scale(0.93); }
+        .cloud-slow { animation: floatCloudSlow 18s ease-in-out infinite; }
+        .cloud-fast { animation: floatCloudFast 12s ease-in-out infinite; }
+
+        .btn-active-scale { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease; }
+        .btn-active-scale:active { transform: scale(0.96); }
 
         body {
             -webkit-tap-highlight-color: transparent;
-            background-color: #dcedc8; /* Фірмовий фісташковий відтінок NewTea */
+            background-color: #d8f3dc; /* Світло-зелений фон */
+            overflow-x: hidden;
+        }
+
+        /* Плаваючі хмари на фон */
+        .bg-clouds-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .cloud-shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.45);
+            border-radius: 9999px;
+            filter: blur(40px);
         }
     </style>
 </head>
-<body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-20 md:pb-0">
+<body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-24 md:pb-0">
+
+    <!-- Фонові плавні хмари -->
+    <div class="bg-clouds-container">
+        <div class="cloud-shape cloud-slow w-96 h-96 -top-20 -left-20"></div>
+        <div class="cloud-shape cloud-fast w-[500px] h-[500px] top-1/3 -right-32"></div>
+        <div class="cloud-shape cloud-slow w-80 h-80 -bottom-20 left-1/4"></div>
+    </div>
 
     <!-- Header -->
-    <header class="bg-[#dcedc8]/90 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-900/10">
+    <header class="bg-[#d8f3dc]/85 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-900/10 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
             
             <!-- Logo -->
@@ -60,8 +101,8 @@
             <!-- Search Bar in Header -->
             <div class="hidden md:flex relative flex-1 max-w-md mx-6">
                 <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
-                    placeholder="Поиск по сортам чая и посуды..." 
-                    class="w-full pl-4 pr-10 py-2 bg-white/85 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
+                    placeholder="Пошук за сортами чаю та посуду..." 
+                    class="w-full pl-4 pr-10 py-2.5 bg-white/80 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
 
@@ -73,7 +114,7 @@
 
                 <button onclick="toggleCart()" class="relative bg-stone-900 hover:bg-stone-800 text-white px-4 py-2.5 rounded-full flex items-center gap-2.5 transition shadow-md font-medium text-sm btn-active-scale">
                     <i class="fa-solid fa-bag-shopping text-base"></i>
-                    <span class="hidden sm:inline">Корзина</span>
+                    <span class="hidden sm:inline">Кошик</span>
                     <span id="cartCount" class="bg-emerald-500 text-stone-900 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-inner">0</span>
                 </button>
             </div>
@@ -85,10 +126,10 @@
 
         <!-- Banner / Hero Section -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="md:col-span-2 bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
+            <div class="md:col-span-2 bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
                 <div class="z-10 max-w-md">
-                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">968 вкуснейших сортов чая</h1>
-                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Мы лично отбирали и привезли из Китая... и еще с шестнадцати стран мира</p>
+                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">968 найсмачніших сортів чаю</h1>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Ми особисто відбирали та привезли з Китаю... і ще з шістнадцяти країн світу</p>
                 </div>
                 <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90">
                     <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Tea" class="max-h-[90%] object-contain rounded-2xl">
@@ -98,38 +139,38 @@
             <div class="flex flex-col gap-4">
                 <div onclick="setCategory('Подарки')" class="bg-[#c26e44] text-white rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
                     <div class="flex justify-between items-start">
-                        <h3 class="text-xl font-bold">Подарки</h3>
+                        <h3 class="text-xl font-bold">Подарунки</h3>
                         <i class="fa-solid fa-gift text-2xl opacity-80"></i>
                     </div>
                     <p class="text-xs font-medium opacity-90">Хочу! Хочу! Хочу!</p>
                 </div>
                 <div onclick="setCategory('Акции')" class="bg-[#facc15] text-stone-900 rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
                     <div class="flex justify-between items-start">
-                        <h3 class="text-xl font-bold">Акции</h3>
+                        <h3 class="text-xl font-bold">Акції</h3>
                         <i class="fa-solid fa-percent text-2xl opacity-80"></i>
                     </div>
-                    <p class="text-xs font-medium opacity-80">...от которых нельзя удержаться</p>
+                    <p class="text-xs font-medium opacity-80">...від яких неможливо встояти</p>
                 </div>
             </div>
         </section>
 
-        <!-- Ассиметричные плитки категорий каталога (bento grid: разные размеры) -->
+        <!-- Асиметрична плитка каталогy (Різний розмір плитень: bento grid) -->
         <section class="space-y-4">
-            <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категории каталога</h2>
+            <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категорії каталогу</h2>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid">
-                <!-- Рендерится через JS с акцентными размерами -->
+                <!-- Рендериться через JS з акцентними розмірами -->
             </div>
         </section>
 
-        <!-- Подборка хороших вариантов снизу (хиты / интересные позиции) -->
+        <!-- Підбірка товарів -->
         <section class="space-y-4 pt-4 border-t border-emerald-900/10">
             <div class="flex justify-between items-center">
                 <div>
-                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Коллекции от основателей New Tea</h2>
-                    <p class="text-xs text-stone-600">Несколько отличных вариантов для знакомства</p>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Колекції від засновників New Tea</h2>
+                    <p class="text-xs text-stone-600">Кілька чудових варіантів для знайомства</p>
                 </div>
                 <button onclick="setCategory('Все товары')" class="text-xs font-bold text-emerald-800 hover:underline">
-                    Смотреть все &rarr;
+                    Дивитися всі &rarr;
                 </button>
             </div>
 
@@ -137,13 +178,61 @@
             <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
         </section>
 
-        <!-- Информационный раздел: История чая и виды -->
-        <section class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
+        <!-- Інтерактивні тести для молоді -->
+        <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block">Чайний вайб</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">Інтерактивні тести</h2>
+                <p class="text-xs sm:text-sm text-stone-600">Дізнайся свій справжній чайний характер за хвилину</p>
+            </div>
+
+            <!-- Блоки тестів -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <!-- Тест 1: Який ти чай? -->
+                <div class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Тест #1</span>
+                            <i class="fa-solid fa-mug-hot text-stone-400"></i>
+                        </div>
+                        <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-1">Який ти сорт чаю за вайбом?</h3>
+                        <p class="text-xs text-stone-600">Пройди міні-опитування та знайди своє чайне альтер-его.</p>
+                    </div>
+
+                    <div id="test1Container" class="space-y-3">
+                        <button onclick="startTest(1)" class="w-full bg-stone-900 hover:bg-emerald-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-sm transition btn-active-scale">
+                            Почати тест
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Тест 2: Твоя ідеальна заварка / дегустація -->
+                <div class="bg-stone-50 rounded-2xl p-5 border border-stone-200/80 flex flex-col justify-between space-y-4">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded-full">Тест #2</span>
+                            <i class="fa-solid fa-fire text-stone-400"></i>
+                        </div>
+                        <h3 class="font-bold text-stone-900 text-base sm:text-lg mb-1">Який твій ідеальний спосіб заварювання?</h3>
+                        <p class="text-xs text-stone-600">Термос у рюкзаку, гайвань чи ранковий швидкий напій?</p>
+                    </div>
+
+                    <div id="test2Container" class="space-y-3">
+                        <button onclick="startTest(2)" class="w-full bg-stone-900 hover:bg-amber-700 text-white py-2.5 rounded-xl font-bold text-xs shadow-sm transition btn-active-scale">
+                            Почати тест
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Інформаційний розділ: Історія чаю та види -->
+        <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
             <div class="max-w-3xl">
-                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Энциклопедия чая</span>
-                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Великая история и культура чая</h2>
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Енциклопедія чаю</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Велика історія та культура чаю</h2>
                 <p class="text-stone-600 text-sm leading-relaxed">
-                    Чай — это не просто напиток, а древняя философия, насчитывающая более 4700 лет истории. Согласно легенде, всё началось в 2737 году до н.э., когда китайский император Шэнь-нун случайно уронил несколько листьев дикого чайного дерева в котелок с кипящей водой. Получившийся настой поразил его своим ароматом и бодрящими свойствами. С тех пор чай прошел путь от лекарственного снадобья при императорском дворе до всемирного культурного феномена.
+                    Чай — це не просто напій, а давня філософія, що налічує понад 4700 років історії. Згідно з легендою, все почалося в 2737 році до н.е., коли китайський імператор Шень-нун випадково впустив кілька листків дикого чайного дерева в казанок із киплячою водою. Отриманий настій вразив його своїм ароматом і бадьорими властивостями. З того часу чай пройшов шлях від лікарського зілля при імператорському дворі до всесвітнього культурного феномену.
                 </p>
             </div>
 
@@ -152,9 +241,9 @@
                     <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-base">
                         <i class="fa-solid fa-seedling"></i>
                     </div>
-                    <h3 class="font-bold text-stone-900 text-base">Китайские истоки</h3>
+                    <h3 class="font-bold text-stone-900 text-base">Китайські витоки</h3>
                     <p class="text-xs text-stone-600 leading-relaxed">
-                        Китай — кодина чая. Именно здесь мастера научились тонкостям сбора, ферментации и обжарки листков, создав уникальные традиции чайных церемоний (Гунфу Ча), которые раскрывают всю глубину вкуса.
+                        Китай — батьківщина чаю. Саме тут майстри навчилися тонкощам збору, ферментації та обжарювання листків, створивши унікальні традиції чайних церемоній (Гунфу Ча), які розкривають усю глибину смаку.
                     </p>
                 </div>
 
@@ -162,9 +251,9 @@
                     <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-base">
                         <i class="fa-solid fa-mug-hot"></i>
                     </div>
-                    <h3 class="font-bold text-stone-900 text-base">Основные виды чая</h3>
+                    <h3 class="font-bold text-stone-900 text-base">Основні види чаю</h3>
                     <p class="text-xs text-stone-600 leading-relaxed">
-                        <b>Шу и Шен Пуэры</b> даруют глубокий древесный или фруктовый вкус; <b>Улуны</b> сочетают свежесть зелени и нотки цветов; <b>Зеленые и Белые чаи</b> хранят природную мягкость, а <b>Красные</b> согревают плотным ароматом.
+                        <b>Шу та Шен Пуери</b> дарують глибокий деревний або фруктовий смак; <b>Улуни</b> поєднують свіжість зелені та нотки квітів; <b>Зелені й Білі чаї</b> зберігають природну м'якість, а <b>Червоні</b> зігрівають щільним ароматом.
                     </p>
                 </div>
 
@@ -172,9 +261,9 @@
                     <div class="w-10 h-10 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center font-bold text-base">
                         <i class="fa-solid fa-fire-flame-curved"></i>
                     </div>
-                    <h3 class="font-bold text-stone-900 text-base">Искусство выбора</h3>
+                    <h3 class="font-bold text-stone-900 text-base">Мистецтво вибору</h3>
                     <p class="text-xs text-stone-600 leading-relaxed">
-                        Каждый сорт требует своей температуры воды и времени заваривания. В каталоге tea.haven.ua собраны лучшие авторитетные позиции для ежедневного наслаждения и особых моментов.
+                        Кожен сорт вимагає своєї температури води та часу заварювання. У каталозі tea.haven.ua зібрані найкращі авторитетні позиції для щоденної насолоди та особливих моментів.
                     </p>
                 </div>
             </div>
@@ -186,19 +275,19 @@
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-stone-200 z-30 px-2 py-2 flex justify-around items-center shadow-lg">
         <button onclick="scrollToTop()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-house text-base"></i>
-            <span class="text-[10px] font-medium">Главная</span>
+            <span class="text-[10px] font-medium">Головна</span>
         </button>
         <button onclick="openCategoriesModal()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-layer-group text-base"></i>
-            <span class="text-[10px] font-medium">Разделы</span>
+            <span class="text-[10px] font-medium">Розділи</span>
         </button>
         <button onclick="focusSearch()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
             <i class="fa-solid fa-magnifying-glass text-base"></i>
-            <span class="text-[10px] font-medium">Поиск</span>
+            <span class="text-[10px] font-medium">Пошук</span>
         </button>
         <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-800 hover:text-emerald-700 transition p-1 relative">
             <i class="fa-solid fa-bag-shopping text-base"></i>
-            <span class="text-[10px] font-medium">Корзина</span>
+            <span class="text-[10px] font-medium">Кошик</span>
             <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
         </button>
     </div>
@@ -208,7 +297,7 @@
         <div onclick="closeCategoriesModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
         <div class="fixed inset-x-0 bottom-0 max-h-[80vh] bg-white rounded-t-3xl border-t border-stone-200 shadow-2xl flex flex-col z-10 animate-slide-bottom">
             <div class="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
-                <h3 class="font-bold text-stone-900">Выберите раздел</h3>
+                <h3 class="font-bold text-stone-900">Оберіть розділ</h3>
                 <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-200 text-stone-700 flex items-center justify-center">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
@@ -243,12 +332,12 @@
 
                         <div class="pt-4 border-t border-stone-100">
                             <div class="flex items-center justify-between mb-4">
-                                <span class="text-xs text-stone-500">Цена за упаковку:</span>
+                                <span class="text-xs text-stone-500">Ціна за упаковку:</span>
                                 <span id="modalPrice" class="text-2xl font-black text-emerald-700">0 грн</span>
                             </div>
                             <button id="modalAddBtn" class="w-full bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-2xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
                                 <i class="fa-solid fa-cart-plus"></i>
-                                <span>Добавить в корзину</span>
+                                <span>Додати в кошик</span>
                             </button>
                         </div>
                     </div>
@@ -267,7 +356,7 @@
                 <div class="p-4 sm:p-5 bg-stone-50 text-stone-900 flex justify-between items-center border-b border-stone-200">
                     <div class="flex items-center gap-2.5">
                         <i class="fa-solid fa-bag-shopping text-emerald-600"></i>
-                        <h2 class="text-lg font-bold">Корзина</h2>
+                        <h2 class="text-lg font-bold">Кошик</h2>
                     </div>
                     <button onclick="toggleCart()" class="text-stone-400 hover:text-stone-700 transition btn-active-scale p-1">
                         <i class="fa-solid fa-xmark text-xl"></i>
@@ -278,42 +367,42 @@
 
                 <div id="cartFooter" class="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 hidden">
                     <div class="flex justify-between items-center mb-4 text-stone-900">
-                        <span class="text-sm font-medium text-stone-500">К оплате:</span>
+                        <span class="text-sm font-medium text-stone-500">До сплати:</span>
                         <span id="cartTotal" class="text-xl font-extrabold text-emerald-700">0 грн</span>
                     </div>
 
                     <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
                         <div>
-                            <input type="text" id="custName" required placeholder="Имя и Фамилия" 
+                            <input type="text" id="custName" required placeholder="Ім'я та Прізвище" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div>
-                            <input type="tel" id="custPhone" required placeholder="Номер телефона" 
+                            <input type="tel" id="custPhone" required placeholder="Номер телефону" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
                         <div class="grid grid-cols-2 gap-2">
-                            <input type="text" id="custCity" required placeholder="Город" 
+                            <input type="text" id="custCity" required placeholder="Місто" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
-                            <input type="text" id="custNP" required placeholder="№ отделения НП" 
+                            <input type="text" id="custNP" required placeholder="№ відділення НП" 
                                 class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
                         </div>
 
                         <div class="pt-1">
-                            <label class="block text-xs font-semibold text-stone-500 mb-2">Способ оплаты:</label>
+                            <label class="block text-xs font-semibold text-stone-500 mb-2">Спосіб оплати:</label>
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
                                     <input type="radio" name="paymentMethod" value="full" checked onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-800 block">Полная оплата</span>
-                                        <span class="text-stone-500 text-[10px]">По реквизитам</span>
+                                        <span class="font-bold text-stone-800 block">Повна оплата</span>
+                                        <span class="text-stone-500 text-[10px]">За реквізитами</span>
                                     </div>
                                 </label>
 
                                 <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
                                     <input type="radio" name="paymentMethod" value="cod" onchange="updatePaymentInfo()" class="accent-emerald-600">
                                     <div class="text-[11px] leading-tight">
-                                        <span class="font-bold text-stone-800 block">Наложенный платёж</span>
-                                        <span class="text-stone-500 text-[10px]">Предоплата 200 грн</span>
+                                        <span class="font-bold text-stone-800 block">Післяплата</span>
+                                        <span class="text-stone-500 text-[10px]">Передплата 200 грн</span>
                                     </div>
                                 </label>
                             </div>
@@ -321,11 +410,11 @@
 
                         <div id="paymentNotice" class="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-600 text-[11px] leading-tight flex items-center gap-2">
                             <i class="fa-solid fa-credit-card text-emerald-600 text-sm flex-shrink-0"></i>
-                            <span id="paymentNoticeText">Менеджер пришлет реквизиты для оплаты после подтверждения заказа.</span>
+                            <span id="paymentNoticeText">Менеджер надішле реквізити для оплати після підтвердження замовлення.</span>
                         </div>
 
                         <button type="submit" id="submitBtn" class="w-full mt-2 bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
-                            <span>Оформить заказ</span>
+                            <span>Оформити замовлення</span>
                             <i class="fa-solid fa-paper-plane text-xs"></i>
                         </button>
                     </form>
@@ -341,8 +430,8 @@
         <div class="fixed inset-x-0 bottom-0 top-12 sm:top-20 bg-white rounded-t-3xl shadow-2xl flex flex-col z-10 animate-slide-bottom max-w-5xl mx-auto border border-stone-200">
             <div class="p-4 sm:p-5 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
                 <div>
-                    <h3 id="modalCategoryTitle" class="text-lg sm:text-xl font-black text-stone-900">Категория</h3>
-                    <p id="modalCategoryCount" class="text-xs text-stone-500">Товары</p>
+                    <h3 id="modalCategoryTitle" class="text-lg sm:text-xl font-black text-stone-900">Категорія</h3>
+                    <p id="modalCategoryCount" class="text-xs text-stone-500">Товари</p>
                 </div>
                 <button onclick="closeCategoryModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -359,16 +448,16 @@
         const TG_ADMIN_IDS = ['884682846', '8272212055'];
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
-        // Добавлено свойство span для задания разной ширины плиток (bento grid layout)
+        // Асиметричні розміри плитень (bento grid layout) для кращого дизайну
         const CATEGORIES_LIST = [
-            { name: 'Чай', desc: 'Жемчужины из Китая и мира', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
-            { name: 'Посуда', desc: 'Удобство и стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Шу Пуэр', desc: 'Насыщенный вкус', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Шен Пуэр', desc: 'Светлый и бодрящий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Улун', desc: 'Ароматные полуферментированные', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Зеленый чай', desc: 'Свежесть и гармония', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
+            { name: 'Чай', desc: 'Перлини з Китаю та світу', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
+            { name: 'Посуд', desc: 'Зручність і стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шу Пуэр', desc: 'Насичений смак', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шен Пуэр', desc: 'Світлий та бадьорий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Улун', desc: 'Ароматні напівферментовані', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Зеленый чай', desc: 'Свіжість і гармонія', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
             { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white', span: 'col-span-1 md:col-span-1' },
-            { name: 'Акции', desc: 'Скидки, от которых не устоять', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
+            { name: 'Акции', desc: 'Знижки, від яких не встояти', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
         ];
 
         const TEA_IMAGES = [
@@ -404,7 +493,7 @@
             if (lower.includes('красн') || lower.includes('червон')) return 'Красный чай';
             if (lower.includes('подар') || lower.includes('набор')) return 'Подарки';
             if (lower.includes('акці') || lower.includes('скидк')) return 'Акции';
-            if (lower.includes('гайвань') || lower.includes('чайник') || lower.includes('пиал')) return 'Посуда';
+            if (lower.includes('гайвань') || lower.includes('чайник') || lower.includes('піал')) return 'Посуд';
             return 'Чай';
         }
 
@@ -414,7 +503,7 @@
 
             window.handleSheetData = function(data) {
                 try {
-                    if (!data || !data.table || !data.table.rows) throw new Error("Пустые данные");
+                    if (!data || !data.table || !data.table.rows) throw new Error("Пусті дані");
 
                     const rows = data.table.rows;
                     const parsed = [];
@@ -449,7 +538,7 @@
                             category: detectCategory(name),
                             image: finalImg,
                             fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length],
-                            description: `Артикул: ${productId}. Высокое качество.`
+                            description: `Артикул: ${productId}. Висока якість.`
                         });
                     });
 
@@ -457,7 +546,7 @@
                     renderFeaturedProducts();
 
                 } catch (err) {
-                    console.error("Ошибка загрузки таблицы:", err);
+                    console.error("Помилка завантаження таблиці:", err);
                 }
             };
 
@@ -466,7 +555,6 @@
             document.body.appendChild(script);
         }
 
-        // Рендер категорий с разным размером плиток (bento style)
         function renderCategoryTiles() {
             const container = document.getElementById('categoryTilesGrid');
             container.innerHTML = CATEGORIES_LIST.map(cat => `
@@ -503,7 +591,7 @@
             const featured = allProducts.slice(0, 8);
 
             if (featured.length === 0) {
-                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-6">Загрузка товаров...</p>';
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-6">Завантаження товарів...</p>';
                 return;
             }
 
@@ -522,12 +610,50 @@
                     </div>
                     <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
                         <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
-                        <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                        <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
                             <i class="fa-solid fa-cart-plus text-xs"></i>
                         </button>
                     </div>
                 </div>
             `).join('');
+        }
+
+        // Логіка інтерактивних тестів
+        function startTest(testId) {
+            const container = document.getElementById(`test${testId}Container`);
+            if (testId === 1) {
+                container.innerHTML = `
+                    <div class="space-y-2 animate-fade-in text-xs">
+                        <p class="font-bold text-stone-900">1. Твоя ідеальна атмосфера на вечір:</p>
+                        <div class="space-y-1.5">
+                            <button onclick="finishTest(1, 'Шу Пуер')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">🌑 Темна кімната, музика в навушниках</button>
+                            <button onclick="finishTest(1, 'Зелений чай')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">🌿 Ранок, сонце і плани на продуктивність</button>
+                            <button onclick="finishTest(1, 'Фруктовий/Трав'яний')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-emerald-600 transition">☕ Чистий чилл з друзями під сеісію</button>
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="space-y-2 animate-fade-in text-xs">
+                        <p class="font-bold text-stone-900">1. Де найчастіше п'єш чай?</p>
+                        <div class="space-y-1.5">
+                            <button onclick="finishTest(2, 'Термос у рюкзаку')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">🎒 У дорозі / на парах / прогулянці</button>
+                            <button onclick="finishTest(2, 'Гайвань/Чайник')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">🏠 Вдома за компами чи книгою</button>
+                            <button onclick="finishTest(2, 'Швидка чашка')" class="w-full text-left p-2 rounded-xl bg-white border border-stone-200 hover:border-amber-600 transition">⚡ Головне швидше підзарядитись</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function finishTest(testId, result) {
+            const container = document.getElementById(`test${testId}Container`);
+            container.innerHTML = `
+                <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-2 animate-fade-in">
+                    <p class="text-xs font-bold text-emerald-900">Твій результат: <span class="text-emerald-700 underline">${result}</span>! 🎉</p>
+                    <button onclick="startTest(${testId})" class="text-[10px] text-stone-500 hover:underline">Пройти ще раз</button>
+                </div>
+            `;
         }
 
         function openCategory(catName) {
@@ -542,15 +668,15 @@
             if (catName === 'Все товары') {
                 items = allProducts;
             } else if (catName === 'Чай') {
-                items = allProducts.filter(p => !['Посуда', 'Подарки', 'Акции'].includes(p.category));
+                items = allProducts.filter(p => !['Посуд', 'Подарки', 'Акции'].includes(p.category));
             } else {
                 items = allProducts.filter(p => p.category === catName);
             }
 
-            countEl.innerText = `Найдено товаров: ${items.length}`;
+            countEl.innerText = `Знайдено товарів: ${items.length}`;
 
             if (items.length === 0) {
-                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">В этой категории пока нет товаров</p>';
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">У цій категорії поки немає товарів</p>';
             } else {
                 grid.innerHTML = items.map(item => `
                     <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
@@ -567,7 +693,7 @@
                         </div>
                         <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
                             <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
-                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                            <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
                                 <i class="fa-solid fa-cart-plus text-xs"></i>
                             </button>
                         </div>
@@ -633,7 +759,7 @@
             }
 
             updateCartCounters();
-            showNotification(`Товар добавлен в корзину`);
+            showNotification(`Товар додано до кошика`);
         }
 
         function updateCartQuantity(id, change) {
@@ -665,7 +791,7 @@
                         <div class="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto text-2xl">
                             <i class="fa-solid fa-bag-shopping"></i>
                         </div>
-                        <p class="text-stone-500 text-sm">Ваша корзина пуста</p>
+                        <p class="text-stone-500 text-sm">Ваш кошик порожній</p>
                     </div>
                 `;
                 footer.classList.add('hidden');
@@ -697,9 +823,9 @@
             const method = document.querySelector('input[name="paymentMethod"]:checked').value;
             const noticeText = document.getElementById('paymentNoticeText');
             if (method === 'full') {
-                noticeText.innerText = "Менеджер пришлет реквизиты для оплаты после подтверждения заказа.";
+                noticeText.innerText = "Менеджер надішле реквізити для оплати після підтвердження замовлення.";
             } else {
-                noticeText.innerText = "Отправка наложенным платежом с минимальной предоплатой 200 грн.";
+                noticeText.innerText = "Відправка післяплатою з мінімальною передплатою 200 грн.";
             }
         }
 
@@ -709,26 +835,26 @@
 
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"><span>Отправка...</span></i>';
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"><span>Надсилання...</span></i>';
 
             const name = document.getElementById('custName').value;
             const phone = document.getElementById('custPhone').value;
             const city = document.getElementById('custCity').value;
             const np = document.getElementById('custNP').value;
-            const payment = document.querySelector('input[name="paymentMethod"]:checked').value === 'full' ? 'Полная оплата' : 'Наложенный платёж (предоплата 200 грн)';
+            const payment = document.querySelector('input[name="paymentMethod"]:checked').value === 'full' ? 'Повна оплата' : 'Післяплата (передплата 200 грн)';
             
             const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
-            let message = `🛒 <b>Новый заказ с сайта tea.haven.ua!</b>\n\n`;
-            message += `👤 <b>Имя:</b> ${name}\n`;
+            let message = `🛒 <b>Нове замовлення з сайту tea.haven.ua!</b>\n\n`;
+            message += `👤 <b>Ім'я:</b> ${name}\n`;
             message += `📞 <b>Телефон:</b> ${phone}\n`;
-            message += `📍 <b>Город:</b> ${city}, Отделение НП №${np}\n`;
+            message += `📍 <b>Місто:</b> ${city}, Відділення НП №${np}\n`;
             message += `💳 <b>Оплата:</b> ${payment}\n\n`;
-            message += `📦 <b>Состав заказа:</b>\n`;
+            message += `📦 <b>Склад замовлення:</b>\n`;
             cart.forEach((item, idx) => {
                 message += `${idx + 1}. ${item.name} (ID: ${item.id}) — ${item.qty} шт. × ${item.price} грн\n`;
             });
-            message += `\n💰 <b>Итого к оплате:</b> ${totalPrice} грн`;
+            message += `\n💰 <b>Всього до сплати:</b> ${totalPrice} грн`;
 
             let success = true;
             for (const adminId of TG_ADMIN_IDS) {
@@ -750,16 +876,16 @@
             }
 
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<span>Оформить заказ</span><i class="fa-solid fa-paper-plane text-xs"></i>';
+            submitBtn.innerHTML = '<span>Оформити замовлення</span><i class="fa-solid fa-paper-plane text-xs"></i>';
 
             if (success) {
-                alert('Спасибо за заказ! Наш менеджер свяжется с вами в ближайшее время.');
+                alert('Дякуємо за замовлення! Наш менеджер зв\'яжеться з вами найближчим часом.');
                 cart = [];
                 updateCartCounters();
                 toggleCart();
                 document.getElementById('orderForm').reset();
             } else {
-                alert('Ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую через Instagram.');
+                alert('Помилка при надсиланні замовлення. Будь ласка, зв\'яжіться з нами напряму через Instagram.');
             }
         }
 
@@ -776,7 +902,7 @@
                 
                 const grid = document.getElementById('productGrid');
                 if (filtered.length === 0) {
-                    grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">Ничего не найдено по вашему запросу</p>';
+                    grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">Нічого не знайдено за вашим запитом</p>';
                     return;
                 }
 
@@ -795,7 +921,7 @@
                         </div>
                         <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
                             <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
-                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                            <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
                                 <i class="fa-solid fa-cart-plus text-xs"></i>
                             </button>
                         </div>
