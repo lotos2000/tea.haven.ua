@@ -126,6 +126,9 @@
     <script>
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
         
+        // Резервне пряме фото з каталогу kovtok.com.ua
+        const FALLBACK_IMAGE = 'https://kovtok.com.ua/wp-content/uploads/2023/11/chaj-shu-puer-menhaj-dayi-7572-2021.jpg';
+
         let allProducts = [];
         let filteredProducts = [];
         let cart = [];
@@ -155,10 +158,10 @@
                             return String(cells[idx].f || cells[idx].v).trim();
                         };
 
-                        const name = getValue(1); // Столбец B: Название
+                        const name = getValue(1); // Столбец B: Назва
                         if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
 
-                        // Парсинг картинки из столбца A
+                        // Парсинг та обробка картинки зі стовпця A
                         let rawImg = getValue(0);
                         let img = '';
 
@@ -167,17 +170,17 @@
                             img = urlMatch[0];
                         }
 
-                        // Конвертация Google Drive ссылок
+                        // Надійна конвертація посилань Google Drive у прямі публічні прев'ю
                         if (img.includes('drive.google.com')) {
-                            const driveIdMatch = img.match(/\/d\/([^\/]+)/) || img.match(/id=([^&]+)/);
+                            const driveIdMatch = img.match(/\/d\/([a-zA-Z0-9_-]+)/) || img.match(/id=([a-zA-Z0-9_-]+)/);
                             if (driveIdMatch && driveIdMatch[1]) {
-                                img = `https://lh3.googleusercontent.com/u/0/d/${driveIdMatch[1]}`;
+                                img = `https://drive.google.com/thumbnail?id=${driveIdMatch[1]}&sz=w1000`;
                             }
                         }
 
-                        // Дефолтное фото, если ссылка не найдена
+                        // Запасна картинка з kovtok.com.ua, якщо посилання немає
                         if (!img || !img.startsWith('http')) {
-                            img = 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400';
+                            img = FALLBACK_IMAGE;
                         }
 
                         const priceRetail = getValue(4) || '0';
@@ -242,7 +245,7 @@
                 card.innerHTML = `
                     <div>
                         <div class="h-48 overflow-hidden bg-stone-100 relative">
-                            <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400'">
+                            <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
                             ${item.id ? `<span class="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-900/80 text-stone-200 backdrop-blur-md">ID: ${item.id}</span>` : ''}
                         </div>
                         <div class="p-4">
@@ -352,7 +355,7 @@
             footer.classList.remove('hidden');
             container.innerHTML = cart.map(item => `
                 <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200/60">
-                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg">
+                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
                         <span class="text-xs text-amber-700 font-semibold">${item.price} грн</span>
