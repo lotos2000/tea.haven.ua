@@ -45,7 +45,7 @@
                 <h1 class="text-2xl font-bold text-stone-900">Каталог товарів</h1>
                 <p id="statusText" class="text-xs text-stone-500 mt-1 flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                    Швидке завантаження товарів...
+                    Завантаження каталогів...
                 </p>
             </div>
 
@@ -125,7 +125,16 @@
 
     <script>
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
-        const FALLBACK_IMAGE = 'https://kovtok.com.ua/wp-content/uploads/2023/11/chaj-shu-puer-menhaj-dayi-7572-2021.jpg';
+        
+        // Гарантована база працюючих фото з магазину чаю
+        const TEA_IMAGES = [
+            "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1531970227416-f0cdade1f726?auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1594631252845-29fc4cc86de5?auto=format&fit=crop&w=600&q=80"
+        ];
 
         let allProducts = [];
         let filteredProducts = [];
@@ -134,6 +143,25 @@
         const PAGE_SIZE = 24;
         let currentPage = 1;
         let searchTimeout = null;
+
+        function processImageUrl(rawUrl, index) {
+            if (!rawUrl) return TEA_IMAGES[index % TEA_IMAGES.length];
+
+            const urlMatch = rawUrl.match(/https?:\/\/[^\s"'\)]+/);
+            if (!urlMatch) return TEA_IMAGES[index % TEA_IMAGES.length];
+
+            let cleanUrl = urlMatch[0];
+
+            // Перетворення посилання з Google Drive в пряму картинку через проксі
+            if (cleanUrl.includes('drive.google.com')) {
+                const driveIdMatch = cleanUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || cleanUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (driveIdMatch && driveIdMatch[1]) {
+                    return `https://lh3.googleusercontent.com/d/${driveIdMatch[1]}=w800`;
+                }
+            }
+
+            return cleanUrl;
+        }
 
         async function loadData() {
             const statusText = document.getElementById('statusText');
@@ -147,47 +175,25 @@
                     const rows = data.table.rows;
                     const parsed = [];
 
-                    rows.forEach((row) => {
+                    rows.forEach((row, idx) => {
                         const cells = row.c;
                         if (!cells) return;
 
-                        // Отримуємо і формулу (.f), і значення (.v)
-                        const getRawData = (idx) => {
-                            if (!cells[idx]) return '';
-                            const fVal = cells[idx].f ? String(cells[idx].f) : '';
-                            const vVal = cells[idx].v !== null && cells[idx].v !== undefined ? String(cells[idx].v) : '';
-                            return `${fVal} ${vVal}`.trim();
+                        const getValue = (i) => {
+                            if (!cells[i] || cells[i].v === null || cells[i].v === undefined) return '';
+                            return String(cells[i].f || cells[i].v).trim();
                         };
 
-                        const getValue = (idx) => {
-                            if (!cells[idx] || cells[idx].v === null || cells[idx].v === undefined) return '';
-                            return String(cells[idx].f || cells[idx].v).trim();
+                        const getRawCell = (i) => {
+                            if (!cells[i]) return '';
+                            return `${cells[i].f || ''} ${cells[i].v || ''}`;
                         };
 
-                        const name = getValue(1); // Назва (Стовпець B)
+                        const name = getValue(1);
                         if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
 
-                        // Витягуємо посилання з формули =IMAGE("url") або простого тексту
-                        const rawImgData = getRawData(0);
-                        let img = '';
-
-                        // Парсимо URL через регулярний вираз
-                        const urlMatch = rawImgData.match(/https?:\/\/[^\s"'\)]+/);
-                        if (urlMatch) {
-                            img = urlMatch[0];
-                        }
-
-                        // Конвертація Google Drive у пряме фото
-                        if (img.includes('drive.google.com')) {
-                            const driveIdMatch = img.match(/\/d\/([a-zA-Z0-9_-]+)/) || img.match(/id=([a-zA-Z0-9_-]+)/);
-                            if (driveIdMatch && driveIdMatch[1]) {
-                                img = `https://drive.google.com/thumbnail?id=${driveIdMatch[1]}&sz=w1000`;
-                            }
-                        }
-
-                        if (!img || !img.startsWith('http')) {
-                            img = FALLBACK_IMAGE;
-                        }
+                        const rawImg = getRawCell(0);
+                        const finalImg = processImageUrl(rawImg, idx);
 
                         const priceRetail = getValue(4) || '0';
                         const cleanPrice = parseFloat(priceRetail.replace(/[^0-9.]/g, '')) || 0;
@@ -198,7 +204,8 @@
                             price: cleanPrice,
                             priceOpt7: getValue(3),
                             priceOpt15: getValue(2),
-                            image: img
+                            image: finalImg,
+                            fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length]
                         });
                     });
 
@@ -251,7 +258,9 @@
                 card.innerHTML = `
                     <div>
                         <div class="h-48 overflow-hidden bg-stone-100 relative">
-                            <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
+                            <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                onerror="this.onerror=null; this.src='${item.fallbackImg}';">
                             ${item.id ? `<span class="absolute top-2.5 right-2.5 text-[10px] font-semibold px-2 py-0.5 rounded-md bg-stone-900/80 text-stone-200 backdrop-blur-md">ID: ${item.id}</span>` : ''}
                         </div>
                         <div class="p-4">
@@ -358,7 +367,7 @@
             footer.classList.remove('hidden');
             container.innerHTML = cart.map(item => `
                 <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-xl border border-stone-200/60">
-                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
+                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-lg" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
                     <div class="flex-1 min-w-0">
                         <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
                         <span class="text-xs text-amber-700 font-semibold">${item.price} грн</span>
