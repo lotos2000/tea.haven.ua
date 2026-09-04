@@ -60,7 +60,7 @@
             <!-- Search Bar in Header -->
             <div class="hidden md:flex relative flex-1 max-w-md mx-6">
                 <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
-                    placeholder="Поиск по 1000 сортам чая и посуды..." 
+                    placeholder="Поиск по сортам чая и посуды..." 
                     class="w-full pl-4 pr-10 py-2 bg-white/85 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
@@ -83,9 +83,8 @@
     <!-- Main Content -->
     <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full space-y-8">
 
-        <!-- Banner / Hero Section (як на NewTea) -->
+        <!-- Banner / Hero Section -->
         <section class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Main Large Banner Card -->
             <div class="md:col-span-2 bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[280px]">
                 <div class="z-10 max-w-md">
                     <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">968 вкуснейших сортов чая</h1>
@@ -96,7 +95,6 @@
                 </div>
             </div>
 
-            <!-- Side Cards Stack -->
             <div class="flex flex-col gap-4">
                 <div onclick="setCategory('Подарки')" class="bg-[#c26e44] text-white rounded-3xl p-5 shadow-sm cursor-pointer hover:opacity-95 transition flex flex-col justify-between min-h-[130px] btn-active-scale">
                     <div class="flex justify-between items-start">
@@ -115,33 +113,30 @@
             </div>
         </section>
 
-        <!-- Categories Slider Bar -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar" id="categoryContainer"></div>
+        <!-- Большие прямоугольные плитки категорий (как на NewTea) -->
+        <section class="space-y-4">
+            <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категории каталога</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="categoryTilesGrid">
+                <!-- Рендерится через JS -->
+            </div>
+        </section>
 
-        <!-- Catalog Section -->
-        <div id="catalog" class="space-y-4">
+        <!-- Подборка хороших вариантов снизу (хиты / интересные позиции) -->
+        <section class="space-y-4 pt-4 border-t border-emerald-900/10">
             <div class="flex justify-between items-center">
-                <h2 id="catalogTitle" class="text-xl sm:text-2xl font-black text-stone-900">Коллекции от основателей New Tea</h2>
-                <p id="statusText" class="text-xs text-stone-600 font-medium"></p>
-            </div>
-
-            <!-- Product Grid -->
-            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
-
-            <div id="scrollTrigger" class="h-10 my-4 flex items-center justify-center">
-                <span id="loadMoreSpinner" class="text-stone-600 text-sm hidden">
-                    <i class="fa-solid fa-spinner animate-spin mr-2"></i> Загрузка...
-                </span>
-            </div>
-
-            <div id="emptyMessage" class="hidden text-center py-20 bg-white/60 rounded-3xl border border-dashed border-stone-300">
-                <i class="fa-solid fa-box-open text-4xl text-stone-400 mb-3 block"></i>
-                <p class="text-stone-700 font-medium">Ничего не найдено</p>
-                <button onclick="resetFilters()" class="mt-3 px-4 py-2 bg-white text-stone-800 text-xs font-semibold rounded-xl shadow-sm border border-stone-200">
-                    Сбросить фильтры
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Коллекции от основателей New Tea</h2>
+                    <p class="text-xs text-stone-600">Несколько отличных вариантов для знакомства</p>
+                </div>
+                <button onclick="setCategory('Все товары')" class="text-xs font-bold text-emerald-800 hover:underline">
+                    Смотреть все &rarr;
                 </button>
             </div>
-        </div>
+
+            <!-- Product Grid (показываем только топ предложений) -->
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+        </section>
+
     </main>
 
     <!-- Mobile Bottom Navigation Bar -->
@@ -296,15 +291,40 @@
         </div>
     </div>
 
+    <!-- Modal Category Viewer (если выбрана категория) -->
+    <div id="categoryModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeCategoryModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+
+        <div class="fixed inset-x-0 bottom-0 top-12 sm:top-20 bg-white rounded-t-3xl shadow-2xl flex flex-col z-10 animate-slide-bottom max-w-5xl mx-auto border border-stone-200">
+            <div class="p-4 sm:p-5 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
+                <div>
+                    <h3 id="modalCategoryTitle" class="text-lg sm:text-xl font-black text-stone-900">Категория</h3>
+                    <p id="modalCategoryCount" class="text-xs text-stone-500">Товары</p>
+                </div>
+                <button onclick="closeCategoryModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar">
+                <div id="categoryModalGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
         const TG_BOT_TOKEN = '8970897973:AAG1JZ-f2IgQElmMR_OdFvH2Pj9cOLz8txs';
         const TG_ADMIN_IDS = ['884682846', '8272212055'];
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
-        const DEFAULT_CATEGORIES = [
-            'Все товары', 'Шу Пуэр', 'Шен Пуэр', 'Улун', 
-            'Зеленый чай', 'Белый чай', 'Красный чай', 
-            'Подарки', 'Акции', 'Гайвани', 'Чайники', 'Пиалы'
+        const CATEGORIES_LIST = [
+            { name: 'Чай', desc: 'Искания жемчужины из Китая и мира', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Посуда', desc: 'Удобство и стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Шу Пуэр', desc: 'Насыщенный и глубокий вкус', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Шен Пуэр', desc: 'Светлый, бодрящий и ароматный', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Улун', desc: 'Ароматные полуферментированные чаи', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Зеленый чай', desc: 'Свежесть и гармония', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
+            { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white' },
+            { name: 'Акции', desc: '...от которых нельзя удержаться', image: '', color: 'bg-[#facc15] text-stone-900' }
         ];
 
         const TEA_IMAGES = [
@@ -314,12 +334,7 @@
         ];
 
         let allProducts = [];
-        let filteredProducts = [];
         let cart = [];
-        let selectedCategory = 'Все товары';
-        
-        const PAGE_SIZE = 20;
-        let currentPage = 1;
         let searchTimeout = null;
 
         function cleanNumber(val) {
@@ -345,16 +360,13 @@
             if (lower.includes('красн') || lower.includes('червон')) return 'Красный чай';
             if (lower.includes('подар') || lower.includes('набор')) return 'Подарки';
             if (lower.includes('акці') || lower.includes('скидк')) return 'Акции';
-            if (lower.includes('гайвань')) return 'Гайвани';
-            if (lower.includes('чайник') || lower.includes('исин')) return 'Чайники';
-            if (lower.includes('пиал') || lower.includes('піал')) return 'Пиалы';
-            return 'Все товары';
+            if (lower.includes('гайвань') || lower.includes('чайник') || lower.includes('пиал')) return 'Посуда';
+            return 'Чай';
         }
 
         async function loadData() {
-            const statusText = document.getElementById('statusText');
-            renderCategories();
-            renderModalCategories();
+            renderCategoryTiles();
+            renderModalCategoriesList();
 
             window.handleSheetData = function(data) {
                 try {
@@ -365,7 +377,6 @@
 
                     rows.forEach((row, idx) => {
                         if (idx === 0) return;
-
                         const cells = row.c;
                         if (!cells) return;
 
@@ -385,7 +396,6 @@
                         const productId = getValue(5) || String(250008 - idx); 
                         const rawImg = getRawCell(0); 
                         const finalImg = processImageUrl(rawImg, idx);
-
                         const retailVal = cleanNumber(getValue(4)) || cleanNumber(getValue(3)) || 250; 
 
                         parsed.push({
@@ -400,14 +410,10 @@
                     });
 
                     allProducts = parsed;
-                    applyFilters();
-
-                    statusText.innerText = `Товаров: ${allProducts.length}`;
-                    setupInfiniteScroll();
+                    renderFeaturedProducts();
 
                 } catch (err) {
-                    console.error("Ошибка:", err);
-                    statusText.innerText = "Ошибка загрузки";
+                    console.error("Ошибка загрузки таблицы:", err);
                 }
             };
 
@@ -416,144 +422,157 @@
             document.body.appendChild(script);
         }
 
-        function renderCategories() {
-            const container = document.getElementById('categoryContainer');
-            container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
-                <button onclick="setCategory('${cat}')" class="whitespace-nowrap px-4 py-2 rounded-2xl text-xs font-bold transition border btn-active-scale flex items-center gap-1.5 ${
-                    selectedCategory === cat 
-                    ? 'bg-stone-900 text-white border-stone-900 shadow-sm' 
-                    : 'bg-white/80 text-stone-700 border-stone-200/80 hover:bg-white'
-                }">
-                    <span>${cat}</span>
-                </button>
+        function renderCategoryTiles() {
+            const container = document.getElementById('categoryTilesGrid');
+            container.innerHTML = CATEGORIES_LIST.map(cat => `
+                <div onclick="openCategory('${cat.name}')" class="${cat.color} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[160px] relative overflow-hidden btn-active-scale group">
+                    <div class="z-10">
+                        <h3 class="text-lg font-bold mb-1 group-hover:text-emerald-700 transition">${cat.name}</h3>
+                        <p class="text-xs opacity-80 leading-relaxed">${cat.desc}</p>
+                    </div>
+                    ${cat.image ? `
+                        <div class="absolute right-0 bottom-0 w-24 h-24 opacity-80 pointer-events-none">
+                            <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover rounded-tl-2xl">
+                        </div>
+                    ` : `
+                        <div class="flex justify-end mt-4">
+                            <i class="fa-solid fa-arrow-right text-lg opacity-70"></i>
+                        </div>
+                    `}
+                </div>
             `).join('');
         }
 
-        function renderModalCategories() {
+        function renderModalCategoriesList() {
             const container = document.getElementById('modalCategoriesGrid');
-            container.innerHTML = DEFAULT_CATEGORIES.map(cat => `
-                <button onclick="setCategory('${cat}'); closeCategoriesModal();" class="p-3 rounded-xl text-left text-xs font-semibold transition border flex items-center gap-3 ${
-                    selectedCategory === cat 
-                    ? 'bg-emerald-50 text-emerald-900 border-emerald-300' 
-                    : 'bg-stone-50 text-stone-700 border-stone-200'
-                }">
+            container.innerHTML = CATEGORIES_LIST.map(cat => `
+                <button onclick="openCategory('${cat.name}'); closeCategoriesModal();" class="p-3 rounded-xl text-left text-xs font-semibold transition border flex items-center gap-3 bg-stone-50 text-stone-700 border-stone-200 hover:border-emerald-600">
                     <i class="fa-solid fa-tag text-emerald-600"></i>
-                    <span class="truncate">${cat}</span>
+                    <span class="truncate">${cat.name}</span>
                 </button>
             `).join('');
         }
 
-        function setCategory(cat) {
-            selectedCategory = cat;
-            renderCategories();
-            renderModalCategories();
-            applyFilters();
-            document.getElementById('catalogTitle').innerText = cat;
-            scrollToCatalog();
-        }
-
-        function applyFilters() {
-            const query = document.getElementById('headerSearchInput').value.toLowerCase().trim();
-
-            filteredProducts = allProducts.filter(p => {
-                const matchesCat = selectedCategory === 'Все товары' || p.category === selectedCategory;
-                const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).toLowerCase().includes(query);
-                return matchesCat && matchesQuery;
-            });
-
-            renderCurrentPage(true);
-        }
-
-        function resetFilters() {
-            selectedCategory = 'Все товары';
-            document.getElementById('headerSearchInput').value = '';
-            document.getElementById('catalogTitle').innerText = "Коллекции от основателей New Tea";
-            renderCategories();
-            applyFilters();
-        }
-
-        function renderCurrentPage(reset = false) {
+        function renderFeaturedProducts() {
             const grid = document.getElementById('productGrid');
-            const emptyMsg = document.getElementById('emptyMessage');
+            // Берем первые 8 хороших вариантов для главной
+            const featured = allProducts.slice(0, 8);
 
-            if (reset) {
-                currentPage = 1;
-                grid.innerHTML = '';
-            }
-
-            if (filteredProducts.length === 0) {
-                emptyMsg.classList.remove('hidden');
+            if (featured.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-6">Загрузка товаров...</p>';
                 return;
             }
-            emptyMsg.classList.add('hidden');
 
-            const start = (currentPage - 1) * PAGE_SIZE;
-            const end = start + PAGE_SIZE;
-            const itemsToRender = filteredProducts.slice(start, end);
-
-            const fragment = document.createDocumentFragment();
-
-            itemsToRender.forEach(item => {
-                const card = document.createElement('div');
-                card.className = "bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in";
-                
-                card.innerHTML = `
+            grid.innerHTML = featured.map(item => `
+                <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
                     <div>
-                        <div class="h-44 sm:h-56 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                        <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
                             <img src="${item.image}" alt="${item.name}" loading="lazy" 
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
                                 onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                            <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60 shadow-xs">ID: ${item.id}</span>
+                            <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
                         </div>
-                        <div class="p-3.5 sm:p-5">
+                        <div class="p-3.5 sm:p-4">
                             <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
                         </div>
                     </div>
-                    <div class="p-3.5 sm:p-5 pt-0 flex items-center justify-between mt-auto">
-                        <div>
-                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] sm:text-xs font-normal text-stone-500">грн</span></span>
-                        </div>
-                        <div class="flex items-center gap-1.5">
-                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
-                                <i class="fa-solid fa-cart-plus text-xs"></i>
-                            </button>
-                        </div>
+                    <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                        <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                        <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                        </button>
                     </div>
-                `;
-                fragment.appendChild(card);
-            });
-
-            grid.appendChild(fragment);
+                </div>
+            `).join('');
         }
 
-        function setupInfiniteScroll() {
-            const observer = new IntersectionObserver((entries) => {
-                if (entries[0].isIntersecting) {
-                    if (currentPage * PAGE_SIZE < filteredProducts.length) {
-                        currentPage++;
-                        renderCurrentPage(false);
-                    }
-                }
-            }, { rootMargin: '200px' });
+        function openCategory(catName) {
+            const modal = document.getElementById('categoryModal');
+            const titleEl = document.getElementById('modalCategoryTitle');
+            const countEl = document.getElementById('modalCategoryCount');
+            const grid = document.getElementById('categoryModalGrid');
 
-            observer.observe(document.getElementById('scrollTrigger'));
+            titleEl.innerText = catName;
+
+            let items = [];
+            if (catName === 'Все товары') {
+                items = allProducts;
+            } else if (catName === 'Чай') {
+                items = allProducts.filter(p => p.category !== 'Посуда');
+            } else if (catName === 'Посуда') {
+                items = allProducts.filter(p => p.category === 'Посуда');
+            } else {
+                items = allProducts.filter(p => p.category === catName);
+            }
+
+            countEl.innerText = `Найдено товаров: ${items.length}`;
+
+            grid.innerHTML = items.map(item => `
+                <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                    <div>
+                        <div class="h-40 sm:h-48 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="closeCategoryModal(); openProductModal('${item.id}')">
+                            <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                            <span class="absolute top-2 right-2 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/90 text-stone-700">ID: ${item.id}</span>
+                        </div>
+                        <div class="p-3">
+                            <h3 onclick="closeCategoryModal(); openProductModal('${item.id}')" class="text-xs font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700">${item.name}</h3>
+                        </div>
+                    </div>
+                    <div class="p-3 pt-0 flex items-center justify-between mt-auto">
+                        <span class="text-sm font-black text-stone-900">${item.price} грн</span>
+                        <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-emerald-700 text-white w-8 h-8 rounded-xl flex items-center justify-center transition">
+                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.add('hidden');
         }
 
         function handleSearch(val) {
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
-                applyFilters();
-            }, 250);
+                if (!val.trim()) return;
+                openCategory('Все товары');
+                // Фильтруем внутри модалки поиска
+                const grid = document.getElementById('categoryModalGrid');
+                const titleEl = document.getElementById('modalCategoryTitle');
+                const countEl = document.getElementById('modalCategoryCount');
+                titleEl.innerText = `Поиск: "${val}"`;
+
+                const items = allProducts.filter(p => p.name.toLowerCase().includes(val.toLowerCase()) || String(p.id).includes(val));
+                countEl.innerText = `Найдено: ${items.length}`;
+
+                grid.innerHTML = items.map(item => `
+                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                        <div>
+                            <div class="h-40 sm:h-48 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="closeCategoryModal(); openProductModal('${item.id}')">
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                            </div>
+                            <div class="p-3">
+                                <h3 onclick="closeCategoryModal(); openProductModal('${item.id}')" class="text-xs font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="p-3 pt-0 flex items-center justify-between mt-auto">
+                            <span class="text-sm font-black text-stone-900">${item.price} грн</span>
+                            <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-emerald-700 text-white w-8 h-8 rounded-xl flex items-center justify-center transition">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                document.getElementById('categoryModal').classList.remove('hidden');
+            }, 300);
         }
 
         function focusSearch() {
             const searchInput = document.getElementById('headerSearchInput');
             searchInput.focus();
-            scrollToCatalog();
-        }
-
-        function scrollToCatalog() {
-            document.getElementById('catalog').scrollIntoView({ behavior: 'smooth' });
         }
 
         function scrollToTop() {
