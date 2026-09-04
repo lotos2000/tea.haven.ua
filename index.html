@@ -124,7 +124,7 @@
     </footer>
 
     <script>
-       const SHEET_ID = '1z6ytK07e6iLq356LmKxzWToQfKDhxQD9zUxep4E4PZg';
+        const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
         
         let allProducts = [];
         let filteredProducts = [];
@@ -137,7 +137,6 @@
         async function loadData() {
             const statusText = document.getElementById('statusText');
             
-            // GViz JSONP запит (без обмежень CORS)
             window.handleSheetData = function(data) {
                 try {
                     if (!data || !data.table || !data.table.rows) {
@@ -156,15 +155,28 @@
                             return String(cells[idx].f || cells[idx].v).trim();
                         };
 
-                        const name = getValue(1);
+                        const name = getValue(1); // Столбец B: Название
                         if (!name || ['назва', 'название', 'name'].includes(name.toLowerCase())) return;
 
-                        let img = getValue(0);
-                        if (img.includes('http')) {
-                            const m = img.match(/https?:\/\/[^\s"']+/);
-                            if (m) img = m[0];
+                        // Парсинг картинки из столбца A
+                        let rawImg = getValue(0);
+                        let img = '';
+
+                        const urlMatch = rawImg.match(/https?:\/\/[^\s"']+/);
+                        if (urlMatch) {
+                            img = urlMatch[0];
                         }
-                        if (!img.startsWith('http')) {
+
+                        // Конвертация Google Drive ссылок
+                        if (img.includes('drive.google.com')) {
+                            const driveIdMatch = img.match(/\/d\/([^\/]+)/) || img.match(/id=([^&]+)/);
+                            if (driveIdMatch && driveIdMatch[1]) {
+                                img = `https://lh3.googleusercontent.com/u/0/d/${driveIdMatch[1]}`;
+                            }
+                        }
+
+                        // Дефолтное фото, если ссылка не найдена
+                        if (!img || !img.startsWith('http')) {
                             img = 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400';
                         }
 
@@ -198,7 +210,7 @@
             const script = document.createElement('script');
             script.src = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=responseHandler:handleSheetData`;
             script.onerror = function() {
-                statusText.innerText = "Не вдалося підключитися до Google Таблиці. Перевірте доступ.";
+                statusText.innerText = "Не вдалося підключитися до Google Таблиці. Перевірте доступ по посиланню.";
             };
             document.body.appendChild(script);
         }
