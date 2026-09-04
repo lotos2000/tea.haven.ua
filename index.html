@@ -113,11 +113,11 @@
             </div>
         </section>
 
-        <!-- Большие прямоугольные плитки категорий (как на NewTea) -->
+        <!-- Ассиметричные плитки категорий каталога (bento grid: разные размеры) -->
         <section class="space-y-4">
             <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категории каталога</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="categoryTilesGrid">
-                <!-- Рендерится через JS -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid">
+                <!-- Рендерится через JS с акцентными размерами -->
             </div>
         </section>
 
@@ -133,8 +133,51 @@
                 </button>
             </div>
 
-            <!-- Product Grid (показываем только топ предложений) -->
+            <!-- Product Grid -->
             <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+        </section>
+
+        <!-- Информационный раздел: История чая и виды -->
+        <section class="bg-white rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
+            <div class="max-w-3xl">
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Энциклопедия чая</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Великая история и культура чая</h2>
+                <p class="text-stone-600 text-sm leading-relaxed">
+                    Чай — это не просто напиток, а древняя философия, насчитывающая более 4700 лет истории. Согласно легенде, всё началось в 2737 году до н.э., когда китайский император Шэнь-нун случайно уронил несколько листьев дикого чайного дерева в котелок с кипящей водой. Получившийся настой поразил его своим ароматом и бодрящими свойствами. С тех пор чай прошел путь от лекарственного снадобья при императорском дворе до всемирного культурного феномена.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-stone-100">
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-seedling"></i>
+                    </div>
+                    <h3 class="font-bold text-stone-900 text-base">Китайские истоки</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Китай — кодина чая. Именно здесь мастера научились тонкостям сбора, ферментации и обжарки листков, создав уникальные традиции чайных церемоний (Гунфу Ча), которые раскрывают всю глубину вкуса.
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-mug-hot"></i>
+                    </div>
+                    <h3 class="font-bold text-stone-900 text-base">Основные виды чая</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        <b>Шу и Шен Пуэры</b> даруют глубокий древесный или фруктовый вкус; <b>Улуны</b> сочетают свежесть зелени и нотки цветов; <b>Зеленые и Белые чаи</b> хранят природную мягкость, а <b>Красные</b> согревают плотным ароматом.
+                    </p>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="w-10 h-10 rounded-2xl bg-stone-100 text-stone-800 flex items-center justify-center font-bold text-base">
+                        <i class="fa-solid fa-fire-flame-curved"></i>
+                    </div>
+                    <h3 class="font-bold text-stone-900 text-base">Искусство выбора</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">
+                        Каждый сорт требует своей температуры воды и времени заваривания. В каталоге tea.haven.ua собраны лучшие авторитетные позиции для ежедневного наслаждения и особых моментов.
+                    </p>
+                </div>
+            </div>
         </section>
 
     </main>
@@ -291,7 +334,7 @@
         </div>
     </div>
 
-    <!-- Modal Category Viewer (если выбрана категория) -->
+    <!-- Modal Category Viewer -->
     <div id="categoryModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
         <div onclick="closeCategoryModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
 
@@ -316,15 +359,16 @@
         const TG_ADMIN_IDS = ['884682846', '8272212055'];
         const SHEET_ID = '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0';
 
+        // Добавлено свойство span для задания разной ширины плиток (bento grid layout)
         const CATEGORIES_LIST = [
-            { name: 'Чай', desc: 'Искания жемчужины из Китая и мира', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Посуда', desc: 'Удобство и стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Шу Пуэр', desc: 'Насыщенный и глубокий вкус', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Шен Пуэр', desc: 'Светлый, бодрящий и ароматный', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Улун', desc: 'Ароматные полуферментированные чаи', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Зеленый чай', desc: 'Свежесть и гармония', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white' },
-            { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white' },
-            { name: 'Акции', desc: '...от которых нельзя удержаться', image: '', color: 'bg-[#facc15] text-stone-900' }
+            { name: 'Чай', desc: 'Жемчужины из Китая и мира', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
+            { name: 'Посуда', desc: 'Удобство и стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шу Пуэр', desc: 'Насыщенный вкус', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шен Пуэр', desc: 'Светлый и бодрящий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Улун', desc: 'Ароматные полуферментированные', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Зеленый чай', desc: 'Свежесть и гармония', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', color: 'bg-white', span: 'col-span-2 md:col-span-2' },
+            { name: 'Подарки', desc: 'Хочу! Хочу! Хочу!', image: '', color: 'bg-[#c26e44] text-white', span: 'col-span-1 md:col-span-1' },
+            { name: 'Акции', desc: 'Скидки, от которых не устоять', image: '', color: 'bg-[#facc15] text-stone-900', span: 'col-span-1 md:col-span-1' }
         ];
 
         const TEA_IMAGES = [
@@ -422,12 +466,13 @@
             document.body.appendChild(script);
         }
 
+        // Рендер категорий с разным размером плиток (bento style)
         function renderCategoryTiles() {
             const container = document.getElementById('categoryTilesGrid');
             container.innerHTML = CATEGORIES_LIST.map(cat => `
-                <div onclick="openCategory('${cat.name}')" class="${cat.color} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[160px] relative overflow-hidden btn-active-scale group">
+                <div onclick="openCategory('${cat.name}')" class="${cat.color} ${cat.span} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[150px] relative overflow-hidden btn-active-scale group">
                     <div class="z-10">
-                        <h3 class="text-lg font-bold mb-1 group-hover:text-emerald-700 transition">${cat.name}</h3>
+                        <h3 class="text-base sm:text-lg font-bold mb-1 group-hover:text-emerald-700 transition">${cat.name}</h3>
                         <p class="text-xs opacity-80 leading-relaxed">${cat.desc}</p>
                     </div>
                     ${cat.image ? `
@@ -455,7 +500,6 @@
 
         function renderFeaturedProducts() {
             const grid = document.getElementById('productGrid');
-            // Берем первые 8 хороших вариантов для главной
             const featured = allProducts.slice(0, 8);
 
             if (featured.length === 0) {
@@ -498,81 +542,276 @@
             if (catName === 'Все товары') {
                 items = allProducts;
             } else if (catName === 'Чай') {
-                items = allProducts.filter(p => p.category !== 'Посуда');
-            } else if (catName === 'Посуда') {
-                items = allProducts.filter(p => p.category === 'Посуда');
+                items = allProducts.filter(p => !['Посуда', 'Подарки', 'Акции'].includes(p.category));
             } else {
                 items = allProducts.filter(p => p.category === catName);
             }
 
             countEl.innerText = `Найдено товаров: ${items.length}`;
 
-            grid.innerHTML = items.map(item => `
-                <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
-                    <div>
-                        <div class="h-40 sm:h-48 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="closeCategoryModal(); openProductModal('${item.id}')">
-                            <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                            <span class="absolute top-2 right-2 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/90 text-stone-700">ID: ${item.id}</span>
-                        </div>
-                        <div class="p-3">
-                            <h3 onclick="closeCategoryModal(); openProductModal('${item.id}')" class="text-xs font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700">${item.name}</h3>
-                        </div>
-                    </div>
-                    <div class="p-3 pt-0 flex items-center justify-between mt-auto">
-                        <span class="text-sm font-black text-stone-900">${item.price} грн</span>
-                        <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-emerald-700 text-white w-8 h-8 rounded-xl flex items-center justify-center transition">
-                            <i class="fa-solid fa-cart-plus text-xs"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-
-            modal.classList.remove('hidden');
-        }
-
-        function closeCategoryModal() {
-            document.getElementById('categoryModal').classList.add('hidden');
-        }
-
-        function handleSearch(val) {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                if (!val.trim()) return;
-                openCategory('Все товары');
-                // Фильтруем внутри модалки поиска
-                const grid = document.getElementById('categoryModalGrid');
-                const titleEl = document.getElementById('modalCategoryTitle');
-                const countEl = document.getElementById('modalCategoryCount');
-                titleEl.innerText = `Поиск: "${val}"`;
-
-                const items = allProducts.filter(p => p.name.toLowerCase().includes(val.toLowerCase()) || String(p.id).includes(val));
-                countEl.innerText = `Найдено: ${items.length}`;
-
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">В этой категории пока нет товаров</p>';
+            } else {
                 grid.innerHTML = items.map(item => `
-                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group">
+                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
                         <div>
-                            <div class="h-40 sm:h-48 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="closeCategoryModal(); openProductModal('${item.id}')">
-                                <img src="${item.image}" alt="${item.name}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                            <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}'); closeCategoryModal();">
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                    onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                                <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
                             </div>
-                            <div class="p-3">
-                                <h3 onclick="closeCategoryModal(); openProductModal('${item.id}')" class="text-xs font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700">${item.name}</h3>
+                            <div class="p-3.5 sm:p-4">
+                                <h3 onclick="openProductModal('${item.id}'); closeCategoryModal();" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
                             </div>
                         </div>
-                        <div class="p-3 pt-0 flex items-center justify-between mt-auto">
-                            <span class="text-sm font-black text-stone-900">${item.price} грн</span>
-                            <button onclick="addToCart('${item.id}')" class="bg-stone-900 hover:bg-emerald-700 text-white w-8 h-8 rounded-xl flex items-center justify-center transition">
+                        <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
                                 <i class="fa-solid fa-cart-plus text-xs"></i>
                             </button>
                         </div>
                     </div>
                 `).join('');
-                document.getElementById('categoryModal').classList.remove('hidden');
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function openProductModal(id) {
+            const item = allProducts.find(p => p.id === id);
+            if (!item) return;
+
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalId').innerText = `ID: ${item.id}`;
+            document.getElementById('modalTitle').innerText = item.name;
+            document.getElementById('modalDescription').innerHTML = `<p>${item.description}</p>`;
+            document.getElementById('modalPrice').innerText = `${item.price} грн`;
+            
+            const addBtn = document.getElementById('modalAddBtn');
+            addBtn.onclick = function() {
+                addToCart(item.id);
+                closeProductModal();
+            };
+
+            document.getElementById('productModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                renderCartItems();
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function addToCart(id) {
+            const item = allProducts.find(p => p.id === id);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartCounters();
+            showNotification(`Товар добавлен в корзину`);
+        }
+
+        function updateCartQuantity(id, change) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+
+            item.qty += change;
+            if (item.qty <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+
+            updateCartCounters();
+            renderCartItems();
+        }
+
+        function updateCartCounters() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = totalCount;
+            document.getElementById('mobileCartBadge').innerText = totalCount;
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cartItemsContainer');
+            const footer = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 space-y-3">
+                        <div class="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <p class="text-stone-500 text-sm">Ваша корзина пуста</p>
+                    </div>
+                `;
+                footer.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            container.innerHTML = cart.map(item => `
+                <div class="bg-stone-50 border border-stone-200/80 rounded-2xl p-3 flex items-center gap-3">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl bg-white border border-stone-200/50 flex-shrink-0" onerror="this.src='${item.fallbackImg}';">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-stone-900 truncate mb-1">${item.name}</h4>
+                        <div class="text-xs font-extrabold text-emerald-700">${item.price} грн</div>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white border border-stone-200 rounded-xl px-2 py-1">
+                        <button onclick="updateCartQuantity('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 w-5 h-5 flex items-center justify-center text-xs font-bold">-</button>
+                        <span class="text-xs font-bold text-stone-900 w-4 text-center">${item.qty}</span>
+                        <button onclick="updateCartQuantity('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 w-5 h-5 flex items-center justify-center text-xs font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('cartTotal').innerText = `${totalPrice} грн`;
+            updatePaymentInfo();
+        }
+
+        function updatePaymentInfo() {
+            const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const noticeText = document.getElementById('paymentNoticeText');
+            if (method === 'full') {
+                noticeText.innerText = "Менеджер пришлет реквизиты для оплаты после подтверждения заказа.";
+            } else {
+                noticeText.innerText = "Отправка наложенным платежом с минимальной предоплатой 200 грн.";
+            }
+        }
+
+        async function handleCheckout(e) {
+            e.preventDefault();
+            if (cart.length === 0) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"><span>Отправка...</span></i>';
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const city = document.getElementById('custCity').value;
+            const np = document.getElementById('custNP').value;
+            const payment = document.querySelector('input[name="paymentMethod"]:checked').value === 'full' ? 'Полная оплата' : 'Наложенный платёж (предоплата 200 грн)';
+            
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            let message = `🛒 <b>Новый заказ с сайта tea.haven.ua!</b>\n\n`;
+            message += `👤 <b>Имя:</b> ${name}\n`;
+            message += `📞 <b>Телефон:</b> ${phone}\n`;
+            message += `📍 <b>Город:</b> ${city}, Отделение НП №${np}\n`;
+            message += `💳 <b>Оплата:</b> ${payment}\n\n`;
+            message += `📦 <b>Состав заказа:</b>\n`;
+            cart.forEach((item, idx) => {
+                message += `${idx + 1}. ${item.name} (ID: ${item.id}) — ${item.qty} шт. × ${item.price} грн\n`;
+            });
+            message += `\n💰 <b>Итого к оплате:</b> ${totalPrice} грн`;
+
+            let success = true;
+            for (const adminId of TG_ADMIN_IDS) {
+                try {
+                    const response = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: adminId,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    });
+                    const resData = await response.json();
+                    if (!resData.ok) success = false;
+                } catch (err) {
+                    success = false;
+                }
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Оформить заказ</span><i class="fa-solid fa-paper-plane text-xs"></i>';
+
+            if (success) {
+                alert('Спасибо за заказ! Наш менеджер свяжется с вами в ближайшее время.');
+                cart = [];
+                updateCartCounters();
+                toggleCart();
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Ошибка при отправке заказа. Пожалуйста, свяжитесь с нами напрямую через Instagram.');
+            }
+        }
+
+        function handleSearch(query) {
+            clearTimeout(searchTimeout);
+            if (!query || query.trim().length < 2) {
+                if (query.trim().length === 0) renderFeaturedProducts();
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const q = query.toLowerCase();
+                const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || p.id.includes(q) || p.category.toLowerCase().includes(q));
+                
+                const grid = document.getElementById('productGrid');
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">Ничего не найдено по вашему запросу</p>';
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(item => `
+                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
+                        <div>
+                            <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                    onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                                <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
+                            </div>
+                            <div class="p-3.5 sm:p-4">
+                                <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                            <button onclick="addToCart('${item.id}')" title="В корзину" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
             }, 300);
         }
 
+        function setCategory(catName) {
+            openCategory(catName);
+        }
+
         function focusSearch() {
-            const searchInput = document.getElementById('headerSearchInput');
-            searchInput.focus();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const input = document.getElementById('headerSearchInput');
+            if (input) input.focus();
         }
 
         function scrollToTop() {
@@ -581,188 +820,32 @@
 
         function openCategoriesModal() {
             document.getElementById('categoriesModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeCategoriesModal() {
             document.getElementById('categoriesModal').classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
-        function openProductModal(productId) {
-            const product = allProducts.find(p => String(p.id) === String(productId));
-            if (!product) return;
+        function showNotification(text) {
+            const existing = document.getElementById('toastNotification');
+            if (existing) existing.remove();
 
-            document.getElementById('modalImage').src = product.image;
-            document.getElementById('modalTitle').innerText = product.name;
-            document.getElementById('modalCategory').innerText = product.category;
-            document.getElementById('modalId').innerText = `ID: ${product.id}`;
-            document.getElementById('modalDescription').innerText = product.description;
-            document.getElementById('modalPrice').innerText = `${product.price} грн`;
+            const toast = document.createElement('div');
+            toast.id = 'toastNotification';
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-stone-900 text-white px-4 py-2.5 rounded-2xl shadow-xl z-50 text-xs font-bold animate-fade-in flex items-center gap-2';
+            toast.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span>${text}</span>`;
+            document.body.appendChild(toast);
 
-            const addBtn = document.getElementById('modalAddBtn');
-            addBtn.onclick = () => {
-                addToCart(product.id);
-                closeProductModal();
-            };
-
-            document.getElementById('productModal').classList.remove('hidden');
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
         }
 
-        function closeProductModal() {
-            document.getElementById('productModal').classList.add('hidden');
-        }
-
-        function addToCart(productId) {
-            const product = allProducts.find(p => String(p.id) === String(productId));
-            if (!product) return;
-
-            const existingItem = cart.find(item => String(item.id) === String(productId));
-            if (existingItem) {
-                existingItem.qty += 1;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-
-            updateCartUI();
-            toggleCart(true);
-        }
-
-        function changeQty(productId, delta) {
-            const item = cart.find(i => String(i.id) === String(productId));
-            if (!item) return;
-
-            item.qty += delta;
-            if (item.qty <= 0) {
-                cart = cart.filter(i => String(i.id) !== String(productId));
-            }
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const cartCount = document.getElementById('cartCount');
-            const mobileCartBadge = document.getElementById('mobileCartBadge');
-            const container = document.getElementById('cartItemsContainer');
-            const footer = document.getElementById('cartFooter');
-            const totalEl = document.getElementById('cartTotal');
-
-            cartCount.innerText = cart.length;
-            mobileCartBadge.innerText = cart.length;
-
-            let totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            totalEl.innerText = `${totalSum} грн`;
-
-            updatePaymentInfo();
-
-            if (cart.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center py-16 text-stone-400">
-                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 block opacity-30"></i>
-                        <p class="text-sm">Корзина пуста</p>
-                    </div>
-                `;
-                footer.classList.add('hidden');
-                return;
-            }
-
-            footer.classList.remove('hidden');
-
-            container.innerHTML = cart.map(item => `
-                <div class="flex items-center gap-3 bg-stone-50 p-3 rounded-2xl border border-stone-200">
-                    <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-xl bg-white" onerror="this.onerror=null; this.src='${item.fallbackImg}';">
-                    <div class="flex-1 min-w-0">
-                        <h4 class="text-xs font-bold text-stone-900 truncate">${item.name}</h4>
-                        <span class="text-xs text-emerald-700 font-bold">${item.price} грн/шт</span>
-                    </div>
-                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-xl border border-stone-200">
-                        <button onclick="changeQty('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5">-</button>
-                        <span class="text-xs font-bold w-4 text-center text-stone-900">${item.qty}</span>
-                        <button onclick="changeQty('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 text-xs px-1.5 py-0.5">+</button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        function updatePaymentInfo() {
-            const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
-            const noticeText = document.getElementById('paymentNoticeText');
-            let totalSum = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
-            if (selectedMethod === 'cod') {
-                const prepay = totalSum >= 100 ? 200 : totalSum;
-                noticeText.innerHTML = `Предоплата: <strong>${prepay} грн</strong> (остаток ${Math.max(0, totalSum - prepay)} грн при получении).`;
-            } else {
-                noticeText.innerText = "Менеджер пришлет реквизиты для оплаты после подтверждения заказа.";
-            }
-        }
-
-        function toggleCart(forceOpen = false) {
-            const drawer = document.getElementById('cartDrawer');
-            if (forceOpen) {
-                drawer.classList.remove('hidden');
-            } else {
-                drawer.classList.toggle('hidden');
-            }
-        }
-
-        async function handleCheckout(e) {
-            e.preventDefault();
-
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i><span>Обработка...</span>`;
-
-            const name = document.getElementById('custName').value;
-            const phone = document.getElementById('custPhone').value;
-            const city = document.getElementById('custCity').value;
-            const np = document.getElementById('custNP').value;
-            const payMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value;
-            
-            let totalSum = 0;
-            let itemsText = cart.map((item, idx) => {
-                totalSum += item.price * item.qty;
-                return `${idx + 1}. *${item.name}*\n   └ ID: \`${item.id}\` | ${item.qty} шт. x ${item.price} грн`;
-            }).join('\n');
-
-            let payText = payMethod === 'cod' ? `📦 *Наложенный платёж* (Предоплата)` : `💳 *Полная оплата* (По реквизитам)`;
-
-            const message = `🛍 *НОВЫЙ ЗАКАЗ — tea.haven.ua*\n` +
-                `------------------------------------\n` +
-                `👤 *Клиент:* ${name}\n` +
-                `📞 *Телефон:* ${phone}\n` +
-                `📍 *Доставка:* г. ${city}, НП №${np}\n` +
-                `💳 *Оплата:* ${payText}\n` +
-                `------------------------------------\n` +
-                `📦 *Товары:*\n${itemsText}\n` +
-                `------------------------------------\n` +
-                `💰 *Итого к оплате:* ${totalSum} грн`;
-
-            try {
-                for (const chatId of TG_ADMIN_IDS) {
-                    await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            chat_id: chatId,
-                            text: message,
-                            parse_mode: 'Markdown'
-                        })
-                    });
-                }
-
-                alert(`Спасибо за заказ, ${name}! Менеджер свяжется с вами.`);
-                cart = [];
-                updateCartUI();
-                toggleCart();
-                document.getElementById('orderForm').reset();
-            } catch (err) {
-                console.error("Ошибка:", err);
-                alert("Ошибка отправки. Напишите в Telegram @FdDollar.");
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = `<span>Оформить заказ</span><i class="fa-solid fa-paper-plane text-xs"></i>`;
-            }
-        }
-
-        window.onload = loadData;
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>
