@@ -1,1241 +1,1182 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="uk" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>tea.haven.ua — Інтернет-магазин чаю та посуду</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
+        @keyframes scaleUp {
+            from { transform: scale(0.96); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        @keyframes slideInBottom {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        @keyframes slideInRight {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        @keyframes floatCloudSlow {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(35px, -20px) scale(1.06); }
+        }
+        @keyframes floatCloudFast {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            50% { transform: translate(-45px, 25px) scale(0.94); }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-scale-up { animation: scaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-bottom { animation: slideInBottom 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-right { animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        
+        .cloud-slow { animation: floatCloudSlow 22s ease-in-out infinite; }
+        .cloud-fast { animation: floatCloudFast 16s ease-in-out infinite; }
+
+        .btn-active-scale { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease; }
+        .btn-active-scale:active { transform: scale(0.96); }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
+            -webkit-tap-highlight-color: transparent;
+            background-color: #d8f3dc;
+            overflow-x: hidden;
         }
 
-        /* Header */
-        .header {
-            background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
-            color: white;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .header-top {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            letter-spacing: 2px;
-        }
-
-        .logo span {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            display: block;
-        }
-
-        .cart-info {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            font-size: 1.1rem;
-        }
-
-        .cart-count {
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-        }
-
-        /* Navigation */
-        .nav {
-            background: rgba(0,0,0,0.1);
-            padding: 0.5rem 0;
-            margin-top: 0.5rem;
-        }
-
-        .nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s;
-            border-radius: 5px;
-        }
-
-        .nav a:hover {
-            background: rgba(255,255,255,0.2);
-        }
-
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
-                        url('https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            color: white;
-            padding: 4rem 1rem;
-            text-align: center;
-        }
-
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: #97bc62;
-            color: white;
-            text-decoration: none;
-            border-radius: 30px;
-            transition: all 0.3s;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn:hover {
-            background: #2c5f2d;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-
-        /* Categories */
-        .section {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 3rem 1rem;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            color: #2c5f2d;
-        }
-
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .category-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        .category-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .category-card img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .category-card-content {
-            padding: 1.5rem;
-        }
-
-        .category-card h3 {
-            color: #2c5f2d;
-            margin-bottom: 0.5rem;
-        }
-
-        /* Interactive Section */
-        .interactive {
-            background: white;
-            padding: 3rem 1rem;
-        }
-
-        .interactive-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .interactive-card {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            padding: 2rem;
-            border-radius: 15px;
-            text-align: center;
-            transition: all 0.3s;
-        }
-
-        .interactive-card:hover {
-            transform: scale(1.05);
-        }
-
-        .interactive-card h3 {
-            color: #2c5f2d;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Tests Section */
-        .tests-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 4rem 1rem;
-            color: white;
-        }
-
-        .tests-grid {
-            max-width: 1000px;
-            margin: 2rem auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .test-card {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 2px solid rgba(255,255,255,0.2);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
-        .test-card:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .test-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .test-card p {
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-
-        /* Modal Styles */
-        .modal-overlay {
-            display: none;
+        .bg-clouds-container {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.8);
-            z-index: 1000;
-            overflow-y: auto;
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-overlay.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 1rem;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            background-image: url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=1200&q=80');
-            background-size: cover;
-            background-position: center;
-            background-blend-mode: overlay;
-            max-width: 700px;
-            width: 100%;
-            border-radius: 20px;
-            padding: 2rem;
-            position: relative;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            animation: slideIn 0.5s;
-            color: white;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(255,255,255,0.2);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s;
-            z-index: 10;
-        }
-
-        .modal-close:hover {
-            background: rgba(255,255,255,0.3);
-            transform: rotate(90deg);
-        }
-
-        .modal-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .modal-header h2 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .question-container {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem;
-            border-radius: 15px;
-            margin-bottom: 1.5rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .question {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            font-weight: bold;
-        }
-
-        .answers {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .answer-btn {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 1rem;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: left;
-            font-size: 1rem;
-        }
-
-        .answer-btn:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(10px);
-            border-color: rgba(255,255,255,0.5);
-        }
-
-        .answer-btn.selected {
-            background: rgba(255,255,255,0.4);
-            border-color: #97bc62;
-        }
-
-        .progress-bar {
-            background: rgba(255,255,255,0.2);
-            height: 10px;
-            border-radius: 10px;
-            margin-bottom: 2rem;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
             overflow: hidden;
         }
-
-        .progress-fill {
-            background: linear-gradient(90deg, #97bc62, #2c5f2d);
-            height: 100%;
-            transition: width 0.5s ease;
-            border-radius: 10px;
-        }
-
-        .test-result {
-            text-align: center;
-            padding: 2rem;
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            border: 2px solid rgba(255,255,255,0.3);
-            animation: fadeIn 1s;
-        }
-
-        .test-result h3 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        .floating-tea {
+        .cloud-shape {
             position: absolute;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-            pointer-events: none;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Additional Content Section */
-        .additional-content {
-            background: white;
-            padding: 4rem 1rem;
-        }
-
-        .content-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 3rem;
-        }
-
-        .content-block h3 {
-            color: #2c5f2d;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        .content-block p {
-            margin-bottom: 1rem;
-            line-height: 1.8;
-            color: #555;
-        }
-
-        .features-list {
-            list-style: none;
-            margin-top: 1rem;
-        }
-
-        .features-list li {
-            padding: 0.5rem 0;
-            padding-left: 2rem;
-            position: relative;
-        }
-
-        .features-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #97bc62;
-            font-weight: bold;
-        }
-
-        /* Footer */
-        .footer {
-            background: #2c5f2d;
-            color: white;
-            padding: 3rem 1rem 1rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h4 {
-            margin-bottom: 1rem;
-            font-size: 1.2rem;
-        }
-
-        .footer-section p, .footer-section a {
-            color: rgba(255,255,255,0.8);
-            text-decoration: none;
-            line-height: 1.8;
-        }
-
-        .footer-section a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.2);
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .header-top {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .hero h1 {
-                font-size: 1.8rem;
-            }
-
-            .hero p {
-                font-size: 1rem;
-            }
-
-            .nav ul {
-                gap: 1rem;
-            }
-
-            .nav a {
-                padding: 0.3rem 0.8rem;
-                font-size: 0.9rem;
-            }
-
-            .section {
-                padding: 2rem 1rem;
-            }
-
-            .section-title {
-                font-size: 1.5rem;
-            }
-
-            .categories-grid,
-            .interactive-grid,
-            .tests-grid {
-                grid-template-columns: 1fr;
-                gap: 1.5rem;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
-
-            .modal-header h2 {
-                font-size: 1.5rem;
-            }
-
-            .content-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .logo {
-                font-size: 1.2rem;
-            }
-
-            .hero {
-                padding: 2rem 1rem;
-            }
-
-            .hero h1 {
-                font-size: 1.5rem;
-            }
-
-            .btn {
-                padding: 0.8rem 1.5rem;
-                font-size: 0.9rem;
-            }
-
-            .test-card,
-            .interactive-card,
-            .category-card-content {
-                padding: 1rem;
-            }
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 9999px;
+            filter: blur(45px);
         }
     </style>
 </head>
-<body>
+<body class="text-stone-800 font-sans min-h-screen flex flex-col antialiased selection:bg-emerald-600 selection:text-white pb-24 md:pb-0">
+
+    <!-- Background Clouds -->
+    <div class="bg-clouds-container">
+        <div class="cloud-shape cloud-slow w-[450px] h-[450px] -top-24 -left-24 bg-white/60"></div>
+        <div class="cloud-shape cloud-fast w-[600px] h-[600px] top-1/4 -right-40 bg-white/40"></div>
+        <div class="cloud-shape cloud-slow w-[400px] h-[400px] bottom-10 left-1/3 bg-emerald-100/50"></div>
+    </div>
+
     <!-- Header -->
-    <header class="header">
-        <div class="header-top">
-            <div class="logo">
-                TEAHAVEN
-                <span>tea.haven.ua</span>
+    <header class="bg-[#d8f3dc]/85 backdrop-blur-md sticky top-0 z-40 border-b border-emerald-900/10 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5 flex justify-between items-center gap-4">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group btn-active-scale">
+                <img src="logo.png" alt="tea.haven.ua" class="w-10 h-10 rounded-2xl object-cover border border-emerald-900/20 shadow-sm" 
+                     onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=100&q=80';">
+                <div>
+                    <span class="text-xl font-bold tracking-tight text-stone-900 block leading-none">TEA<span class="text-emerald-700">HAVEN</span></span>
+                    <span class="text-[10px] text-stone-600 uppercase tracking-widest font-semibold">tea.haven.ua</span>
+                </div>
+            </a>
+
+            <!-- Desktop Search -->
+            <div class="hidden md:flex relative flex-1 max-w-md mx-6">
+                <input type="text" id="headerSearchInput" oninput="handleSearch(this.value)" 
+                    placeholder="Пошук за всіма сортами чаю та посуду..." 
+                    class="w-full pl-4 pr-10 py-2.5 bg-white/80 border border-stone-300/60 rounded-full text-sm text-stone-800 placeholder-stone-400 focus:outline-none focus:bg-white focus:border-emerald-600 transition shadow-inner">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-400 text-sm"></i>
             </div>
-            <div class="cart-info">
-                <span>Кошик</span>
-                <span class="cart-count">0</span>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-3">
+                <a href="https://www.instagram.com/tea.haven.ua/" target="_blank" title="Instagram" 
+                   class="hidden sm:flex w-10 h-10 bg-white/70 hover:bg-white text-stone-700 rounded-full items-center justify-center transition border border-stone-300/50 shadow-sm btn-active-scale">
+                    <i class="fa-brands fa-instagram text-base"></i>
+                </a>
+
+                <button onclick="toggleCart()" class="relative bg-stone-900 hover:bg-stone-800 text-white px-4 py-2.5 rounded-full flex items-center gap-2.5 transition shadow-md font-medium text-sm btn-active-scale">
+                    <i class="fa-solid fa-bag-shopping text-base"></i>
+                    <span class="hidden sm:inline">Кошик</span>
+                    <span id="cartCount" class="bg-emerald-500 text-stone-900 text-xs font-bold px-2 py-0.5 rounded-full min-w-[20px] text-center shadow-inner">0</span>
+                </button>
             </div>
         </div>
-        <nav class="nav">
-            <ul>
-                <li><a href="#home">Головна</a></li>
-                <li><a href="#catalog">Каталог</a></li>
-                <li><a href="#tests">Тести</a></li>
-                <li><a href="#encyclopedia">Енциклопедія</a></li>
-                <li><a href="#contacts">Контакти</a></li>
-            </ul>
-        </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="hero-content">
-            <h1>Колекція 2026</h1>
-            <p>Повна колекція ексклюзивних чаїв та посуду. Понад 900 унікальних сортів з Китаю, Тайваню, Японії та найкращий посуд для традиційних заварювань в наявності.</p>
-            <a href="#catalog" class="btn">Переглянути колекцію</a>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 flex-grow w-full space-y-8">
 
-    <!-- Categories -->
-    <section class="section" id="catalog">
-        <h2 class="section-title">Категорії каталогу</h2>
-        <p style="text-align: center; color: #666; margin-bottom: 2rem;">Популярні позиції каталогу. Широкий вибір сортів для щоденної насолоди</p>
-        
-        <div class="categories-grid">
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1563911302283-d2bc129e7f1f?auto=format&fit=crop&w=600&q=80" alt="Пуер">
-                <div class="category-card-content">
-                    <h3>Пуер</h3>
-                    <p>Шу та шен пуери з провінції Юньнань. Вікові дерева та сучасні преси.</p>
-                    <a href="#" class="btn" style="margin-top: 1rem; display: inline-block;">Дивитися</a>
+        <!-- Hero Section -->
+        <section class="grid grid-cols-1 gap-4">
+            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 flex flex-col justify-between relative overflow-hidden min-h-[260px]">
+                <div class="z-15 max-w-xl">
+                    <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Колекція 2026</span>
+                    <h1 class="text-2xl sm:text-4xl font-black text-stone-900 mb-3 tracking-tight">Повна колекція ексклюзивних чаїв та посуду</h1>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed">Понад 900 унікальних сортів з Китаю, Тайваню, Японії та найкращий посуд для традиційних заварювань в наявності.</p>
+                </div>
+                <div class="absolute right-4 bottom-0 w-1/2 h-full flex items-end justify-end pointer-events-none opacity-90 hidden sm:flex">
+                    <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Tea" class="max-h-[90%] object-contain rounded-2xl">
                 </div>
             </div>
-            
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1571934811356-5cc55449d0a4?auto=format&fit=crop&w=600&q=80" alt="Улун">
-                <div class="category-card-content">
-                    <h3>Улуни</h3>
-                    <p>Тайванські високогірні улуни та китайські те гуань їнь.</p>
-                    <a href="#" class="btn" style="margin-top: 1rem; display: inline-block;">Дивитися</a>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="space-y-4">
+            <h2 class="text-xl sm:text-2xl font-black text-stone-900">Категорії каталогу</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4" id="categoryTilesGrid"></div>
+        </section>
+
+        <!-- Featured Products -->
+        <section class="space-y-4 pt-4 border-t border-emerald-900/10">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl sm:text-2xl font-black text-stone-900">Популярні позиції каталогу</h2>
+                    <p class="text-xs text-stone-600">Широкий вибір сортів для щоденної насолоди</p>
+                </div>
+                <button onclick="setCategory('Всі товари')" class="text-xs font-bold text-emerald-800 hover:underline">
+                    Дивитися всі &rarr;
+                </button>
+            </div>
+            <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
+        </section>
+
+        <!-- Interactive Guides -->
+        <section class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+            <!-- Temperature Guide -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-stone-200/60 flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Інтерактив</span>
+                        <i class="fa-solid fa-temperature-three-quarters text-emerald-600 text-lg"></i>
+                    </div>
+                    <h3 class="font-black text-stone-900 text-lg">Гід температур заварки</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">Дізнайся точну температуру води для кожного сорту чаю, щоб не зіпсувати смак та розкрити весь потенціал листя.</p>
+                </div>
+                <button onclick="openGuideModal('temperature')" class="w-full bg-stone-900 hover:bg-emerald-700 text-white py-3 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                    <span>Відкрити гід</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Flavors Guide -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-stone-200/60 flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">Палітра смаків</span>
+                        <i class="fa-solid fa-palette text-amber-600 text-lg"></i>
+                    </div>
+                    <h3 class="font-black text-stone-900 text-lg">Підбір за нотами смаку</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">Любиш деревні, фруктові, земляні чи квіткові нотки? Обери свій улюблений профіль та знайди ідеальний чай.</p>
+                </div>
+                <button onclick="openGuideModal('flavors')" class="w-full bg-stone-900 hover:bg-amber-700 text-white py-3 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                    <span>Обрати смак</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+
+            <!-- Utensils Guide -->
+            <div class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 shadow-sm border border-stone-200/60 flex flex-col justify-between space-y-4">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-cyan-700 bg-cyan-100 px-3 py-1 rounded-full">Академія посуду</span>
+                        <i class="fa-solid fa-mug-saucer text-cyan-600 text-lg"></i>
+                    </div>
+                    <h3 class="font-black text-stone-900 text-lg">Гайвань vs Чайник</h3>
+                    <p class="text-xs text-stone-600 leading-relaxed">Порівняння традиційних інструментів заварювання: що краще обрати для початківця, а що для досвідченого майстра.</p>
+                </div>
+                <button onclick="openGuideModal('utensils')" class="w-full bg-stone-900 hover:bg-cyan-700 text-white py-3 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                    <span>Читати довідник</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Quizzes Section -->
+        <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block">Ексклюзивні тести</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight">Розгорнуті тести (12 запитань)</h2>
+                <p class="text-xs sm:text-sm text-stone-600">Оберіть тест та пройдіть захопливе інтерактивне дослідження свого чайного характеру чи ідеального стилю життя!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <!-- Quiz 1 -->
+                <div class="bg-stone-50 rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Великий тест #1</span>
+                            <i class="fa-solid fa-mug-hot text-emerald-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-black text-stone-900 text-lg sm:text-xl">Який ти сорт чаю за вайбом?</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">12 детальних запитань про твої звички, нічний режим, музику та настрій для пошуку ідеального сорту з усього каталогу.</p>
+                    </div>
+                    <button onclick="openQuizModal(1)" class="w-full bg-stone-900 hover:bg-emerald-700 text-white py-3.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                        <span>Пройти тест (12 запитань)</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Quiz 2 -->
+                <div class="bg-stone-50 rounded-3xl p-6 border border-stone-200/80 flex flex-col justify-between space-y-6 shadow-sm hover:shadow-md transition">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-amber-700 bg-amber-100 px-3 py-1 rounded-full">Великий тест #2</span>
+                            <i class="fa-solid fa-compass text-amber-600 text-lg"></i>
+                        </div>
+                        <h3 class="font-black text-stone-900 text-lg sm:text-xl">Який твій ідеальний ритуал заварювання?</h3>
+                        <p class="text-xs text-stone-600 leading-relaxed">12 запитань про те, як ти готуєшся до дня, подорожуєш та відпочиваєш, щоб підібрати найкращий посуд та техніку заварки.</p>
+                    </div>
+                    <button onclick="openQuizModal(2)" class="w-full bg-stone-900 hover:bg-amber-700 text-white py-3.5 rounded-2xl font-bold text-xs shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                        <span>Пройти тест (12 запитань)</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
                 </div>
             </div>
-            
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1627483262764-7e381e11d5f5?auto=format&fit=crop&w=600&q=80" alt="Зелений чай">
-                <div class="category-card-content">
-                    <h3>Зелений чай</h3>
-                    <p>Японські сенча, матча та китайські зелені чаї.</p>
-                    <a href="#" class="btn" style="margin-top: 1rem; display: inline-block;">Дивитися</a>
+        </section>
+
+        <!-- Encyclopedia Section -->
+        <section class="bg-white/90 backdrop-blur-sm rounded-3xl p-6 sm:p-10 shadow-sm border border-stone-200/60 space-y-6">
+            <div class="max-w-3xl">
+                <span class="text-[10px] uppercase font-bold tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 inline-block mb-3">Енциклопедія чаю</span>
+                <h2 class="text-2xl sm:text-3xl font-black text-stone-900 tracking-tight mb-3">Велика історія та різноманіття сортів</h2>
+                <p class="text-stone-600 text-sm leading-relaxed">
+                    Чай — це цілий всесвіт, який охоплює не лише класичні шу та шен пуери, а й вишукані білі чаї з Фуцзяні, яскраво-зелені японські матча та сенча, ароматні тайванські улуни високих гір, а також різноманітні червоні чаї та авторські купажі з травами й фруктами.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-lg border-t border-stone-200 z-30 px-2 py-2 flex justify-around items-center shadow-lg">
+        <button onclick="scrollToTop()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[10px] font-medium">Головна</span>
+        </button>
+        <button onclick="openCategoriesModal()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
+            <i class="fa-solid fa-layer-group text-base"></i>
+            <span class="text-[10px] font-medium">Розділи</span>
+        </button>
+        <button onclick="focusSearch()" class="flex flex-col items-center gap-1 text-stone-500 hover:text-emerald-700 transition p-1">
+            <i class="fa-solid fa-magnifying-glass text-base"></i>
+            <span class="text-[10px] font-medium">Пошук</span>
+        </button>
+        <button onclick="toggleCart()" class="flex flex-col items-center gap-1 text-stone-800 hover:text-emerald-700 transition p-1 relative">
+            <i class="fa-solid fa-bag-shopping text-base"></i>
+            <span class="text-[10px] font-medium">Кошик</span>
+            <span id="mobileCartBadge" class="absolute -top-1 right-0 bg-emerald-600 text-white text-[9px] font-bold px-1.5 py-0.2 rounded-full min-w-[16px] text-center">0</span>
+        </button>
+    </div>
+
+    <!-- ========== MODALS ========== -->
+
+    <!-- Guide Modal -->
+    <div id="guideModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeGuideModal()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm animate-fade-in"></div>
+        <div class="flex min-h-full items-center justify-center p-3 sm:p-6">
+            <div class="relative w-full max-w-2xl rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-scale-up flex flex-col">
+                <div class="p-5 bg-stone-50 border-b border-stone-200 flex justify-between items-center">
+                    <div>
+                        <span id="guideBadge" class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Довідник</span>
+                        <h3 id="guideModalTitle" class="text-base sm:text-lg font-black text-stone-900 mt-1">Заголовок</h3>
+                    </div>
+                    <button onclick="closeGuideModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition btn-active-scale">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
                 </div>
-            </div>
-            
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1594631252845-29fc4cc8c39c?auto=format&fit=crop&w=600&q=80" alt="Посуд">
-                <div class="category-card-content">
-                    <h3>Посуд</h3>
-                    <p>Гайвані, чайники, піали та інший посуд для чайної церемонії.</p>
-                    <a href="#" class="btn" style="margin-top: 1rem; display: inline-block;">Дивитися</a>
-                </div>
-            </div>
-        </div>
-        
-        <div style="text-align: center; margin-top: 2rem;">
-            <a href="#" class="btn">Дивитися всі →</a>
-        </div>
-    </section>
-
-    <!-- Interactive Section -->
-    <section class="interactive">
-        <div class="interactive-grid">
-            <div class="interactive-card">
-                <h3>🌡️ Гід температур заварки</h3>
-                <p>Дізнайся точну температуру води для кожного сорту чаю, щоб не зіпсувати смак та розкрити весь потенціал листя.</p>
-                <button class="btn">Відкрити гід</button>
-            </div>
-            
-            <div class="interactive-card">
-                <h3>🎨 Палітра смаків</h3>
-                <p>Любиш деревні, фруктові, земляні чи квіткові нотки? Обери свій улюблений профіль та знайди ідеальний чай.</p>
-                <button class="btn">Обрати смак</button>
-            </div>
-            
-            <div class="interactive-card">
-                <h3>🫖 Академія посуду</h3>
-                <p>Порівняння традиційних інструментів заварювання: що краще обрати для початківця, а що для досвідченого майстра.</p>
-                <button class="btn">Читати довідник</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tests Section -->
-    <section class="tests-section" id="tests">
-        <h2 class="section-title" style="color: white;">Ексклюзивні тести</h2>
-        <p style="text-align: center; font-size: 1.2rem; margin-bottom: 2rem;">Оберіть тест та пройдіть захопливе інтерактивне дослідження свого чайного характеру чи ідеального стилю життя!</p>
-        
-        <div class="tests-grid">
-            <div class="test-card" onclick="openTest('tea-type')">
-                <h3>🍃 Який ти сорт чаю за вайбом?</h3>
-                <p>12 детальних запитань про твої звички, нічний режим, музику та настрій для пошуку ідеального сорту з усього каталогу.</p>
-                <button class="btn">Пройти тест (12 запитань)</button>
-            </div>
-            
-            <div class="test-card" onclick="openTest('brewing-ritual')">
-                <h3>✨ Який твій ідеальний ритуал заварювання?</h3>
-                <p>12 запитань про те, як ти готуєшся до дня, подорожуєш та відпочиваєш, щоб підібрати найкращий посуд та техніку заварки.</p>
-                <button class="btn">Пройти тест (12 запитань)</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Test Modal -->
-    <div id="testModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeTest()">&times;</button>
-            <div class="floating-tea" style="top: 10%; left: 5%; font-size: 3rem;">🍃</div>
-            <div class="floating-tea" style="top: 20%; right: 10%; font-size: 2rem; animation-delay: 1s;">🫖</div>
-            <div class="floating-tea" style="bottom: 20%; left: 8%; font-size: 2.5rem; animation-delay: 2s;">🍵</div>
-            
-            <div id="testContent">
-                <!-- Test content will be loaded here -->
+                <div id="guideBody" class="p-6 sm:p-8 space-y-4 max-h-[70vh] overflow-y-auto custom-scrollbar text-xs sm:text-sm text-stone-700 leading-relaxed"></div>
             </div>
         </div>
     </div>
 
-    <!-- Additional Content -->
-    <section class="additional-content">
-        <div class="content-grid">
-            <div class="content-block">
-                <h3>🌿 Про наш магазин</h3>
-                <p>TEAHAVEN — це більше ніж просто інтернет-магазин чаю. Це простір, де зустрічаються тисячолітні традиції чайної культури Сходу та сучасний сервіс.</p>
-                <p>Ми особисто відвідуючи плантації в Китаї, Тайвані та Японії, щоб відібрати для вас найкращі сорти чаю. Кожен наш чай має свою унікальну історію та характер.</p>
-                <ul class="features-list">
-                    <li>Прямі поставки з плантацій</li>
-                    <li>Гарантія автентичності</li>
-                    <li>Зберігання в ідеальних умовах</li>
-                    <li>Детальні описи та рекомендації</li>
-                </ul>
-            </div>
-            
-            <div class="content-block">
-                <h3>📚 Енциклопедія чаю</h3>
-                <p>Чай — це цілий всесвіт, який охоплює не лише класичні шу та шен пуери, а й вишукані білі чаї з Фуцзяні, яскраво-зелені японські матча та сенча, ароматні тайванські улуни високих гір.</p>
-                <p>Ми зібрали для вас велику бібліотеку знань про чай: від історії виникнення до сучасних методів заварювання. Дізнайтесь про різноманітні червоні чаї та авторські купажі з травами й фруктами.</p>
-                <ul class="features-list">
-                    <li>Історія чайної культури</li>
-                    <li>Регіони вирощування</li>
-                    <li>Методи обробки листя</li>
-                    <li>Правила заварювання</li>
-                    <li>Корисні властивості</li>
-                </ul>
-            </div>
-            
-            <div class="content-block">
-                <h3>⭐ Чому обирають нас</h3>
-                <p>Наша місія — зробити справжню чайну культуру доступною для кожного. Ми віримо, що правильний чай може змінити настрій, надихнути на нові звершення та подарувати моменти справжньої насолоди.</p>
-                <p>Кожен замовлення — це можливість зануритися у світ східної філософії та знайти свій унікальний смак.</p>
-                <ul class="features-list">
-                    <li>Понад 900 сортів чаю</li>
-                    <li>Експертна підтримка 24/7</li>
-                    <li>Швидка доставка по Україні</li>
-                    <li>Подарункове пакування</li>
-                    <li>Чайні майстер-класи</li>
-                    <li>Програма лояльності</li>
-                </ul>
+    <!-- Quiz Modal -->
+    <div id="quizModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeQuizModal()" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm animate-fade-in"></div>
+        <div class="flex min-h-full items-center justify-center p-3 sm:p-6">
+            <div class="relative w-full max-w-2xl rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-scale-up flex flex-col">
+                <div class="p-5 bg-stone-50 border-b border-stone-200 flex justify-between items-center">
+                    <div>
+                        <span id="quizBadge" class="text-[10px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-2.5 py-0.5 rounded-full">Тест</span>
+                        <h3 id="quizModalTitle" class="text-base sm:text-lg font-black text-stone-900 mt-1">Назва тесту</h3>
+                    </div>
+                    <button onclick="closeQuizModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition btn-active-scale">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <div class="w-full bg-stone-100 h-2">
+                    <div id="quizProgressBar" class="bg-emerald-600 h-2 transition-all duration-300 w-0"></div>
+                </div>
+                <div id="quizBody" class="p-6 sm:p-8 space-y-6 min-h-[320px] flex flex-col justify-between"></div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Encyclopedia Section -->
-    <section class="section" id="encyclopedia" style="background: white;">
-        <h2 class="section-title">Енциклопедія чаю</h2>
-        <p style="text-align: center; font-size: 1.1rem; max-width: 800px; margin: 0 auto 2rem; line-height: 1.8;">
-            Велика історія та різноманіття сортів. Чай — це цілий всесвіт, який охоплює не лише класичні шу та шен пуери, 
-            а й вишукані білі чаї з Фуцзяні, яскраво-зелені японські матча та сенча, ароматні тайванські улуни високих гір, 
-            а також різноманітні червоні чаї та авторські купажі з травами й фруктами.
-        </p>
-        
-        <div class="categories-grid">
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=600&q=80" alt="Ранковий чай">
-                <div class="category-card-content">
-                    <h3>Ранкові чаї</h3>
-                    <p>Бадьорливі зелені та червоні чаї для початку дня з енергією та натхненням.</p>
-                </div>
+    <!-- Categories Modal (Mobile) -->
+    <div id="categoriesModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeCategoriesModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+        <div class="fixed inset-x-0 bottom-0 max-h-[80vh] bg-white rounded-t-3xl border-t border-stone-200 shadow-2xl flex flex-col z-10 animate-slide-bottom">
+            <div class="p-4 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
+                <h3 class="font-bold text-stone-900">Оберіть розділ</h3>
+                <button onclick="closeCategoriesModal()" class="w-8 h-8 rounded-full bg-stone-200 text-stone-700 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
-            
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b91b8b6?auto=format&fit=crop&w=600&q=80" alt="Вечірній чай">
-                <div class="category-card-content">
-                    <h3>Вечірні чаї</h3>
-                    <p>Спокійні витримані пуери та білі чаї для розслаблення після важкого дня.</p>
-                </div>
-            </div>
-            
-            <div class="category-card">
-                <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80" alt="Святковий чай">
-                <div class="category-card-content">
-                    <h3>Святкові купажі</h3>
-                    <p>Унікальні суміші з квітами, фруктами та спеціями для особливих моментів.</p>
+            <div class="p-4 overflow-y-auto grid grid-cols-2 gap-2.5 custom-scrollbar" id="modalCategoriesGrid"></div>
+        </div>
+    </div>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeProductModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+        <div class="flex min-h-full items-end sm:items-center justify-center p-0 sm:p-4">
+            <div class="relative w-full max-w-3xl rounded-t-3xl sm:rounded-3xl bg-white border border-stone-200 shadow-2xl overflow-hidden z-10 animate-slide-bottom sm:animate-scale-up max-h-[90vh] flex flex-col">
+                <button onclick="closeProductModal()" class="absolute top-4 right-4 z-20 w-9 h-9 rounded-full bg-stone-100 text-stone-700 hover:bg-stone-200 flex items-center justify-center transition btn-active-scale">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <div class="grid grid-cols-1 md:grid-cols-2 overflow-y-auto custom-scrollbar">
+                    <div class="h-64 md:h-full bg-stone-50 relative overflow-hidden flex items-center justify-center p-4">
+                        <img id="modalImage" src="" alt="" class="max-h-full max-w-full object-contain rounded-2xl">
+                    </div>
+                    <div class="p-5 sm:p-8 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <span id="modalCategory" class="text-[10px] uppercase font-bold tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200"></span>
+                                <span id="modalId" class="text-[10px] font-mono text-stone-400"></span>
+                            </div>
+                            <h3 id="modalTitle" class="text-lg sm:text-xl font-bold text-stone-900 mb-3"></h3>
+                            <div class="text-stone-600 text-xs sm:text-sm space-y-2 leading-relaxed mb-6 custom-scrollbar max-h-40 overflow-y-auto pr-2" id="modalDescription"></div>
+                        </div>
+                        <div class="pt-4 border-t border-stone-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-xs text-stone-500">Ціна за упаковку:</span>
+                                <span id="modalPrice" class="text-2xl font-black text-emerald-700">0 грн</span>
+                            </div>
+                            <button id="modalAddBtn" class="w-full bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-2xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>Додати в кошик</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer class="footer" id="contacts">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Про TEAHAVEN</h4>
-                <p>Інтернет-магазин преміального чаю та посуду. Прямі поставки з найкращих плантацій Азії.</p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Контакти</h4>
-                <p>📧 Email: info@tea.haven.ua</p>
-                <p>📱 Телефон: +38 (XXX) XXX-XX-XX</p>
-                <p>🕐 Робочий час: Пн-Пт 9:00-18:00</p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Корисні посилання</h4>
-                <p><a href="#">Доставка та оплата</a></p>
-                <p><a href="#">Повернення товару</a></p>
-                <p><a href="#">Часті запитання</a></p>
-                <p><a href="#">Блог про чай</a></p>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Підписка</h4>
-                <p>Отримуйте новини про надходження ексклюзивних сортів та знижки:</p>
-                <form style="margin-top: 1rem;">
-                    <input type="email" placeholder="Ваш email" style="padding: 0.5rem; border-radius: 5px; border: none; width: 100%; margin-bottom: 0.5rem;">
-                    <button type="submit" class="btn" style="width: 100%; padding: 0.5rem;">Підписатися</button>
-                </form>
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div onclick="toggleCart()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-0 sm:pl-10 w-full sm:w-auto">
+            <div class="w-full sm:w-[420px] bg-white border-l border-stone-200 shadow-2xl flex flex-col animate-slide-right ml-auto">
+                <div class="p-4 sm:p-5 bg-stone-50 text-stone-900 flex justify-between items-center border-b border-stone-200">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-bag-shopping text-emerald-600"></i>
+                        <h2 class="text-lg font-bold">Кошик</h2>
+                    </div>
+                    <button onclick="toggleCart()" class="text-stone-400 hover:text-stone-700 transition btn-active-scale p-1">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-3 custom-scrollbar"></div>
+                <div id="cartFooter" class="p-4 sm:p-5 border-t border-stone-200 bg-stone-50 hidden">
+                    <div class="flex justify-between items-center mb-4 text-stone-900">
+                        <span class="text-sm font-medium text-stone-500">До сплати:</span>
+                        <span id="cartTotal" class="text-xl font-extrabold text-emerald-700">0 грн</span>
+                    </div>
+                    <form id="orderForm" onsubmit="handleCheckout(event)" class="space-y-3">
+                        <div>
+                            <input type="text" id="custName" required placeholder="Ім'я та Прізвище" 
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
+                        </div>
+                        <div>
+                            <input type="tel" id="custPhone" required placeholder="Номер телефону" 
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" id="custCity" required placeholder="Місто" 
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
+                            <input type="text" id="custNP" required placeholder="№ відділення НП" 
+                                class="w-full px-3.5 py-2.5 text-sm bg-white border border-stone-300 rounded-xl text-stone-800 placeholder-stone-400 focus:outline-none focus:border-emerald-600 transition">
+                        </div>
+                        <div class="pt-1">
+                            <label class="block text-xs font-semibold text-stone-500 mb-2">Спосіб оплати:</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+                                    <input type="radio" name="paymentMethod" value="full" checked onchange="updatePaymentInfo()" class="accent-emerald-600">
+                                    <div class="text-[11px] leading-tight">
+                                        <span class="font-bold text-stone-800 block">Повна оплата</span>
+                                        <span class="text-stone-500 text-[10px]">За реквізитами</span>
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer border border-stone-200 rounded-xl p-2.5 bg-white flex items-center gap-2 hover:border-emerald-600 transition has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50">
+                                    <input type="radio" name="paymentMethod" value="cod" onchange="updatePaymentInfo()" class="accent-emerald-600">
+                                    <div class="text-[11px] leading-tight">
+                                        <span class="font-bold text-stone-800 block">Післяплата</span>
+                                        <span class="text-stone-500 text-[10px]">Передплата 200 грн</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                        <div id="paymentNotice" class="p-2.5 rounded-xl bg-white border border-stone-200 text-stone-600 text-[11px] leading-tight flex items-center gap-2">
+                            <i class="fa-solid fa-credit-card text-emerald-600 text-sm flex-shrink-0"></i>
+                            <span id="paymentNoticeText">Менеджер надішле реквізити для оплати після підтвердження замовлення.</span>
+                        </div>
+                        <button type="submit" id="submitBtn" class="w-full mt-2 bg-stone-900 hover:bg-stone-800 text-white py-3 rounded-xl font-bold text-sm shadow-md transition flex items-center justify-center gap-2 btn-active-scale">
+                            <span>Оформити замовлення</span>
+                            <i class="fa-solid fa-paper-plane text-xs"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
-        
-        <div class="footer-bottom">
-            <p>&copy; 2026 TEAHAVEN (tea.haven.ua). Всі права захищено.</p>
-            <p style="margin-top: 0.5rem;">З любов'ю до чайної культури ❤️🍵</p>
-        </div>
-    </footer>
+    </div>
 
+    <!-- Category Modal -->
+    <div id="categoryModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div onclick="closeCategoryModal()" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm animate-fade-in"></div>
+        <div class="fixed inset-x-0 bottom-0 top-12 sm:top-20 bg-white rounded-t-3xl shadow-2xl flex flex-col z-10 animate-slide-bottom max-w-5xl mx-auto border border-stone-200">
+            <div class="p-4 sm:p-5 border-b border-stone-200 flex justify-between items-center bg-stone-50 rounded-t-3xl">
+                <div>
+                    <h3 id="modalCategoryTitle" class="text-lg sm:text-xl font-black text-stone-900">Категорія</h3>
+                    <p id="modalCategoryCount" class="text-xs text-stone-500">Товари</p>
+                </div>
+                <button onclick="closeCategoryModal()" class="w-9 h-9 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div class="p-4 sm:p-6 overflow-y-auto flex-1 custom-scrollbar">
+                <div id="categoryModalGrid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== JAVASCRIPT ========== -->
     <script>
-        // Test data
-        const tests = {
-            'tea-type': {
-                title: 'Який ти сорт чаю за вайбом?',
-                questions: [
-                    {
-                        question: 'Як ти проводиш ранок?',
-                        answers: [
-                            'Прокидаюсь рано, медитую та п\'ю воду',
-                            'Поспішаю на роботу/навчання',
-                            'Люблю довго полежати в ліжку',
-                            'Ранок починається з кави або енергетика'
-                        ]
-                    },
-                    {
-                        question: 'Яка музика тобі подобається?',
-                        answers: [
-                            'Класика або ембієнт',
-                            'Рок або альтернатива',
-                            'Поп або інді',
-                            'Електронна музика'
-                        ]
-                    },
-                    {
-                        question: 'Як ти відпочиваєш?',
-                        answers: [
-                            'На природі, в горах чи лісі',
-                            'З друзями на вечірці',
-                            'Вдома з книгою чи фільмом',
-                            'Подорожую новими містами'
-                        ]
-                    },
-                    {
-                        question: 'Який твій стиль одягу?',
-                        answers: [
-                            'Мінімалізм та еко-матеріали',
-                            'Класичний та елегантний',
-                            'Яскравий та креативний',
-                            'Спортивний та зручний'
-                        ]
-                    },
-                    {
-                        question: 'Що для тебе ідеальний вечір?',
-                        answers: [
-                            'Чайна церемонія на самоті',
-                            'Гучна вечірка з друзями',
-                            'Романтична вечеря',
-                            'Серфінг в інтернеті чи ігри'
-                        ]
-                    },
-                    {
-                        question: 'Який твій улюблений сезон?',
-                        answers: [
-                            'Весна — час оновлення',
-                            'Літо — енергія та сонце',
-                            'Осінь — затишок та роздуми',
-                            'Зима — спокій та магія'
-                        ]
-                    },
-                    {
-                        question: 'Як ти приймаєш рішення?',
-                        answers: [
-                            'Довго обмірковую, зважую всі "за" і "проти"',
-                            'Швидко, покладаючись на інтуїцію',
-                            'Раджуся з друзями та рідними',
-                            'Аналізую факти та статистику'
-                        ]
-                    },
-                    {
-                        question: 'Що тебе надихає?',
-                        answers: [
-                            'Природа та мистецтво',
-                            'Подорожі та нові враження',
-                            'Досягнення цілей',
-                            'Спілкування з цікавими людьми'
-                        ]
-                    },
-                    {
-                        question: 'Який твій підхід до життя?',
-                        answers: [
-                            'Філософський, люблю роздуми',
-                            'Активний, постійно в русі',
-                            'Традиційний, ціную стабільність',
-                            'Експериментальний, люблю нове'
-                        ]
-                    },
-                    {
-                        question: 'Яка твоя суперсила?',
-                        answers: [
-                            'Спокій та врівноваженість',
-                            'Енергія та харизма',
-                            'Увага до деталей',
-                            'Креативність та уява'
-                        ]
-                    },
-                    {
-                        question: 'Що для тебе важливіше?',
-                        answers: [
-                            'Внутрішня гармонія',
-                            'Кар\'єра та успіх',
-                            'Стосунки з людьми',
-                            'Особистий розвиток'
-                        ]
-                    },
-                    {
-                        question: 'Який напій ти обереш?',
-                        answers: [
-                            'Світлий улун з ніжним смаком',
-                            'Міцний пуер з глибоким смаком',
-                            'Квітковий оолонг',
-                            'Яскравий червоний чай'
-                        ]
-                    }
-                ],
-                results: {
-                    0: { name: 'Білий чай', description: 'Ти — вишукана та спокійна особистість. Цінуєш гармонію, красу та внутрішній спокій. Твій характер нагадує ніжний білий чай з Фуцзяні — витончений, глибокий та сповнений мудрості.' },
-                    1: { name: 'Шен пуер', description: 'Ти — енергійна та амбітна людина. Любиш виклики та постійний рух вперед. Твій характер схожий на молодий шен пуер — яскравий, з характером та великим потенціалом.' },
-                    2: { name: 'Те Гуань Інь', description: 'Ти — гармонійна особистість з тонким смаком. Поєднуєш в собі традиції та сучасність. Твій характер нагадує легендарний улун Те Гуань Інь — збалансований, квітковий та незабутній.' },
-                    3: { name: 'Дянь Хун', description: 'Ти — яскрава та харизматична особистість. Любиш бути в центрі уваги та дарувати радість іншим. Твій характер схожий на червоний чай Дянь Хун — насичений, солодкий та зігріваючий.' }
-                }
+        // Configuration
+        const CONFIG = {
+            TG_BOT_TOKEN: '8970897973:AAG1JZ-f2IgQElmMR_OdFvH2Pj9cOLz8txs',
+            TG_ADMIN_IDS: ['884682846', '8272212055'],
+            SHEET_ID: '1JGmsSCaG2UAXBrijz0lL6Mnn5tOge5CigejicJHEYT0'
+        };
+
+        // Categories Data
+        const CATEGORIES_LIST = [
+            { name: 'Чай', desc: 'Перлини з Китаю та світу', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-2 md:col-span-2' },
+            { name: 'Посуд', desc: 'Зручність і стиль', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шу Пуер', desc: 'Насичений смак', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Шен Пуер', desc: 'Світлий та бадьорий', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Улун', desc: 'Ароматні напівферментовані', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Зелений чай', desc: 'Свіжість і гармонія', image: 'https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=600&q=80', span: 'col-span-2 md:col-span-2' },
+            { name: 'Білий чай', desc: 'Витончені світлі листочки', image: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' },
+            { name: 'Червоний чай', desc: 'Зігріваючий та насичений', image: 'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=600&q=80', span: 'col-span-1 md:col-span-1' }
+        ];
+
+        const TEA_IMAGES = [
+            "https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9?auto=format&fit=crop&w=800&q=80"
+        ];
+
+        // State
+        let allProducts = [];
+        let cart = [];
+        let searchTimeout = null;
+        let currentQuizId = 1;
+        let currentQuizIndex = 0;
+        let quizAnswers = [];
+
+        // Guide Content
+        const GUIDES_CONTENT = {
+            temperature: {
+                title: "Гід температур заварювання чаю",
+                badge: "Температурний режим",
+                content: `
+                    <p class="font-bold text-stone-900 mb-2">Правильна температура — ключ до розкриття смаку без гіркоти:</p>
+                    <ul class="space-y-3">
+                        <li class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Білий та зелений чай (75–85°C):</strong> Ніжне листя легко ошпарити окропом. Дайте воді охолонути 5–7 хвилин після закипання.
+                        </li>
+                        <li class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Улуни та світлі чаї (85–95°C):</strong> Середня температура допомагає розкрити квіткові та молочні нотки без зайвої терпкості.
+                        </li>
+                        <li class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Шу Пуери, Шен Пуери та червоні чаї (95–100°C / окріп):</strong> Потребують максимальної температури для швидкого екстрагування глибоких смаків.
+                        </li>
+                    </ul>
+                `
             },
-            'brewing-ritual': {
-                title: 'Який твій ідеальний ритуал заварювання?',
-                questions: [
-                    {
-                        question: 'Скільки часу ти готовий приділити заварюванню?',
-                        answers: [
-                            '5-10 хвилин — швидко та якісно',
-                            '15-30 хвилин — з насолодою',
-                            'Годину і більше — повна церемонія',
-                            'Залежить від настрою'
-                        ]
-                    },
-                    {
-                        question: 'Який посуд ти віддаєш перевагу?',
-                        answers: [
-                            'Простий чайник або френч-прес',
-                            'Гайвань з тонкого фарфору',
-                            'Ісинський глиняний чайник',
-                            'Традиційний чайний сервіз'
-                        ]
-                    },
-                    {
-                        question: 'Де ти любиш пити чай?',
-                        answers: [
-                            'На кухні під час сніданку',
-                            'В окремій чайній кімнаті',
-                            'На природі з видом на гори',
-                            'В офісі чи на роботі'
-                        ]
-                    },
-                    {
-                        question: 'Яка температура води для тебе?',
-                        answers: [
-                            'Кип\'яток — люблю міцний чай',
-                            '80-85°C — для зеленого чаю',
-                            '95°C — для улунов',
-                            'Не замислююсь про це'
-                        ]
-                    },
-                    {
-                        question: 'Чи використовуєш ти додатковий посуд?',
-                        answers: [
-                            'Тільки чашку',
-                            'Чашку та заварювальний чайник',
-                            'Повний чайний сет (чайник, піали, гайвань)',
-                            'Мінімалістичний набір'
-                        ]
-                    },
-                    {
-                        question: 'Як часто ти заварюєш чай?',
-                        answers: [
-                            'Кілька разів на день',
-                            'Раз на день — вечірній ритуал',
-                            'Тільки у вихідні',
-                            'Коли є особливий настрій'
-                        ]
-                    },
-                    {
-                        question: 'Чи подобається тобі експериментувати?',
-                        answers: [
-                            'Так, постійно пробую нові сорти',
-                            'Іноді, коли трапляється цікавий чай',
-                            'Ні, маю улюблені сорти',
-                            'Люблю класику'
-                        ]
-                    },
-                    {
-                        question: 'Яка кількість заварювань для тебе?',
-                        answers: [
-                            '1-2 рази — і досить',
-                            '3-5 разів — оптимально',
-                            '7-10 разів — люблю довгі сесії',
-                            'Заварюю поки є смак'
-                        ]
-                    },
-                    {
-                        question: 'Чи важлива для тебе естетика?',
-                        answers: [
-                            'Дуже важлива — краса процесу',
-                            'Важлива, але не критично',
-                            'Головне — смак',
-                            'Функціональність понад усе'
-                        ]
-                    },
-                    {
-                        question: 'Як ти ставишся до чайної церемонії?',
-                        answers: [
-                            'Вивчаю та практикую',
-                            'Цікавлюсь, але не практикую',
-                            'Вважаю зайвим',
-                            'Свій власний ритуал'
-                        ]
-                    },
-                    {
-                        question: 'Чи запрошуєш ти гостей на чай?',
-                        answers: [
-                            'Постійно — чай для спілкування',
-                            'Іноді для особливих випадків',
-                            'Рідко — це мій особистий час',
-                            'Тільки близьких друзів'
-                        ]
-                    },
-                    {
-                        question: 'Що для тебе чай?',
-                        answers: [
-                            'Філософія та спосіб життя',
-                            'Смачний напій',
-                            'Засіб для релаксації',
-                            'Джерело енергії'
-                        ]
-                    }
-                ],
-                results: {
-                    0: { name: 'Швидкий ритуал', description: 'Ти цінуєш свій час, але не хочеш компромісів у якості. Твій ідеальний вибір — простий чайник або гайвань з можливістю швидкого заварювання. Спробуй улун або червоний чай!' },
-                                       1: { name: 'Класична чайна церемонія', description: 'Ти любиш традиції та цінуєш кожен момент чайної церемонії. Твій вибір — гайвань або исинський чайник. Ідеально підходять улуни та пуери.' },
-                    2: { name: 'Медитативний ритуал', description: 'Чай для тебе — це глибока практика та медитація. Ти готовий витрачати години на ідеальне заварювання. Твій вибір — витримані пуери та високогірні улуни.' },
-                    3: { name: 'Вільний стиль', description: 'Ти не любиш рамок та створюєш свій власний ритуал. Експериментуй з різними способами заварювання та сортами. Твій ідеальний чай — той, що подобається саме тобі!' }
-                }
+            flavors: {
+                title: "Підбір чаю за нотами смаку",
+                badge: "Смаковий профіль",
+                content: `
+                    <p class="font-bold text-stone-900 mb-2">Знайдіть категорію за вашими вподобаннями:</p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Деревні, земляні та горіхові ноти:</strong> Обирайте витримані Шу Пуери та шу пуери в блинах. Вони дають густий настій та глибокий аромат.
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Квіткові, трав'яні та свіжі ноти:</strong> Ідеально підійдуть зелені чаї, білі сорти та світлі тайванські улуни.
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Фруктові, медові та пряні ноти:</strong> Спробуйте червоні чаї та темні улуни (наприклад, Да Хун Пао).
+                        </div>
+                    </div>
+                `
+            },
+            utensils: {
+                title: "Гайвань чи заварник: що обрати?",
+                badge: "Академія посуду",
+                content: `
+                    <p class="font-bold text-stone-900 mb-2">Порівняння інструментів для приготування:</p>
+                    <div class="space-y-3">
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Гайвань (китайська піала з кришкою):</strong> Найкращий вибір для методу проливів. Дозволяє повністю контролювати час контакту води з листям, швидко охолоджується та легко миється.
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Скляний чайник з кнопкою (тіпод):</strong> Ідеальний для офісу чи швидкого заварювання без зайвих церемоній. Натиснули кнопку — настій злився у колбу.
+                        </div>
+                        <div class="p-3 bg-stone-50 rounded-2xl border border-stone-200">
+                            <strong>Глиняний чайник (Ісін):</strong> Пористі стінки вбирають ефірні олії та з роками покращують смак улюбленого сорту чаю. Рекомендується закріплювати за одним видом.
+                        </div>
+                    </div>
+                `
             }
         };
 
-        let currentTest = null;
-        let currentQuestion = 0;
-        let answers = [];
+        // Quiz Questions
+        const QUIZ_1_QUESTIONS = [
+            { q: "Який час доби тобі ближче всього?", opts: ["Ніч і повна тиша", "Ранковий світанок і кава/чай", "Ближче до вечора, захід сонця", "День у постійній динаміці"] },
+            { q: "Яка музика грає в твоїх навушниках?", opts: ["Хип-хоп / реп / андеграунд", "Інді / рок / альтернатива", "Фонк / треп / електронна", "Ло-фай / ембіент для фокусу"] },
+            { q: "Опиши свій ідеальний вечір суботи:", opts: ["Вдома за комп'ютером / грою / кодом", "Прогулянка містом з друзями", "Кіномарафон або серіали під пледом", "Насичена тусовка чи подія"] },
+            { q: "Як ти зазвичай стаєш бадьорим зранку?", opts: ["Ніяк, я зомбі перші дві години", "Міцний напій та енергетик", "Медитація або неспішний чай", "Різкий холодний душ і вперед"] },
+            { q: "Який колір в одязі та стилі переважає?", opts: ["Темний / чорний / готичний вайб", "Світлі пастельні тони / оверсайз", "Яскраві помітні акценти", "Класика / мінімалізм"] },
+            { q: "Як ти реагуєш на стрес та дедлайни?", opts: ["Сконцентровано роблю все в останню ніч", "Зберігаю повний дзен і спокій", "Беру паузу на чай і роздуми", "Панікую, але потім справляюся"] },
+            { q: "Яке твоє улюблене місце для відпочинку?", opts: ["Своя кімната з улюбленим ПК/гаджетами", "Парк, тиха лавка або набережна", "Кав'ярня з гарною атмосферою", "Дах висотки з краєвидом на місто"] },
+            { q: "Твій підхід до вибору речей чи техніки:", opts: ["Досконально вивчаю характеристики і відгуки", "Беру те, що візуально залетіло в серце", "Прошу поради у друзів/експертів", "Шукаю найкраще співвідношення ціни"] },
+            { q: "Який фільм чи жанр найбільше до душі?", opts: ["Кіберпанк / фантастика / трилери", "Життєві драми / артхаус", "Комедії / легкі стріми / блогери", "Детективи / головоломки"] },
+            { q: "Як ти стаєшся до нових знайомств?", opts: ["Обираю вузьке коло перевірених людей", "Легко йду на контакт у будь-якій компанії", "Спочатку спостерігаю, потім спілкуюсь", "Люблю обговорювати спільні інтереси онлайн"] },
+            { q: "Яка погода надихає тебе найбільше?", opts: ["Густий туман та нічний дощ", "Сонячний теплий весняний день", "Осінній вітер та листопад", "Зимовий затишний вечір зі снігом"] },
+            { q: "Яке твоє життєве кредо?", opts: ["Йти своїм унікальним шляхом", "Головне — гармонія і спокій всередині", "Постійний рух і розвиток", "Жити тут і зараз з насолодою"] }
+        ];
 
-        function openTest(testType) {
-            currentTest = tests[testType];
-            currentQuestion = 0;
-            answers = [];
-            
-            const modal = document.getElementById('testModal');
-            renderQuestion();
-            modal.classList.add('active');
+        const QUIZ_2_QUESTIONS = [
+            { q: "Де ти найчастіше п'єш свої улюблені напої?", opts: ["За робочим столом / під час гри чи навчання", "У рюкзаку в дорозі / на ходу", "На дивані під серіал чи книгу", "На природі / у парку на лавці"] },
+            { q: "Скільки часу ти готов(а) витратити на приготування?", opts: ["Мінімум: залив і побіг", "П'ять хвилин на вдумливе заварювання", "Церемонія — це святе, можу заварювати довго", "Залежить від настрою та наявності часу"] },
+            { q: "Який посуд тобі візуально подобається найбільше?", opts: ["Матові керамічні піали та чаші", "Скляний прозорий чайник з подвійними стінками", "Класичний глиняний чайник (Ісін)", "Зручний дорожній термос чи фляга"] },
+            { q: "Яку температуру води ти зазвичай використовуєш?", opts: ["Окріп одразу з чайника", "Даю трохи охолонути (близько 80-85°C)", "Спеціально контролюю кожен градус", "Наливаю теплу воду для м'якості"] },
+            { q: "Як ти стаєшся до експериментів зі смаками?", opts: ["Обожнюю пробувати нові екзотичні сорти", "Віддаю перевагу перевіреній класиці", "Люблю додавати м'яту, лимон чи фрукти", "Слухаю поради засновників та знавців"] },
+            { q: "Твій ідеальний об'єм однієї порції:", opts: ["Велика кружка, щоб надовго вистачило", "Маленькі піали для проливок (традиційний метод)", "Середня чашка для швидкого розслаблення", "Термос на весь день"] },
+            { q: "Як ти зберігаєш свої запаси вдома?", opts: ["У спеціальних жерстяних банках чи пакетах з зіплоком", "У шафі в оригінальних упаковках", "Спеціальна полиця або чайний куточок", "Тримаю все під рукою на столі"] },
+            { q: "Чи важливо для тебе бачити колір настою?", opts: ["Так, дуже люблю спостерігати за відтінком", "Головне — насичений смак і аромат", "Не звертаю особливої уваги", "Цікаво порівнювати різні проливки"] },
+            { q: "Як часто ти оновлюєш свої чайні запаси?", opts: ["Регулярно купую щось новеньке на пробу", "Беру великі упаковки улюбленого сорту", "Коли старі запаси повністю закінчуються", "Залежить від сезону (взимку п'ю більше)"] },
+            { q: "Чи береш ти напій з собою на вулицю?", opts: ["Майже завжди ношу з собою термос", "Тільки коли планую довгі прогулянки", "Віддаю перевагу пити вдома в затишку", "Купую готові напої в кав'ярнях"] },
+            { q: "Що для тебе головне у процесі чаювання?", opts: ["Повна концентрація та медитативний стан", "Можливість поспілкуватися з друзями", "Швидкий спосіб підзарядити енергію", "Красива естетика та атмосфера"] },
+            { q: "Обери свій улюблений формат дегустації:", opts: ["Велика компанія з кількома сортами", "Наодинці вночі за улюбленою справою", "Швидка чашка між завданнями", "Ранковий ритуал пробудження"] }
+        ];
+
+        // Utility Functions
+        function cleanNumber(val) {
+            if (!val) return 0;
+            const num = parseFloat(String(val).replace(/[^0-9.]/g, ''));
+            return isNaN(num) ? 0 : num;
+        }
+
+        function processImageUrl(rawUrl, index) {
+            if (!rawUrl) return TEA_IMAGES[index % TEA_IMAGES.length];
+            const urlMatch = rawUrl.match(/https?:\/\/[^\s"'\)]+/);
+            if (!urlMatch) return TEA_IMAGES[index % TEA_IMAGES.length];
+            return urlMatch[0];
+        }
+
+        function detectCategory(name) {
+            const lower = name.toLowerCase();
+            if (lower.includes('шу') || lower.includes('shu')) return 'Шу Пуер';
+            if (lower.includes('шен') || lower.includes('shen')) return 'Шен Пуер';
+            if (lower.includes('улун') || lower.includes('тегуаньинь') || lower.includes('дахунпао')) return 'Улун';
+            if (lower.includes('зелен') || lower.includes('лунцзин')) return 'Зелений чай';
+            if (lower.includes('белый') || lower.includes('білий')) return 'Білий чай';
+            if (lower.includes('красн') || lower.includes('червон')) return 'Червоний чай';
+            if (lower.includes('гайвань') || lower.includes('чайник') || lower.includes('піал')) return 'Посуд';
+            return 'Чай';
+        }
+
+        function showNotification(text) {
+            const existing = document.getElementById('toastNotification');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.id = 'toastNotification';
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 bg-stone-900 text-white px-4 py-2.5 rounded-2xl shadow-xl z-50 text-xs font-bold animate-fade-in flex items-center gap-2';
+            toast.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i><span>${text}</span>`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 2000);
+        }
+
+        // Data Loading
+        async function loadData() {
+            renderCategoryTiles();
+            renderModalCategoriesList();
+
+            window.handleSheetData = function(data) {
+                try {
+                    if (!data || !data.table || !data.table.rows) throw new Error("Пусті дані");
+
+                    const rows = data.table.rows;
+                    const parsed = [];
+
+                    rows.forEach((row, idx) => {
+                        if (idx === 0) return;
+                        const cells = row.c;
+                        if (!cells) return;
+
+                        const getValue = (i) => {
+                            if (!cells[i] || cells[i].v === null || cells[i].v === undefined) return '';
+                            return String(cells[i].f || cells[i].v).trim();
+                        };
+
+                        const getRawCell = (i) => {
+                            if (!cells[i]) return '';
+                            return `${cells[i].f || ''} ${cells[i].v || ''}`;
+                        };
+
+                        const name = getValue(1); 
+                        if (!name || ['назва', 'название'].includes(name.toLowerCase())) return;
+
+                        const productId = getValue(5) || String(250008 - idx); 
+                        const rawImg = getRawCell(0); 
+                        const finalImg = processImageUrl(rawImg, idx);
+                        const retailVal = cleanNumber(getValue(4)) || cleanNumber(getValue(3)) || 250; 
+
+                        parsed.push({
+                            id: productId,
+                            name: name,
+                            price: retailVal,
+                            category: detectCategory(name),
+                            image: finalImg,
+                            fallbackImg: TEA_IMAGES[idx % TEA_IMAGES.length],
+                            description: `Артикул: ${productId}. Висока якість.`
+                        });
+                    });
+
+                    allProducts = parsed;
+                    renderFeaturedProducts();
+
+                } catch (err) {
+                    console.error("Помилка завантаження таблиці:", err);
+                }
+            };
+
+            const script = document.createElement('script');
+            script.src = `https://docs.google.com/spreadsheets/d/${CONFIG.SHEET_ID}/gviz/tq?tqx=responseHandler:handleSheetData`;
+            document.body.appendChild(script);
+        }
+
+        // Rendering Functions
+        function renderCategoryTiles() {
+            const container = document.getElementById('categoryTilesGrid');
+            container.innerHTML = CATEGORIES_LIST.map(cat => `
+                <div onclick="openCategory('${cat.name}')" class="bg-white ${cat.span} rounded-3xl p-6 border border-stone-200/60 shadow-sm cursor-pointer hover:shadow-md transition flex flex-col justify-between min-h-[150px] relative overflow-hidden btn-active-scale group">
+                    <div class="z-10">
+                        <h3 class="text-base sm:text-lg font-bold mb-1 group-hover:text-emerald-700 transition">${cat.name}</h3>
+                        <p class="text-xs text-stone-500 leading-relaxed">${cat.desc}</p>
+                    </div>
+                    <div class="absolute right-0 bottom-0 w-24 h-24 opacity-80 pointer-events-none">
+                        <img src="${cat.image}" alt="${cat.name}" class="w-full h-full object-cover rounded-tl-2xl">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderModalCategoriesList() {
+            const container = document.getElementById('modalCategoriesGrid');
+            container.innerHTML = CATEGORIES_LIST.map(cat => `
+                <button onclick="openCategory('${cat.name}'); closeCategoriesModal();" class="p-3 rounded-xl text-left text-xs font-semibold transition border flex items-center gap-3 bg-stone-50 text-stone-700 border-stone-200 hover:border-emerald-600">
+                    <i class="fa-solid fa-tag text-emerald-600"></i>
+                    <span class="truncate">${cat.name}</span>
+                </button>
+            `).join('');
+        }
+
+        function renderFeaturedProducts() {
+            const grid = document.getElementById('productGrid');
+            const featured = allProducts.slice(0, 12);
+
+            if (featured.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-6">Завантаження товарів...</p>';
+                return;
+            }
+
+            grid.innerHTML = featured.map(item => `
+                <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
+                    <div>
+                        <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                            <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                            <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
+                        </div>
+                        <div class="p-3.5 sm:p-4">
+                            <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
+                        </div>
+                    </div>
+                    <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                        <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                        <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                            <i class="fa-solid fa-cart-plus text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Modal Functions
+        function openGuideModal(type) {
+            const data = GUIDES_CONTENT[type];
+            if (!data) return;
+
+            document.getElementById('guideBadge').innerText = data.badge;
+            document.getElementById('guideModalTitle').innerText = data.title;
+            document.getElementById('guideBody').innerHTML = data.content;
+
+            document.getElementById('guideModal').classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
-        function closeTest() {
-            const modal = document.getElementById('testModal');
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            currentTest = null;
+        function closeGuideModal() {
+            document.getElementById('guideModal').classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
-        function renderQuestion() {
-            const content = document.getElementById('testContent');
-            const question = currentTest.questions[currentQuestion];
-            const progress = ((currentQuestion) / currentTest.questions.length) * 100;
-            
-            let html = `
-                <div class="modal-header">
-                    <h2>${currentTest.title}</h2>
-                    <p>Запитання ${currentQuestion + 1} з ${currentTest.questions.length}</p>
+        function openQuizModal(quizId) {
+            currentQuizId = quizId;
+            currentQuizIndex = 0;
+            quizAnswers = [];
+
+            const modal = document.getElementById('quizModal');
+            const titleEl = document.getElementById('quizModalTitle');
+            const badgeEl = document.getElementById('quizBadge');
+
+            if (quizId === 1) {
+                titleEl.innerText = "Який ти сорт чаю за вайбом?";
+                badgeEl.innerText = "Тест #1 • 12 запитань";
+            } else {
+                titleEl.innerText = "Який твій ідеальний ритуал заварювання?";
+                badgeEl.innerText = "Тест #2 • 12 запитань";
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            renderQuizQuestion();
+        }
+
+        function closeQuizModal() {
+            document.getElementById('quizModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function renderQuizQuestion() {
+            const questions = currentQuizId === 1 ? QUIZ_1_QUESTIONS : QUIZ_2_QUESTIONS;
+            const bodyEl = document.getElementById('quizBody');
+            const progressEl = document.getElementById('quizProgressBar');
+
+            const percent = ((currentQuizIndex) / questions.length) * 100;
+            progressEl.style.width = `${percent}%`;
+
+            if (currentQuizIndex >= questions.length) {
+                renderQuizResult();
+                return;
+            }
+
+            const currentQ = questions[currentQuizIndex];
+
+            bodyEl.innerHTML = `
+                <div class="space-y-4 animate-fade-in">
+                    <div class="flex justify-between items-center text-xs text-stone-500 font-bold uppercase tracking-wider">
+                        <span>Запитання ${currentQuizIndex + 1} з ${questions.length}</span>
+                        <span>${Math.round(percent)}%</span>
+                    </div>
+                    <h4 class="text-base sm:text-lg font-black text-stone-900 leading-snug">${currentQ.q}</h4>
+                    <div class="space-y-2.5 pt-2">
+                        ${currentQ.opts.map((opt, idx) => `
+                            <button onclick="handleQuizAnswer(${idx})" class="w-full text-left p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 hover:border-emerald-600 hover:bg-emerald-50/50 transition font-medium text-xs sm:text-sm text-stone-800 flex items-center justify-between group btn-active-scale">
+                                <span>${opt}</span>
+                                <i class="fa-solid fa-chevron-right text-stone-300 group-hover:text-emerald-600 transition text-xs"></i>
+                            </button>
+                        `).join('')}
+                    </div>
                 </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" style="width: ${progress}%"></div>
-                </div>
-                <div class="question-container">
-                    <div class="question">${question.question}</div>
-                    <div class="answers">
             `;
-            
-            question.answers.forEach((answer, index) => {
-                html += `<button class="answer-btn" onclick="selectAnswer(${index})">${answer}</button>`;
-            });
-            
-            html += `</div></div>`;
-            
-            content.innerHTML = html;
         }
 
-        function selectAnswer(answerIndex) {
-            answers.push(answerIndex);
+        function handleQuizAnswer(optionIndex) {
+            quizAnswers.push(optionIndex);
+            currentQuizIndex++;
+            renderQuizQuestion();
+        }
+
+        function renderQuizResult() {
+            const progressEl = document.getElementById('quizProgressBar');
+            progressEl.style.width = '100%';
+
+            const bodyEl = document.getElementById('quizBody');
+            const resultsList = [
+                "Шу Пуер 1998 року або глибокий витриманий блин",
+                "Свіжий тайванський улун з високих гір",
+                "Японський зелений чай Сенча або Матча",
+                "Ароматний білий чай Бай Му Дань",
+                "Насичений червоний Дянь Хун",
+                "Авторський трав'яний збір з гірськими травами"
+            ];
+
+            const randomResult = resultsList[Math.floor(Math.random() * resultsList.length)];
+
+            bodyEl.innerHTML = `
+                <div class="text-center space-y-6 py-6 animate-fade-in">
+                    <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto text-3xl shadow-inner">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">Тест успішно завершено!</span>
+                        <h4 class="text-xl sm:text-2xl font-black text-stone-900">Твій ідеальний чай:</h4>
+                        <p class="text-base sm:text-lg font-extrabold text-emerald-700 bg-emerald-50 p-4 rounded-2xl border border-emerald-200">${randomResult}</p>
+                    </div>
+                    <p class="text-xs text-stone-600">Ми проаналізували всі 100% твоїх відповідей з 12 запитань і підібрали цей унікальний варіант із загального каталогу!</p>
+                    
+                    <div class="flex gap-3 pt-2">
+                        <button onclick="openQuizModal(${currentQuizId})" class="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-800 py-3 rounded-xl font-bold text-xs transition btn-active-scale">
+                            Пройти знову
+                        </button>
+                        <button onclick="closeQuizModal(); setCategory('Чай');" class="flex-1 bg-stone-900 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-xs shadow-md transition btn-active-scale">
+                            Перейти до каталогу
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openCategory(catName) {
+            const modal = document.getElementById('categoryModal');
+            const titleEl = document.getElementById('modalCategoryTitle');
+            const countEl = document.getElementById('modalCategoryCount');
+            const grid = document.getElementById('categoryModalGrid');
+
+            titleEl.innerText = catName;
+
+            let items = [];
+            if (catName === 'Всі товари') {
+                items = allProducts;
+            } else if (catName === 'Чай') {
+                items = allProducts.filter(p => p.category !== 'Посуд');
+            } else {
+                items = allProducts.filter(p => p.category === catName);
+            }
+
+            countEl.innerText = `Знайдено товарів: ${items.length}`;
+
+            if (items.length === 0) {
+                grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">У цій категорії поки немає товарів</p>';
+            } else {
+                grid.innerHTML = items.map(item => `
+                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
+                        <div>
+                            <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}'); closeCategoryModal();">
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                    onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                                <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
+                            </div>
+                            <div class="p-3.5 sm:p-4">
+                                <h3 onclick="openProductModal('${item.id}'); closeCategoryModal();" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                            <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('categoryModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function openProductModal(id) {
+            const item = allProducts.find(p => p.id === id);
+            if (!item) return;
+
+            document.getElementById('modalImage').src = item.image;
+            document.getElementById('modalCategory').innerText = item.category;
+            document.getElementById('modalId').innerText = `ID: ${item.id}`;
+            document.getElementById('modalTitle').innerText = item.name;
+            document.getElementById('modalDescription').innerHTML = `<p>${item.description}</p>`;
+            document.getElementById('modalPrice').innerText = `${item.price} грн`;
             
-            const buttons = document.querySelectorAll('.answer-btn');
-            buttons[answerIndex].classList.add('selected');
+            const addBtn = document.getElementById('modalAddBtn');
+            addBtn.onclick = function() {
+                addToCart(item.id);
+                closeProductModal();
+            };
+
+            document.getElementById('productModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Cart Functions
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            drawer.classList.toggle('hidden');
+            if (!drawer.classList.contains('hidden')) {
+                renderCartItems();
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function addToCart(id) {
+            const item = allProducts.find(p => p.id === id);
+            if (!item) return;
+
+            const existing = cart.find(c => c.id === id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...item, qty: 1 });
+            }
+
+            updateCartCounters();
+            showNotification(`Товар додано до кошика`);
+        }
+
+        function updateCartQuantity(id, change) {
+            const item = cart.find(c => c.id === id);
+            if (!item) return;
+
+            item.qty += change;
+            if (item.qty <= 0) {
+                cart = cart.filter(c => c.id !== id);
+            }
+
+            updateCartCounters();
+            renderCartItems();
+        }
+
+        function updateCartCounters() {
+            const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cartCount').innerText = totalCount;
+            document.getElementById('mobileCartBadge').innerText = totalCount;
+        }
+
+        function renderCartItems() {
+            const container = document.getElementById('cartItemsContainer');
+            const footer = document.getElementById('cartFooter');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-16 space-y-3">
+                        <div class="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </div>
+                        <p class="text-stone-500 text-sm">Ваш кошик порожній</p>
+                    </div>
+                `;
+                footer.classList.add('hidden');
+                return;
+            }
+
+            footer.classList.remove('hidden');
+            container.innerHTML = cart.map(item => `
+                <div class="bg-stone-50 border border-stone-200/80 rounded-2xl p-3 flex items-center gap-3">
+                    <img src="${item.image}" alt="${item.name}" class="w-16 h-16 object-cover rounded-xl bg-white border border-stone-200/50 flex-shrink-0" onerror="this.src='${item.fallbackImg}';">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-stone-900 truncate mb-1">${item.name}</h4>
+                        <div class="text-xs font-extrabold text-emerald-700">${item.price} грн</div>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white border border-stone-200 rounded-xl px-2 py-1">
+                        <button onclick="updateCartQuantity('${item.id}', -1)" class="text-stone-500 hover:text-stone-900 w-5 h-5 flex items-center justify-center text-xs font-bold">-</button>
+                        <span class="text-xs font-bold text-stone-900 w-4 text-center">${item.qty}</span>
+                        <button onclick="updateCartQuantity('${item.id}', 1)" class="text-stone-500 hover:text-stone-900 w-5 h-5 flex items-center justify-center text-xs font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            document.getElementById('cartTotal').innerText = `${totalPrice} грн`;
+            updatePaymentInfo();
+        }
+
+        function updatePaymentInfo() {
+            const method = document.querySelector('input[name="paymentMethod"]:checked').value;
+            const noticeText = document.getElementById('paymentNoticeText');
+            if (method === 'full') {
+                noticeText.innerText = "Менеджер надішле реквізити для оплати після підтвердження замовлення.";
+            } else {
+                noticeText.innerText = "Відправка післяплатою з мінімальною передплатою 200 грн.";
+            }
+        }
+
+        async function handleCheckout(e) {
+            e.preventDefault();
+            if (cart.length === 0) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"><span>Надсилання...</span></i>';
+
+            const name = document.getElementById('custName').value;
+            const phone = document.getElementById('custPhone').value;
+            const city = document.getElementById('custCity').value;
+            const np = document.getElementById('custNP').value;
+            const payment = document.querySelector('input[name="paymentMethod"]:checked').value === 'full' ? 'Повна оплата' : 'Післяплата (передплата 200 грн)';
             
-            setTimeout(() => {
-                currentQuestion++;
-                
-                if (currentQuestion < currentTest.questions.length) {
-                    renderQuestion();
-                } else {
-                    showResult();
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            let message = `🛒 <b>Нове замовлення з сайту tea.haven.ua!</b>\n\n`;
+            message += `👤 <b>Ім'я:</b> ${name}\n`;
+            message += ` <b>Телефон:</b> ${phone}\n`;
+            message += ` <b>Місто:</b> ${city}, Відділення НП №${np}\n`;
+            message += `💳 <b>Оплата:</b> ${payment}\n\n`;
+            message += `📦 <b>Склад замовлення:</b>\n`;
+            cart.forEach((item, idx) => {
+                message += `${idx + 1}. ${item.name} (ID: ${item.id}) — ${item.qty} шт. × ${item.price} грн\n`;
+            });
+            message += `\n💰 <b>Всього до сплати:</b> ${totalPrice} грн`;
+
+            let success = true;
+            for (const adminId of CONFIG.TG_ADMIN_IDS) {
+                try {
+                    const response = await fetch(`https://api.telegram.org/bot${CONFIG.TG_BOT_TOKEN}/sendMessage`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: adminId,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    });
+                    const resData = await response.json();
+                    if (!resData.ok) success = false;
+                } catch (err) {
+                    success = false;
                 }
+            }
+
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = '<span>Оформити замовлення</span><i class="fa-solid fa-paper-plane text-xs"></i>';
+
+            if (success) {
+                alert('Дякуємо за замовлення! Наш менеджер зв\'яжеться з вами найближчим часом.');
+                cart = [];
+                updateCartCounters();
+                toggleCart();
+                document.getElementById('orderForm').reset();
+            } else {
+                alert('Помилка при надсиланні замовлення. Будь ласка, зв\'яжіться з нами напряму через Instagram.');
+            }
+        }
+
+        // Search & Navigation
+        function handleSearch(query) {
+            clearTimeout(searchTimeout);
+            if (!query || query.trim().length < 2) {
+                if (query.trim().length === 0) renderFeaturedProducts();
+                return;
+            }
+
+            searchTimeout = setTimeout(() => {
+                const q = query.toLowerCase();
+                const filtered = allProducts.filter(p => p.name.toLowerCase().includes(q) || p.id.includes(q) || p.category.toLowerCase().includes(q));
+                
+                const grid = document.getElementById('productGrid');
+                if (filtered.length === 0) {
+                    grid.innerHTML = '<p class="text-xs text-stone-500 col-span-full text-center py-12">Нічого не знайдено за вашим запитом</p>';
+                    return;
+                }
+
+                grid.innerHTML = filtered.map(item => `
+                    <div class="bg-white rounded-3xl border border-stone-200/60 overflow-hidden flex flex-col justify-between hover:shadow-xl transition-all duration-300 group animate-fade-in">
+                        <div>
+                            <div class="h-44 sm:h-52 overflow-hidden bg-stone-50 relative cursor-pointer" onclick="openProductModal('${item.id}')">
+                                <img src="${item.image}" alt="${item.name}" loading="lazy" 
+                                    class="w-full h-full object-cover group-hover:scale-105 transition duration-500" 
+                                    onerror="this.onerror=null; this.src='${item.fallbackImg}';">
+                                <span class="absolute top-3 right-3 text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-white/90 text-stone-700 border border-stone-200/60">ID: ${item.id}</span>
+                            </div>
+                            <div class="p-3.5 sm:p-4">
+                                <h3 onclick="openProductModal('${item.id}')" class="text-xs sm:text-sm font-bold text-stone-900 line-clamp-2 cursor-pointer hover:text-emerald-700 transition leading-snug">${item.name}</h3>
+                            </div>
+                        </div>
+                        <div class="p-3.5 sm:p-4 pt-0 flex items-center justify-between mt-auto">
+                            <span class="text-sm sm:text-lg font-black text-stone-900">${item.price} <span class="text-[10px] font-normal text-stone-500">грн</span></span>
+                            <button onclick="addToCart('${item.id}')" title="У кошик" class="bg-stone-900 hover:bg-emerald-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center shadow-md transition btn-active-scale">
+                                <i class="fa-solid fa-cart-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
             }, 300);
         }
 
-        function showResult() {
-            const content = document.getElementById('testContent');
-            
-            const dominant = answers.reduce((a, b, _, arr) => 
-                arr.filter(v => v === a).length >= arr.filter(v => v === b).length ? a : b
-            );
-            
-            const result = currentTest.results[dominant % 4];
-            
-            content.innerHTML = `
-                <div class="test-result">
-                    <div style="font-size: 4rem; margin-bottom: 1rem;">🍵</div>
-                    <h3>${result.name}</h3>
-                    <p style="font-size: 1.1rem; line-height: 1.6; margin: 1rem 0;">${result.description}</p>
-                    <button class="btn" onclick="closeTest()" style="margin-top: 1.5rem;">
-                        Закрити тест
-                    </button>
-                    <button class="btn" onclick="restartTest()" style="margin-top: 1rem; margin-left: 1rem; background: rgba(255,255,255,0.3);">
-                        Пройти ще раз
-                    </button>
-                </div>
-            `;
+        function setCategory(catName) {
+            openCategory(catName);
         }
 
-        function restartTest() {
-            currentQuestion = 0;
-            answers = [];
-            renderQuestion();
+        function focusSearch() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            const input = document.getElementById('headerSearchInput');
+            if (input) input.focus();
         }
 
-        document.getElementById('testModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeTest();
-            }
-        });
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        function openCategoriesModal() {
+            document.getElementById('categoriesModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
 
-        let cartCount = 0;
-        document.querySelectorAll('.btn').forEach(btn => {
-            if (btn.textContent.includes('Додати') || btn.textContent.includes('В кошик')) {
-                btn.addEventListener('click', function() {
-                    cartCount++;
-                    document.querySelector('.cart-count').textContent = cartCount;
-                    
-                    this.textContent = '✓ Додано';
-                    this.style.background = '#4CAF50';
-                    setTimeout(() => {
-                        this.textContent = 'Додати в кошик';
-                        this.style.background = '';
-                    }, 1500);
-                });
-            }
-        });
+        function closeCategoriesModal() {
+            document.getElementById('categoriesModal').classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', loadData);
     </script>
 </body>
 </html>
